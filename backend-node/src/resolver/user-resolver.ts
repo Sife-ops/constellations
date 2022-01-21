@@ -1,4 +1,5 @@
-import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import argon2 from "argon2";
+import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { User } from "../entities/user";
 
 @Resolver(User)
@@ -9,11 +10,25 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async login(@Arg("id") id: number) {
-    const user = await User.findOne(id);
+  async login(
+    @Arg("email", () => String) email: string,
+    @Arg("password", () => String) password: string
+  ) {
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
     if (!user) {
-      throw new Error("username does not exist");
+      throw new Error("user does not exist");
     }
+
+    const verified = await argon2.verify(user.password, password);
+    if (!verified) {
+      throw new Error("incorrect password");
+    }
+
+    // todo: return token
     return user;
   }
 
@@ -24,10 +39,11 @@ export class UserResolver {
     @Arg("password", () => String) password: string
   ): Promise<User> {
     try {
+      const hashed = await argon2.hash(password);
       await User.create({
         email,
         username,
-        password,
+        password: hashed,
       }).save();
     } catch (e) {
       console.log(e);
@@ -39,7 +55,6 @@ export class UserResolver {
         email,
       },
     });
-
     if (!user) {
       throw new Error("failed to create user");
     }
