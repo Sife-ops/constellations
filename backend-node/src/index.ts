@@ -4,7 +4,7 @@ import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { User } from "./entities/user";
-import { UserResolver } from "./resolver/user-resolver";
+import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 

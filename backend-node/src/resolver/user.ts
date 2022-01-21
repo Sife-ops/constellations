@@ -1,7 +1,7 @@
+import * as t from "../utility/token"
 import argon2 from "argon2";
-import jwt from "jsonwebtoken";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
-import { CookieOptions, Request, Response } from "express";
+import { Request, Response } from "express";
 import { User } from "../entities/user";
 
 interface AuthContext {
@@ -69,9 +69,9 @@ export class UserResolver {
       throw new Error("incorrect password");
     }
 
-    sendRefreshToken(res, { id: user.id });
+    t.sendRefreshToken(res, { id: user.id });
 
-    return newAccessToken({ id: user.id });
+    return t.newAccessToken({ id: user.id });
   }
 
   // todo: query or mutation?
@@ -98,35 +98,3 @@ export class UserResolver {
     return true;
   }
 }
-
-const newRefreshToken = (payload: { id: number }): string => {
-  return jwt.sign(
-    //
-    payload,
-    "refresh",
-    {
-      expiresIn: 6000,
-    }
-  );
-};
-
-const newAccessToken = (payload: { id: number }): string => {
-  return jwt.sign(
-    //
-    payload,
-    "access",
-    {
-      expiresIn: 1500,
-    }
-  );
-};
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  sameSite: "none",
-  secure: true,
-};
-
-const sendRefreshToken = (res: Response, payload: { id: number }) => {
-  res.cookie("wg", newRefreshToken(payload), cookieOptions);
-};
