@@ -1,6 +1,10 @@
 import "reflect-metadata";
+import express from "express";
 import { User } from "./entities/user";
 import { createConnection } from "typeorm";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import { UserResolver } from "./resolver/user-resolver";
 
 (async () => {
   try {
@@ -30,6 +34,22 @@ import { createConnection } from "typeorm";
   });
 
   console.log(user);
+  console.log("hello");
 
-  console.log("hello")
+  const app = express();
+
+  const server = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [UserResolver],
+    }),
+  });
+
+  await server.start();
+
+  server.applyMiddleware({ app });
+
+  const port = 4000;
+  app.listen(port, () => {
+    console.log(`running on ${port}`);
+  });
 })();
