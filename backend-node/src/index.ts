@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { User } from "./entities/user";
@@ -21,32 +23,27 @@ import { createConnection } from "typeorm";
     throw new Error("couldn't connect to database");
   }
 
-  await User.create({
-    email: "wyatt.goettsch@gmail.com",
-    username: "wyatt",
-    password: "pass",
-  }).save();
-
-  const user = await User.find({
-    where: {
-      username: "wyatt",
-    },
-  });
-
-  console.log(user);
-  console.log("hello");
-
   const app = express();
+
+  app.use(
+    cors({
+      origin: ["https://studio.apollographql.com", "http://localhost:3000"],
+      credentials: true,
+    })
+  );
+
+  app.use(cookieParser());
 
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver],
     }),
+    context: ({ req, res }) => ({ req, res }),
   });
 
   await server.start();
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, cors: false });
 
   const port = 4000;
   app.listen(port, () => {
