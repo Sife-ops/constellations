@@ -1,6 +1,6 @@
-import { createConnection } from "typeorm";
 import "reflect-metadata";
 import { User } from "./entities/user";
+import { createConnection } from "typeorm";
 
 (async () => {
   try {
@@ -30,4 +30,6 @@ import { User } from "./entities/user";
   });
 
   console.log(user);
+
+  console.log("hello")
 })();
