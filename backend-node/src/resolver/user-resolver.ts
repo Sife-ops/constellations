@@ -17,21 +17,33 @@ export class UserResolver {
     return user;
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => User)
   async register(
     @Arg("email", () => String) email: string,
     @Arg("username", () => String) username: string,
     @Arg("password", () => String) password: string
-  ): Promise<boolean> {
+  ): Promise<User> {
     try {
       await User.create({
         email,
         username,
         password,
       }).save();
-      return true;
     } catch (e) {
+      console.log(e);
       throw new Error("failed to create user");
     }
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new Error("failed to create user");
+    }
+
+    return user;
   }
 }

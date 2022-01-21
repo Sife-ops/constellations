@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import express from "express";
-import { User } from "./entities/user";
-import { createConnection } from "typeorm";
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
+import { User } from "./entities/user";
 import { UserResolver } from "./resolver/user-resolver";
+import { buildSchema } from "type-graphql";
+import { createConnection } from "typeorm";
 
 (async () => {
   try {
