@@ -21,5 +21,5 @@ export const cookieOptions: CookieOptions = {
 };
 
 export const sendRefreshToken = (res: Response, payload: { id: number }) => {
-  res.cookie("wg", newRefreshToken(payload), cookieOptions);
+  res.cookie("refreshToken", newRefreshToken(payload), cookieOptions);
 };

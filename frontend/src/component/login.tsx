@@ -1,8 +1,17 @@
 import React from "react";
+import { useMutation } from "urql";
+
+const login = `
+  mutation Login($password: String!, $email: String!) {
+    login(password: $password, email: $email)
+  }
+`;
 
 export const Login: React.FC = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+
+  const [result, mutation] = useMutation(login);
 
   return (
     <div>
@@ -10,6 +19,13 @@ export const Login: React.FC = () => {
         onSubmit={(e) => {
           e.preventDefault();
           console.log(email, password);
+
+          mutation({
+            email,
+            password,
+          }).then((res) => {
+            console.log(res.data.login);
+          });
         }}
       >
         <div>
@@ -28,7 +44,7 @@ export const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">register</button>
+        <button type="submit">login</button>
       </form>
     </div>
   );
