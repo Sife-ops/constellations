@@ -5,8 +5,9 @@ export const Dev: React.FC = () => {
   return (
     <div>
       <button
-        onChange={() => {
-          console.log(getAccessToken());
+        onClick={() => {
+          const token = getAccessToken();
+          console.log(token);
         }}
       >
         log access token

@@ -19,7 +19,7 @@ export const Login: React.FC = () => {
             email,
             password,
           }).then((res) => {
-            console.log(res.data.login);
+            console.log("login:", res.data.login);
             window.location.reload();
           });
         }}
