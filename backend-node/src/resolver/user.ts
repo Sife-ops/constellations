@@ -4,7 +4,7 @@ import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Request, Response } from "express";
 import { User } from "../entity/user";
 
-interface AuthContext {
+interface Context {
   req: Request;
   res: Response;
 }
@@ -22,9 +22,11 @@ export class UserResolver {
     @Arg("username", () => String) username: string,
     @Arg("password", () => String) password: string
   ): Promise<User> {
+    let user: User;
+
     try {
       const hashed = await argon2.hash(password);
-      await User.create({
+      user = await User.create({
         email,
         username,
         password: hashed,
@@ -34,24 +36,16 @@ export class UserResolver {
       throw new Error("failed to create user");
     }
 
-    const user = await User.findOne({
-      where: {
-        email,
-      },
-    });
-
-    if (!user) {
-      throw new Error("failed to create user");
-    }
-
+    // todo: object does not have id
     return user;
   }
+
 
   @Mutation(() => String)
   async login(
     @Arg("email", () => String) email: string,
     @Arg("password", () => String) password: string,
-    @Ctx() { req, res }: AuthContext
+    @Ctx() { req, res }: Context
   ): Promise<string> {
     console.log("request cookies:", req.cookies);
 

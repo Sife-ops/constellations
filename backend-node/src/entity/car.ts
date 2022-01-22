@@ -19,7 +19,7 @@ export class Car extends BaseEntity {
   plate: string;
 
   @Field(() => User)
-  @ManyToOne((type) => User, (user) => user.cars)
+  @ManyToOne(() => User, (user) => user.cars)
   @TypeormLoader()
   user: User;
 }

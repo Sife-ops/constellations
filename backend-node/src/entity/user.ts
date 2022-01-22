@@ -6,7 +6,7 @@ import { TypeormLoader } from "type-graphql-dataloader";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-  @Field(() => ID)
+  @Field(() => ID, { nullable: true })
   @PrimaryColumn()
   id: number;
 
@@ -22,7 +22,7 @@ export class User extends BaseEntity {
   password: string;
 
   @Field(() => [Car])
-  @OneToMany((type) => Car, (car) => car.user)
+  @OneToMany(() => Car, (car) => car.user)
   @TypeormLoader()
   cars: Car[];
 }

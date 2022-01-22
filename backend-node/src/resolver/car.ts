@@ -11,19 +11,19 @@ export class CarResolver {
 
   @Mutation(() => Car)
   async carCreate(
-    //
     @Arg("userId") userId: number,
     @Arg("year") year: number,
     @Arg("plate") plate: string
   ): Promise<Car> {
     const user = await User.findOne(userId);
+
     if (!user) throw new Error("user not found");
 
     const car = await Car.create({
       year,
       plate,
       user,
-    }).save()
+    }).save();
 
     return car;
   }
