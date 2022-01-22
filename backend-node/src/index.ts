@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { User } from "./entities/user";
+import { User } from "./entity/user";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";

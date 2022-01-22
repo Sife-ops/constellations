@@ -2,7 +2,7 @@ import * as t from "../utility/token"
 import argon2 from "argon2";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Request, Response } from "express";
-import { User } from "../entities/user";
+import { User } from "../entity/user";
 
 interface AuthContext {
   req: Request;
@@ -60,6 +60,7 @@ export class UserResolver {
         email,
       },
     });
+
     if (!user) {
       throw new Error("user does not exist");
     }
