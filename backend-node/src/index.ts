@@ -1,7 +1,8 @@
 import "reflect-metadata";
+import * as t from "./utility/token";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express from "express";
+import express, { Request, Response } from "express";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 import { Car } from "./entity/car";
@@ -10,6 +11,8 @@ import { User } from "./entity/user";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection, getConnection } from "typeorm";
+import { env } from "./utility/constant";
+import { verify } from "jsonwebtoken";
 
 (async () => {
   try {
@@ -30,12 +33,32 @@ import { createConnection, getConnection } from "typeorm";
 
   app.use(
     cors({
-      origin: ["https://studio.apollographql.com", "http://localhost:3000"],
+      origin: ["https://studio.apollographql.com", "http://localhost:3001"],
       credentials: true,
     })
   );
 
   app.use(cookieParser());
+
+  app.post("/refresh", (req: Request, res: Response) => {
+    console.log("request cookies:", req.cookies);
+
+    const refreshToken = req.cookies.wg;
+    const bad = { ok: false, accessToken: "" };
+
+    if (!refreshToken) return res.json(bad);
+
+    try {
+      // todo: check expired
+      const payload: any = verify(refreshToken, env.secret.refreshToken);
+      const newPayload = { id: payload.id };
+      t.sendRefreshToken(res, newPayload);
+      res.json({ ok: true, accessToken: t.newAccessToken(newPayload) });
+    } catch (e) {
+      console.log(e);
+      return res.json(bad);
+    }
+  });
 
   const server = new ApolloServer({
     schema: await buildSchema({

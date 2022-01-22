@@ -1,5 +1,6 @@
 import React from "react";
 import { useMutation } from "urql";
+import { useNavigate } from "react-router-dom";
 
 const register = `
     mutation Register($password: String!, $username: String!, $email: String!) {
@@ -18,6 +19,8 @@ export const Register: React.FC = () => {
 
   const [result, mutation] = useMutation(register);
 
+  const navigate = useNavigate();
+
   return (
     <div>
       <form
@@ -31,6 +34,7 @@ export const Register: React.FC = () => {
             password,
           }).then((res) => {
             console.log(res);
+            navigate("/login");
           });
         }}
       >
