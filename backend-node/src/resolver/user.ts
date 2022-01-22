@@ -22,24 +22,21 @@ export class UserResolver {
     @Arg("username", () => String) username: string,
     @Arg("password", () => String) password: string
   ): Promise<User> {
-    let user: User;
-
     try {
       const hashed = await argon2.hash(password);
-      user = await User.create({
+      const user = await User.create({
         email,
         username,
         password: hashed,
       }).save();
+
+      // todo: object does not have id
+      return user;
     } catch (e) {
       console.log(e);
       throw new Error("failed to create user");
     }
-
-    // todo: object does not have id
-    return user;
   }
-
 
   @Mutation(() => String)
   async login(
