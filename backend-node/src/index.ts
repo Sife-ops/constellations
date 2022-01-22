@@ -3,11 +3,13 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
+import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 import { Car } from "./entity/car";
+import { CarResolver } from "./resolver/car";
 import { User } from "./entity/user";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
-import { createConnection } from "typeorm";
+import { createConnection, getConnection } from "typeorm";
 
 (async () => {
   try {
@@ -37,9 +39,14 @@ import { createConnection } from "typeorm";
 
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [UserResolver],
+      resolvers: [UserResolver, CarResolver],
     }),
     context: ({ req, res }) => ({ req, res }),
+    plugins: [
+      ApolloServerLoaderPlugin({
+        typeormGetConnection: getConnection,
+      }),
+    ],
   });
 
   await server.start();

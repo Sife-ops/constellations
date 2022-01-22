@@ -11,16 +11,9 @@ interface AuthContext {
 
 @Resolver(User)
 export class UserResolver {
-  @Query(() => String)
-  helloWorld() {
-    return "hello";
-  }
-
   @Query(() => [User])
   async users(): Promise<User[]> {
-    const users = await User.find();
-    if (!users) throw new Error("not found");
-    return users;
+    return await User.find();
   }
 
   @Mutation(() => User)
