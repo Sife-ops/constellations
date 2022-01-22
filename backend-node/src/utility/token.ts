@@ -23,3 +23,7 @@ export const cookieOptions: CookieOptions = {
 export const sendRefreshToken = (res: Response, payload: { id: number }) => {
   res.cookie("wg", newRefreshToken(payload), cookieOptions);
 };
+
+export const clearRefreshToken = (res: Response) => {
+  res.clearCookie("wg", cookieOptions);
+};

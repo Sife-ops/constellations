@@ -1,11 +1,6 @@
 import React from "react";
+import { login } from "../utility/request";
 import { useMutation } from "urql";
-
-const login = `
-  mutation Login($password: String!, $email: String!) {
-    login(password: $password, email: $email)
-  }
-`;
 
 export const Login: React.FC = () => {
   const [email, setEmail] = React.useState("");

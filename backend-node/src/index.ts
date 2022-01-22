@@ -60,6 +60,11 @@ import { verify } from "jsonwebtoken";
     }
   });
 
+  app.post("/logout", (_: Request, res: Response) => {
+    t.clearRefreshToken(res);
+    res.json({ ok: "true" });
+  });
+
   const server = new ApolloServer({
     schema: await buildSchema({
       resolvers: [UserResolver, CarResolver],

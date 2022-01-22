@@ -1,16 +1,7 @@
 import React from "react";
+import { register } from "../utility/request";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
-
-const register = `
-    mutation Register($password: String!, $username: String!, $email: String!) {
-        register(password: $password, username: $username, email: $email) {
-            id
-            email
-            username
-        }
-    }
-`;
 
 export const Register: React.FC = () => {
   const [email, setEmail] = React.useState("");
