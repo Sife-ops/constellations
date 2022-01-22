@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
+import { Car } from "./entity/car";
 import { User } from "./entity/user";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
@@ -14,7 +15,7 @@ import { createConnection } from "typeorm";
       type: "sqlite",
       database: "./database/db.sqlite3",
       dropSchema: true,
-      entities: [User],
+      entities: [User, Car],
       synchronize: true,
       logging: false,
     });

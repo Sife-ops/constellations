@@ -1,4 +1,4 @@
-import * as t from "../utility/token"
+import * as t from "../utility/token";
 import argon2 from "argon2";
 import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Request, Response } from "express";
@@ -14,6 +14,13 @@ export class UserResolver {
   @Query(() => String)
   helloWorld() {
     return "hello";
+  }
+
+  @Query(() => [User])
+  async users(): Promise<User[]> {
+    const users = await User.find();
+    if (!users) throw new Error("not found");
+    return users;
   }
 
   @Mutation(() => User)
