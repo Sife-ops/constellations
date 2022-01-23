@@ -19,6 +19,7 @@ import { env } from "./utility/constant";
 (async () => {
   console.log(env);
 
+  // todo: move orm config
   try {
     await createConnection({
       type: "sqlite",
@@ -55,6 +56,7 @@ import { env } from "./utility/constant";
 
   app.use(bodyParser.json());
 
+  // todo: move rest endpoints
   app.post("/refresh", (req: Request, res: Response) => {
     // todo: logging utility
     console.log("index.ts - request cookies:", req.cookies);
@@ -71,12 +73,6 @@ import { env } from "./utility/constant";
         env.secret.refreshToken
       ) as JwtPayload;
 
-      // todo: debug mode
-      // const now = new Date().getTime();
-      // const exp = (payload.exp as number) * 1000;
-      // console.log("index.ts - now:", now);
-      // console.log("index.ts - exp:", exp);
-
       const newPayload = { id: payload.id };
 
       t.sendRefreshToken(res, newPayload);
@@ -87,7 +83,33 @@ import { env } from "./utility/constant";
     }
   });
 
-  // todo: rest register
+  app.post("/register", async (req: Request, res: Response) => {
+    const { email, username, password } = req.body as {
+      email: string;
+      username: string;
+      password: string;
+    };
+
+    if (!email || !username || !password) return res.sendStatus(400);
+
+    try {
+      const hashed = await argon2.hash(password);
+
+      const user = await User.create({
+        email,
+        username,
+        password: hashed,
+      }).save();
+
+      res.json({
+        email: user.email,
+        username: user.username
+      });
+    } catch (e) {
+      console.log(e);
+      return res.sendStatus(400);
+    }
+  });
 
   app.post("/login", async (req: Request, res: Response) => {
     const { email, password } = req.body as {

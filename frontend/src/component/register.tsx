@@ -1,6 +1,5 @@
 import React from "react";
 import _ from "lodash";
-import { register } from "../utility/request";
 import { useMutation, useQuery } from "urql";
 import { useNavigate } from "react-router-dom";
 import { userExists } from "../utility/request";
@@ -12,20 +11,25 @@ export const Register: React.FC = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const [registerResult, registerMutation] = useMutation(register);
   const [userEsxistsResult, userExistsMutation] = useMutation(userExists);
 
   const [
     //
     emailExists,
     setEmailExists,
-  ] = React.useState<null | JSX.Element>(null);
+  ] = React.useState<JSX.Element | null>(null);
 
   const [
     //
     usernameExists,
     setUsernameExists,
-  ] = React.useState<null | JSX.Element>(null);
+  ] = React.useState<JSX.Element | null>(null);
+
+  const [
+    //
+    successFailure,
+    setSuccessFailure,
+  ] = React.useState<JSX.Element | null>(null);
 
   // todo: abstract debounce functions
   // todo: reusable login/register component
@@ -71,22 +75,46 @@ export const Register: React.FC = () => {
     debounceUsername(nextValue);
   };
 
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+
+    fetch("http://localhost:4000/register", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        username,
+        password,
+      }),
+    }).then((res) => {
+      console.log(res);
+
+      res.json().then((e) => {
+        console.log(e);
+      });
+
+      // todo: show success, timeout, go to login
+      if (res.ok) {
+        setSuccessFailure(<div>Success.</div>);
+        setTimeout(() => {
+          navigate("login");
+        }, 3000);
+        return;
+      }
+
+      setSuccessFailure(<div>Something went wrong.</div>);
+
+      // todo: show failure
+    });
+  };
+
   return (
     <div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          console.log(email, username, password);
-          registerMutation({
-            email,
-            username,
-            password,
-          }).then((res) => {
-            console.log(res);
-            navigate("/login");
-          });
-        }}
-      >
+      <form onSubmit={handleSubmit}>
         <div>
           <input
             //
@@ -115,6 +143,7 @@ export const Register: React.FC = () => {
           />
         </div>
         <button type="submit">register</button>
+        {successFailure}
       </form>
     </div>
   );

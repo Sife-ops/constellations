@@ -40,6 +40,7 @@ export class UserResolver {
   ): Promise<User> {
     try {
       const hashed = await argon2.hash(password);
+
       const user = await User.create({
         email,
         username,

@@ -11,8 +11,6 @@ export const Login: React.FC = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          console.log(email, password);
-
           fetch("http://localhost:4000/login", {
             method: "POST",
             credentials: "include",
