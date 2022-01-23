@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import * as t from "./utility/token";
+import argon2 from "argon2";
+import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Request, Response } from "express";
@@ -31,6 +33,13 @@ import { env } from "./utility/constant";
     throw new Error("couldn't connect to database");
   }
 
+  const password = await argon2.hash("pass");
+  await User.create({
+    email: "wyatt",
+    username: "wyatt",
+    password,
+  }).save();
+
   const app = express();
 
   app.use(
@@ -41,6 +50,10 @@ import { env } from "./utility/constant";
   );
 
   app.use(cookieParser());
+
+  app.use(bodyParser.urlencoded({ extended: true }));
+
+  app.use(bodyParser.json());
 
   app.post("/refresh", (req: Request, res: Response) => {
     console.log("index.ts - request cookies:", req.cookies);
@@ -70,6 +83,37 @@ import { env } from "./utility/constant";
       console.log(e);
       return res.json(bad);
     }
+  });
+
+  app.post("/login", async (req: Request, res: Response) => {
+    const { email, password } = req.body as {
+      email: string;
+      password: string;
+    };
+
+    if (!email || !password) return res.sendStatus(400);
+
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    const bad = { ok: false, accessToken: "" };
+
+    if (!user) return res.json(bad);
+
+    const verified = await argon2.verify(user.password, password);
+
+    if (!verified) return res.json(bad);
+
+    t.sendRefreshToken(res, { id: user.id });
+
+    const accessToken = t.newAccessToken({ id: user.id });
+    res.json({
+      ok: true,
+      accessToken,
+    });
   });
 
   app.post("/logout", (_: Request, res: Response) => {

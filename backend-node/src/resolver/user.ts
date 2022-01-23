@@ -1,6 +1,6 @@
 import * as t from "../utility/token";
 import argon2 from "argon2";
-import { AuthContext, auth } from "../utility/auth";
+import { auth } from "../utility/auth";
 import { Request, Response } from "express";
 import { User } from "../entity/user";
 

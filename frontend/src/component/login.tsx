@@ -1,4 +1,5 @@
 import React from "react";
+import { setAccessToken } from "../utility/token";
 import { login } from "../utility/request";
 import { useMutation } from "urql";
 
@@ -15,13 +16,30 @@ export const Login: React.FC = () => {
           e.preventDefault();
           console.log(email, password);
 
-          mutation({
-            email,
-            password,
-          }).then((res) => {
-            console.log("login:", res.data.login);
-            window.location.reload();
-          });
+          fetch("http://localhost:4000/login", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              password,
+            }),
+          }).then((res) =>
+            res
+              .json()
+              .then((data: { ok: string | Boolean; accessToken: string }) => {
+                console.log(data);
+                if (data.ok === true || data.ok === "true") {
+                  setAccessToken(data.accessToken);
+                } else {
+                  setAccessToken("");
+                }
+                window.location.reload();
+              })
+          );
         }}
       >
         <div>
