@@ -17,7 +17,7 @@ import { createConnection, getConnection } from "typeorm";
 import { env } from "./utility/constant";
 
 (async () => {
-  console.log("prod:", env.prod);
+  console.log(env);
 
   try {
     await createConnection({
@@ -56,6 +56,7 @@ import { env } from "./utility/constant";
   app.use(bodyParser.json());
 
   app.post("/refresh", (req: Request, res: Response) => {
+    // todo: logging utility
     console.log("index.ts - request cookies:", req.cookies);
 
     const refreshToken = req.cookies.wg;
@@ -70,10 +71,11 @@ import { env } from "./utility/constant";
         env.secret.refreshToken
       ) as JwtPayload;
 
-      const now = new Date().getTime();
-      const exp = (payload.exp as number) * 1000;
-      console.log("index.ts - now:", now);
-      console.log("index.ts - exp:", exp);
+      // todo: debug mode
+      // const now = new Date().getTime();
+      // const exp = (payload.exp as number) * 1000;
+      // console.log("index.ts - now:", now);
+      // console.log("index.ts - exp:", exp);
 
       const newPayload = { id: payload.id };
 

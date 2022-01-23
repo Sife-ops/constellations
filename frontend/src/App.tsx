@@ -5,7 +5,6 @@ import { Dev } from "./component/dev";
 import { Home } from "./component/home";
 import { Login } from "./component/login";
 import { Register } from "./component/register";
-import { setAccessToken } from "./utility/token";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -18,7 +17,6 @@ function App() {
     }).then((res) =>
       res.json().then((data: { ok: boolean; accessToken: string }) => {
         if (data.ok) {
-          setAccessToken(data.accessToken);
           localStorage.setItem("yu", data.accessToken);
           setLoggedIn(true);
         }
@@ -34,7 +32,6 @@ function App() {
       credentials: "include",
     }).then((res) =>
       res.json().then((data) => {
-        // console.log(data);
         localStorage.removeItem("yu");
         window.location.reload();
       })
