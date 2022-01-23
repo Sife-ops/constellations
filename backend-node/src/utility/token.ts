@@ -4,13 +4,13 @@ import { env } from "./constant";
 
 export const newRefreshToken = (payload: { id: number }): string => {
   return jwt.sign(payload, env.secret.refreshToken, {
-    expiresIn: env.prod ? "7d" : 6000,
+    expiresIn: env.prod ? "7d" : "15s",
   });
 };
 
 export const newAccessToken = (payload: { id: number }): string => {
   return jwt.sign(payload, env.secret.accessToken, {
-    expiresIn: env.prod ? "24h" : 1500,
+    expiresIn: env.prod ? "24h" : "30s",
   });
 };
 

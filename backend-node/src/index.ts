@@ -12,9 +12,11 @@ import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection, getConnection } from "typeorm";
 import { env } from "./utility/constant";
-import { verify } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 
 (async () => {
+  console.log("prod:", env.prod);
+
   try {
     await createConnection({
       type: "sqlite",
@@ -49,9 +51,17 @@ import { verify } from "jsonwebtoken";
     if (!refreshToken) return res.json(bad);
 
     try {
-      // todo: check expired
-      const payload: any = verify(refreshToken, env.secret.refreshToken);
+      // throws if expired
+      const payload = verify(refreshToken, env.secret.refreshToken) as JwtPayload;
+
+      const now = new Date().getTime();
+      const exp = (payload.exp as number) * 1000;
+
+      console.log("now:", now);
+      console.log("exp:", exp);
+
       const newPayload = { id: payload.id };
+
       t.sendRefreshToken(res, newPayload);
       res.json({ ok: true, accessToken: t.newAccessToken(newPayload) });
     } catch (e) {
