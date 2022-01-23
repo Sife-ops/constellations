@@ -56,7 +56,6 @@ import { JwtPayload, verify } from "jsonwebtoken";
 
       const now = new Date().getTime();
       const exp = (payload.exp as number) * 1000;
-
       console.log("now:", now);
       console.log("exp:", exp);
 

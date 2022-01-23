@@ -63,7 +63,7 @@ export class UserResolver {
 
     t.sendRefreshToken(res, { id: user.id });
 
-    return t.newAccessToken({ id: user.id });
+    return "ok";
   }
 
   // todo: query or mutation?
