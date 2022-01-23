@@ -1,5 +1,5 @@
 import React from "react";
-import { setAccessToken } from "../utility/token";
+import { getAccessToken, setAccessToken } from "../utility/token";
 import { login } from "../utility/request";
 import { useMutation } from "urql";
 
@@ -28,17 +28,15 @@ export const Login: React.FC = () => {
               password,
             }),
           }).then((res) =>
-            res
-              .json()
-              .then((data: { ok: string | Boolean; accessToken: string }) => {
-                console.log(data);
-                if (data.ok === true || data.ok === "true") {
-                  setAccessToken(data.accessToken);
-                } else {
-                  setAccessToken("");
-                }
-                window.location.reload();
-              })
+            res.json().then((data: { ok: boolean; accessToken: string }) => {
+              if (data.ok) {
+                debugger;
+                setAccessToken(data.accessToken);
+              } else {
+                setAccessToken("");
+              }
+              window.location.reload();
+            })
           );
         }}
       >

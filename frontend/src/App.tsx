@@ -17,7 +17,7 @@ function App() {
       credentials: "include",
     }).then((res) =>
       res.json().then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.accessToken) {
           setAccessToken(data.accessToken);
           setLoggedIn(true);
@@ -34,7 +34,7 @@ function App() {
       credentials: "include",
     }).then((res) =>
       res.json().then((data) => {
-        console.log(data);
+        // console.log(data);
         window.location.reload();
       })
     );

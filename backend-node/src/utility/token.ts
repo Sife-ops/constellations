@@ -4,7 +4,7 @@ import { env } from "./constant";
 
 export const newAccessToken = (payload: { id: number }): string => {
   return jwt.sign(payload, env.secret.accessToken, {
-    expiresIn: env.prod ? "24h" : "15s",
+    expiresIn: env.prod ? "24h" : "60s",
   });
 };
 
