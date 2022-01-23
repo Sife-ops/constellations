@@ -87,6 +87,8 @@ import { env } from "./utility/constant";
     }
   });
 
+  // todo: rest register
+
   app.post("/login", async (req: Request, res: Response) => {
     const { email, password } = req.body as {
       email: string;

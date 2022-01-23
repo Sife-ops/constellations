@@ -24,3 +24,9 @@ export const user = gql`
     }
   }
 `;
+
+export const userExists = gql`
+  mutation UserExists($email: String, $username: String) {
+    userExists(email: $email, username: $username)
+  }
+`;

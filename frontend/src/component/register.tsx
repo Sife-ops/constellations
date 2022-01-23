@@ -1,26 +1,74 @@
 import React from "react";
-import { register } from "../utility/request";
-import { useMutation } from "urql";
-import { useNavigate } from "react-router-dom";
 import _ from "lodash";
+import { register } from "../utility/request";
+import { useMutation, useQuery } from "urql";
+import { useNavigate } from "react-router-dom";
+import { userExists } from "../utility/request";
 
 export const Register: React.FC = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const [result, mutation] = useMutation(register);
+  const [registerResult, registerMutation] = useMutation(register);
+  const [userEsxistsResult, userExistsMutation] = useMutation(userExists);
 
-  const navigate = useNavigate();
+  const [
+    //
+    emailExists,
+    setEmailExists,
+  ] = React.useState<null | JSX.Element>(null);
 
-  const debouncedSave = React.useRef(
-    _.debounce((nextValue) => console.log("sup"), 1000)
+  const [
+    //
+    usernameExists,
+    setUsernameExists,
+  ] = React.useState<null | JSX.Element>(null);
+
+  // todo: abstract debounce functions
+  // todo: reusable login/register component
+  const debounceEmail = React.useRef(
+    _.debounce((nextValue) => {
+      if (nextValue) {
+        userExistsMutation({ email: nextValue }).then((res) => {
+          if (res.data?.userExists) {
+            setEmailExists(<div>already registered</div>);
+            return;
+          }
+          setEmailExists(<div>available</div>);
+        });
+      }
+      setEmailExists(null);
+    }, 1000)
   ).current;
 
-  const handleChange = (e: any) => {
+  const debounceUsername = React.useRef(
+    _.debounce((nextValue) => {
+      if (nextValue) {
+        userExistsMutation({ username: nextValue }).then((res) => {
+          if (res.data?.userExists) {
+            setUsernameExists(<div>already registered</div>);
+            return;
+          }
+          setUsernameExists(<div>available</div>);
+        });
+      }
+      setUsernameExists(null);
+    }, 1000)
+  ).current;
+
+  const handleEmail = (e: any) => {
     const { value: nextValue } = e.target;
     setEmail(nextValue);
-    debouncedSave(nextValue);
+    debounceEmail(nextValue);
+  };
+
+  const handleUsername = (e: any) => {
+    const { value: nextValue } = e.target;
+    setUsername(nextValue);
+    debounceUsername(nextValue);
   };
 
   return (
@@ -29,7 +77,7 @@ export const Register: React.FC = () => {
         onSubmit={(e) => {
           e.preventDefault();
           console.log(email, username, password);
-          mutation({
+          registerMutation({
             email,
             username,
             password,
@@ -45,17 +93,19 @@ export const Register: React.FC = () => {
             value={email}
             placeholder="email"
             type="text"
-            onChange={handleChange}
+            onChange={handleEmail}
           />
         </div>
+        {emailExists}
         <div>
           <input
             value={username}
             placeholder="username"
             type="text"
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={handleUsername}
           />
         </div>
+        {usernameExists}
         <div>
           <input
             value={password}
