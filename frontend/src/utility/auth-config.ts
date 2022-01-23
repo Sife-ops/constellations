@@ -10,7 +10,6 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
   },
   getAuth: async ({ authState }) => {
     if (!authState) {
-      // todo: global variable doesn't work; try useState
       const accessToken = localStorage.getItem("yu");
       if (accessToken) {
         return { accessToken };

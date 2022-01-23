@@ -1,28 +1,25 @@
 import "reflect-metadata";
-import * as t from "./utility/token";
 import argon2 from "argon2";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import express, { Request, Response } from "express";
+import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 import { Car } from "./entity/car";
 import { CarResolver } from "./resolver/car";
-import { JwtPayload, verify } from "jsonwebtoken";
 import { User } from "./entity/user";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection, getConnection } from "typeorm";
 import { env } from "./utility/constant";
 import { login, logout } from "./rest/login";
-import { register } from "./rest/register";
 import { refresh } from "./rest/refresh";
+import { register } from "./rest/register";
 
 (async () => {
   console.log(env);
 
-  // todo: move orm config
   try {
     await createConnection({
       type: "sqlite",
@@ -57,10 +54,10 @@ import { refresh } from "./rest/refresh";
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  app.use(refresh);
-  app.use(register)
   app.use(login);
   app.use(logout);
+  app.use(refresh);
+  app.use(register);
 
   const server = new ApolloServer({
     schema: await buildSchema({
@@ -78,7 +75,7 @@ import { refresh } from "./rest/refresh";
 
   server.applyMiddleware({ app, cors: false });
 
-  const port = 4000;
+  const port = env.prod ? 80 : 4000;
   app.listen(port, () => {
     console.log(`running on ${port}`);
   });

@@ -5,7 +5,6 @@ import { verify, JwtPayload } from "jsonwebtoken";
 
 export const refresh = Router();
 
-// todo: move rest endpoints
 refresh.post("/refresh", (req: Request, res: Response) => {
   // todo: logging utility
   console.log("refresh.ts - request cookies:", req.cookies);
