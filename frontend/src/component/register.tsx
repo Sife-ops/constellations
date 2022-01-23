@@ -1,6 +1,6 @@
 import React from "react";
 import _ from "lodash";
-import { useMutation, useQuery } from "urql";
+import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
 import { userExists } from "../utility/request";
 
@@ -107,8 +107,6 @@ export const Register: React.FC = () => {
       }
 
       setSuccessFailure(<div>Something went wrong.</div>);
-
-      // todo: show failure
     });
   };
 

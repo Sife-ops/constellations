@@ -15,6 +15,9 @@ import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection, getConnection } from "typeorm";
 import { env } from "./utility/constant";
+import { login, logout } from "./rest/login";
+import { register } from "./rest/register";
+import { refresh } from "./rest/refresh";
 
 (async () => {
   console.log(env);
@@ -51,101 +54,13 @@ import { env } from "./utility/constant";
   );
 
   app.use(cookieParser());
-
   app.use(bodyParser.urlencoded({ extended: true }));
-
   app.use(bodyParser.json());
 
-  // todo: move rest endpoints
-  app.post("/refresh", (req: Request, res: Response) => {
-    // todo: logging utility
-    console.log("index.ts - request cookies:", req.cookies);
-
-    const refreshToken = req.cookies.wg;
-    const bad = { ok: false, accessToken: "" };
-
-    if (!refreshToken) return res.json(bad);
-
-    try {
-      // throws if expired
-      const payload = verify(
-        refreshToken,
-        env.secret.refreshToken
-      ) as JwtPayload;
-
-      const newPayload = { id: payload.id };
-
-      t.sendRefreshToken(res, newPayload);
-      res.json({ ok: true, accessToken: t.newAccessToken(newPayload) });
-    } catch (e) {
-      console.log(e);
-      return res.json(bad);
-    }
-  });
-
-  app.post("/register", async (req: Request, res: Response) => {
-    const { email, username, password } = req.body as {
-      email: string;
-      username: string;
-      password: string;
-    };
-
-    if (!email || !username || !password) return res.sendStatus(400);
-
-    try {
-      const hashed = await argon2.hash(password);
-
-      const user = await User.create({
-        email,
-        username,
-        password: hashed,
-      }).save();
-
-      res.json({
-        email: user.email,
-        username: user.username
-      });
-    } catch (e) {
-      console.log(e);
-      return res.sendStatus(400);
-    }
-  });
-
-  app.post("/login", async (req: Request, res: Response) => {
-    const { email, password } = req.body as {
-      email: string;
-      password: string;
-    };
-
-    if (!email || !password) return res.sendStatus(400);
-
-    const user = await User.findOne({
-      where: {
-        email,
-      },
-    });
-
-    const bad = { ok: false, accessToken: "" };
-
-    if (!user) return res.json(bad);
-
-    const verified = await argon2.verify(user.password, password);
-
-    if (!verified) return res.json(bad);
-
-    t.sendRefreshToken(res, { id: user.id });
-
-    const accessToken = t.newAccessToken({ id: user.id });
-    res.json({
-      ok: true,
-      accessToken,
-    });
-  });
-
-  app.post("/logout", (_: Request, res: Response) => {
-    t.clearRefreshToken(res);
-    res.json({ ok: "true" });
-  });
+  app.use(refresh);
+  app.use(register)
+  app.use(login);
+  app.use(logout);
 
   const server = new ApolloServer({
     schema: await buildSchema({
