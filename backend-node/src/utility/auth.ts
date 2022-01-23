@@ -1,22 +1,28 @@
 import { MiddlewareFn } from "type-graphql";
 import { Request, Response } from "express";
 import { env } from "./constant";
-import { verify } from "jsonwebtoken";
+import { JwtPayload, verify } from "jsonwebtoken";
 
 export interface AuthContext {
   req: Request;
   res: Response;
-  payload?: any;
+  payload: JwtPayload;
 }
 
 export const auth: MiddlewareFn<AuthContext> = async ({ context }, next) => {
-  const auth = context.req.headers["authorization"] as string;
+  console.log("auth.ts - request headers:", context.req.headers.authorization);
+
+  const auth = context.req.headers.authorization as string;
   if (!auth) throw new Error("no authorization header");
+  const accessToken = auth.split(" ")[1];
+  if (!accessToken) throw new Error("no token");
 
   try {
-    const accessToken = auth.split(" ")[1];
-    const payload = verify(accessToken, env.secret.accessToken);
-    context.payload = payload as any;
+    const payload: JwtPayload = verify(
+      accessToken,
+      env.secret.accessToken
+    ) as JwtPayload;
+    context.payload = payload;
   } catch (e) {
     console.log(e);
     throw new Error("bad token");

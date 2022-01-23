@@ -1,8 +1,18 @@
 import * as t from "../utility/token";
 import argon2 from "argon2";
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { AuthContext, auth } from "../utility/auth";
 import { Request, Response } from "express";
 import { User } from "../entity/user";
+
+import {
+  Arg,
+  Ctx,
+  Int,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 
 interface Context {
   req: Request;
@@ -14,6 +24,12 @@ export class UserResolver {
   @Query(() => [User])
   async users(): Promise<User[]> {
     return await User.find();
+  }
+
+  @Query(() => User)
+  @UseMiddleware(auth)
+  async user(@Arg("id", () => Int) id: number): Promise<User> {
+    return await User.findOneOrFail(id);
   }
 
   @Mutation(() => User)
@@ -38,13 +54,14 @@ export class UserResolver {
     }
   }
 
+  // todo: use findOneOrFail
   @Mutation(() => String)
   async login(
     @Arg("email", () => String) email: string,
     @Arg("password", () => String) password: string,
     @Ctx() { req, res }: Context
   ): Promise<string> {
-    console.log("request cookies:", req.cookies);
+    console.log("user.ts - request cookies:", req.cookies);
 
     const user = await User.findOne({
       where: {

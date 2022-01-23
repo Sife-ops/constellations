@@ -1,4 +1,5 @@
 import React from "react";
+import { AuthTest } from "./auth-test";
 import { getAccessToken } from "../utility/token";
 
 export const Dev: React.FC = () => {
@@ -12,6 +13,8 @@ export const Dev: React.FC = () => {
       >
         log access token
       </button>
+      <br />
+      <AuthTest />
     </div>
   );
 };

@@ -7,12 +7,12 @@ import { ApolloServer } from "apollo-server-express";
 import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 import { Car } from "./entity/car";
 import { CarResolver } from "./resolver/car";
+import { JwtPayload, verify } from "jsonwebtoken";
 import { User } from "./entity/user";
 import { UserResolver } from "./resolver/user";
 import { buildSchema } from "type-graphql";
 import { createConnection, getConnection } from "typeorm";
 import { env } from "./utility/constant";
-import { JwtPayload, verify } from "jsonwebtoken";
 
 (async () => {
   console.log("prod:", env.prod);
@@ -43,7 +43,7 @@ import { JwtPayload, verify } from "jsonwebtoken";
   app.use(cookieParser());
 
   app.post("/refresh", (req: Request, res: Response) => {
-    console.log("request cookies:", req.cookies);
+    console.log("index.ts - request cookies:", req.cookies);
 
     const refreshToken = req.cookies.wg;
     const bad = { ok: false, accessToken: "" };
@@ -52,12 +52,15 @@ import { JwtPayload, verify } from "jsonwebtoken";
 
     try {
       // throws if expired
-      const payload = verify(refreshToken, env.secret.refreshToken) as JwtPayload;
+      const payload = verify(
+        refreshToken,
+        env.secret.refreshToken
+      ) as JwtPayload;
 
       const now = new Date().getTime();
       const exp = (payload.exp as number) * 1000;
-      console.log("now:", now);
-      console.log("exp:", exp);
+      console.log("index.ts - now:", now);
+      console.log("index.ts - exp:", exp);
 
       const newPayload = { id: payload.id };
 
