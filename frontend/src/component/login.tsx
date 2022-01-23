@@ -1,13 +1,10 @@
 import React from "react";
-import { getAccessToken, setAccessToken } from "../utility/token";
 import { login } from "../utility/request";
 import { useMutation } from "urql";
 
 export const Login: React.FC = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  const [result, mutation] = useMutation(login);
 
   return (
     <div>
@@ -30,10 +27,9 @@ export const Login: React.FC = () => {
           }).then((res) =>
             res.json().then((data: { ok: boolean; accessToken: string }) => {
               if (data.ok) {
-                debugger;
-                setAccessToken(data.accessToken);
+                localStorage.setItem("yu", data.accessToken);
               } else {
-                setAccessToken("");
+                localStorage.removeItem("yu");
               }
               window.location.reload();
             })

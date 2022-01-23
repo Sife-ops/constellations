@@ -1,5 +1,4 @@
 import React from "react";
-import { getAccessToken } from "../utility/token";
 import { isValid } from "../utility/token";
 
 export const Home: React.FC = () => {
@@ -9,7 +8,7 @@ export const Home: React.FC = () => {
       <br />
       <button
         onClick={() => {
-          const token = getAccessToken();
+          const token = localStorage.getItem("yu") || "";
           console.log(token, "valid:", isValid(token));
         }}
       >

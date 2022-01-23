@@ -16,10 +16,10 @@ function App() {
       method: "POST",
       credentials: "include",
     }).then((res) =>
-      res.json().then((data) => {
-        // console.log(data);
-        if (data.accessToken) {
+      res.json().then((data: { ok: boolean; accessToken: string }) => {
+        if (data.ok) {
           setAccessToken(data.accessToken);
+          localStorage.setItem("yu", data.accessToken);
           setLoggedIn(true);
         }
         setLoading(false);
@@ -35,6 +35,7 @@ function App() {
     }).then((res) =>
       res.json().then((data) => {
         // console.log(data);
+        localStorage.removeItem("yu");
         window.location.reload();
       })
     );
