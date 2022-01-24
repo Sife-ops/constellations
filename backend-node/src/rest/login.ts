@@ -19,21 +19,17 @@ login.post("/login", async (req: Request, res: Response) => {
     },
   });
 
-  const bad = { ok: false, accessToken: "" };
-
-  if (!user) return res.json(bad);
+  if (!user) return res.sendStatus(401);
 
   const verified = await argon2.verify(user.password, password);
 
-  if (!verified) return res.json(bad);
+  if (!verified) return res.sendStatus(401);
 
   t.sendRefreshToken(res, { id: user.id });
 
   const accessToken = t.newAccessToken({ id: user.id });
-  res.json({
-    ok: true,
-    accessToken,
-  });
+
+  res.json({ accessToken });
 });
 
 export const logout = Router();

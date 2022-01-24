@@ -21,16 +21,15 @@ export const Login: React.FC = () => {
               email,
               password,
             }),
-          }).then((res) =>
-            res.json().then((data: { ok: boolean; accessToken: string }) => {
-              if (data.ok) {
-                localStorage.setItem("yu", data.accessToken);
-              } else {
-                localStorage.removeItem("yu");
-              }
-              window.location.reload();
-            })
-          );
+          }).then(async (res) => {
+            if (res.ok) {
+              const data = await res.json();
+              localStorage.setItem("yu", data.accessToken);
+            } else {
+              localStorage.removeItem("yu");
+            }
+            window.location.reload();
+          });
         }}
       >
         <div>
