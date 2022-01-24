@@ -7,13 +7,11 @@ export const AuthTest: React.FC = () => {
 
   const [res, reexec] = useQuery({
     query: user,
-    variables: {
-      userId: 1,
-    },
     requestPolicy: "network-only",
   });
 
   if (res.fetching) return <div>loading...</div>;
+
   if (res.error) {
     console.log(res.error);
     return <div>error</div>;

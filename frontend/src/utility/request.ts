@@ -16,8 +16,8 @@ export const register = gql`
 `;
 
 export const user = gql`
-  query User($userId: Int!) {
-    user(id: $userId) {
+  query User {
+    user {
       id
       email
       username

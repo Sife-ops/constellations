@@ -1,8 +1,9 @@
 import { User } from "../entity/user";
-import { auth } from "../utility/auth";
+import { auth, AuthContext } from "../utility/auth";
 
 import {
   Arg,
+  Ctx,
   Int,
   Mutation,
   Query,
@@ -12,15 +13,10 @@ import {
 
 @Resolver(User)
 export class UserResolver {
-  @Query(() => [User])
-  async users(): Promise<User[]> {
-    return await User.find();
-  }
-
   @Query(() => User)
   @UseMiddleware(auth)
-  async user(@Arg("id", () => Int) id: number): Promise<User> {
-    return await User.findOneOrFail(id);
+  async user(@Ctx() { payload }: AuthContext): Promise<User> {
+    return await User.findOneOrFail(payload.id);
   }
 
   @Mutation(() => Boolean)
