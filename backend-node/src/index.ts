@@ -5,17 +5,18 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { ApolloServerLoaderPlugin } from "type-graphql-dataloader";
 import { Car } from "./entity/car";
-import { CarResolver } from "./resolver/car";
 import { User } from "./entity/user";
-import { UserResolver } from "./resolver/user";
-import { buildSchema } from "type-graphql";
-import { createConnection, getConnection } from "typeorm";
+import { applyMiddleware } from "graphql-middleware";
+import { auth } from "./graphql/auth";
+import { createConnection } from "typeorm";
 import { env } from "./utility/constant";
 import { login, logout } from "./rest/login";
+import { makeExecutableSchema } from "graphql-tools";
 import { refresh } from "./rest/refresh";
 import { register } from "./rest/register";
+import { resolvers } from "./graphql/resolver";
+import { typeDefs } from "./graphql/typedef";
 
 (async () => {
   console.log(env);
@@ -34,6 +35,7 @@ import { register } from "./rest/register";
     throw new Error("couldn't connect to database");
   }
 
+  // mock data
   const password = await argon2.hash("pass");
   await User.create({
     email: "wyatt",
@@ -41,6 +43,25 @@ import { register } from "./rest/register";
     password,
   }).save();
 
+  const user = await User.findOne({
+    where: {
+      username: "wyatt",
+    },
+  });
+
+  await Car.create({
+    year: 1990,
+    plate: "asdf",
+    user,
+  }).save();
+
+  await Car.create({
+    year: 1992,
+    plate: "fdsa",
+    user,
+  }).save();
+
+  // rest
   const origin = (): string[] => {
     const nonprod = [
       "https://studio.apollographql.com",
@@ -63,18 +84,15 @@ import { register } from "./rest/register";
   app.use(refresh);
   app.use(register);
 
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const schemaWithMiddleware = applyMiddleware(schema, auth);
+
   const server = new ApolloServer({
-    schema: await buildSchema({
-      resolvers: [UserResolver, CarResolver],
-    }),
+    schema: schemaWithMiddleware,
     context: ({ req, res }) => ({ req, res }),
-    plugins: [
-      ApolloServerLoaderPlugin({
-        typeormGetConnection: getConnection,
-      }),
-    ],
   });
 
+  // start
   await server.start();
 
   server.applyMiddleware({ app, cors: false });

@@ -3,8 +3,6 @@ import { useQuery } from "urql";
 import { user } from "../utility/request";
 
 export const AuthTest: React.FC = () => {
-  const token = localStorage.getItem("yu");
-
   const [res, reexec] = useQuery({
     query: user,
     requestPolicy: "network-only",
@@ -17,5 +15,5 @@ export const AuthTest: React.FC = () => {
     return <div>error</div>;
   }
 
-  return <div>authtest</div>;
+  return <div>authtest: {JSON.stringify(res.data)}</div>;
 };

@@ -30,3 +30,9 @@ export const userExists = gql`
     userExists(email: $email, username: $username)
   }
 `;
+
+export const authTest = gql`
+  query AuthTest {
+    authTest
+  }
+`;
