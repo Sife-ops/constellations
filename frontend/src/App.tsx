@@ -15,15 +15,14 @@ function App() {
     fetch(`${apiUrl()}/refresh`, {
       method: "POST",
       credentials: "include",
-    }).then((res) =>
-      res.json().then((data: { ok: boolean; accessToken: string }) => {
-        if (data.ok) {
-          localStorage.setItem("yu", data.accessToken);
-          setLoggedIn(true);
-        }
-        setLoading(false);
-      })
-    );
+    }).then(async (res) => {
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem("yu", data.accessToken);
+        setLoggedIn(true);
+      }
+      setLoading(false);
+    });
   }, []);
 
   const handleLogout = () => {

@@ -22,19 +22,14 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
       method: "POST",
       credentials: "include",
     });
-    const data = (await res.json()) as {
-      ok: boolean;
-      accessToken: string;
-    };
 
-    if (data.ok) {
-      localStorage.setItem("yu", data.accessToken);
-      return {
-        accessToken: data.accessToken,
-      };
-    }
+    if (!res.ok) return null;
 
-    return null;
+    const data = await res.json();
+
+    localStorage.setItem("yu", data.accessToken);
+
+    return { accessToken: data.accessToken };
   },
   addAuthToOperation: ({ authState, operation }): Operation<any, any> => {
     if (!authState || !authState.accessToken) {

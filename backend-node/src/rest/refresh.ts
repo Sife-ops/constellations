@@ -12,7 +12,8 @@ refresh.post("/refresh", (req: Request, res: Response) => {
   const refreshToken = req.cookies.wg;
   const bad = { ok: false, accessToken: "" };
 
-  if (!refreshToken) return res.json(bad);
+  // if (!refreshToken) return res.json(bad);
+  if (!refreshToken) return res.sendStatus(401);
 
   try {
     // throws if expired
@@ -21,9 +22,10 @@ refresh.post("/refresh", (req: Request, res: Response) => {
     const newPayload = { id: payload.id };
 
     t.sendRefreshToken(res, newPayload);
-    res.json({ ok: true, accessToken: t.newAccessToken(newPayload) });
+    res.json({ accessToken: t.newAccessToken(newPayload) });
   } catch (e) {
     console.log(e);
-    return res.json(bad);
+    // return res.json(bad);
+    return res.sendStatus(401);
   }
 });
