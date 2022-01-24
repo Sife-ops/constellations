@@ -1,5 +1,6 @@
 import React from "react";
 import _ from "lodash";
+import { apiUrl } from "../utility/function";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
 import { userExists } from "../utility/request";
@@ -78,7 +79,7 @@ export const Register: React.FC = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
-    fetch("http://localhost:4000/register", {
+    fetch(`${apiUrl()}/register`, {
       method: "POST",
       credentials: "include",
       headers: {

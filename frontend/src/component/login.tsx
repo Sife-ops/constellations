@@ -1,6 +1,5 @@
 import React from "react";
-import { login } from "../utility/request";
-import { useMutation } from "urql";
+import { apiUrl } from "../utility/function";
 
 export const Login: React.FC = () => {
   const [email, setEmail] = React.useState("");
@@ -11,7 +10,7 @@ export const Login: React.FC = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          fetch("http://localhost:4000/login", {
+          fetch(`${apiUrl()}/login`, {
             method: "POST",
             credentials: "include",
             headers: {

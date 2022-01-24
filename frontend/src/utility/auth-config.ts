@@ -1,5 +1,6 @@
 import { AuthConfig } from "@urql/exchange-auth";
 import { Operation } from "urql";
+import { apiUrl } from "../utility/function";
 import { isValid } from "./token";
 
 export const authConfig: AuthConfig<{ accessToken: string }> = {
@@ -17,7 +18,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
       return null;
     }
 
-    const res = await fetch("http://localhost:4000/refresh", {
+    const res = await fetch(`${apiUrl()}/refresh`, {
       method: "POST",
       credentials: "include",
     });

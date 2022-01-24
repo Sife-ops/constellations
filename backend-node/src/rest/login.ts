@@ -6,8 +6,6 @@ import { User } from "../entity/user";
 export const login = Router();
 
 login.post("/login", async (req: Request, res: Response) => {
-  //
-
   const { email, password } = req.body as {
     email: string;
     password: string;

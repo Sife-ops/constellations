@@ -2,13 +2,14 @@ import "./index.css";
 import App from "./App";
 import React from "react";
 import ReactDOM from "react-dom";
+import { apiUrl } from "./utility/function";
+import { authConfig } from "./utility/auth-config";
 import { authExchange } from "@urql/exchange-auth";
 import { createClient, Provider as UrqlProvider } from "urql";
 import { fetchExchange } from "urql";
-import { authConfig } from "./utility/auth-config";
 
 const client = createClient({
-  url: "http://localhost:4000/graphql",
+  url: `${apiUrl()}/graphql`,
   exchanges: [
     authExchange(authConfig),
     fetchExchange, // needed

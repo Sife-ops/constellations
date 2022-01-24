@@ -41,15 +41,19 @@ import { register } from "./rest/register";
     password,
   }).save();
 
+  const origin = (): string[] => {
+    const nonprod = [
+      "https://studio.apollographql.com",
+      "http://localhost:3001",
+    ];
+    if (env.prod) return ["prod url"];
+    if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
+    return nonprod;
+  };
+
   const app = express();
 
-  app.use(
-    cors({
-      origin: ["https://studio.apollographql.com", "http://localhost:3001"],
-      credentials: true,
-    })
-  );
-
+  app.use(cors({ origin: origin(), credentials: true }));
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
@@ -75,8 +79,12 @@ import { register } from "./rest/register";
 
   server.applyMiddleware({ app, cors: false });
 
-  const port = env.prod ? 80 : 4000;
-  app.listen(port, () => {
-    console.log(`running on ${port}`);
+  const port = (): number => {
+    if (env.prod || env.ngrok_url) return 80;
+    return 4000;
+  };
+
+  app.listen(port(), () => {
+    console.log(`running on ${port()}`);
   });
 })();

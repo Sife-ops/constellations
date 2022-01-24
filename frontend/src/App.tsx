@@ -5,13 +5,14 @@ import { Dev } from "./component/dev";
 import { Home } from "./component/home";
 import { Login } from "./component/login";
 import { Register } from "./component/register";
+import { apiUrl } from "./utility/function";
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    fetch("http://localhost:4000/refresh", {
+    fetch(`${apiUrl()}/refresh`, {
       method: "POST",
       credentials: "include",
     }).then((res) =>
@@ -27,7 +28,7 @@ function App() {
 
   const handleLogout = () => {
     console.log("logout");
-    fetch("http://localhost:4000/logout", {
+    fetch(`${apiUrl()}/logout`, {
       method: "POST",
       credentials: "include",
     }).then((res) =>

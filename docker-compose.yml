@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend-node
+    volumes:
+      - ./backend-node/database:/app/database
+    environment:
+      - VITE_NGROK_URL=${VITE_NGROK_URL}
+  frontend:
+    depends_on:
+      - backend
+    build: ./frontend
+  proxy:
+    depends_on:
+      - frontend
+    image: nginx:alpine
+    ports:
+      - 3001:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d

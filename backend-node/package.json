@@ -4,7 +4,9 @@
   "description": "backend",
   "scripts": {
     "watch": "tsc -w",
-    "dev": "nodemon --quiet ./dist/index.js"
+    "dev": "nodemon --quiet ./dist/index.js",
+    "build": "tsc",
+    "start": "node ./dist/index.js"
   },
   "main": "index.js",
   "license": "MIT",
