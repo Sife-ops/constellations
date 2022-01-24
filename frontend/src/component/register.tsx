@@ -92,22 +92,14 @@ export const Register: React.FC = () => {
         password,
       }),
     }).then((res) => {
-      console.log(res);
-
-      res.json().then((e) => {
-        console.log(e);
-      });
-
-      // todo: show success, timeout, go to login
-      if (res.ok) {
-        setSuccessFailure(<div>Success.</div>);
-        setTimeout(() => {
-          navigate("login");
-        }, 3000);
+      if (!res.ok) {
+        setSuccessFailure(<div>Something went wrong.</div>);
         return;
       }
-
-      setSuccessFailure(<div>Something went wrong.</div>);
+      setSuccessFailure(<div>Success.</div>);
+      setTimeout(() => {
+        navigate("login");
+      }, 3000);
     });
   };
 
