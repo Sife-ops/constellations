@@ -24,7 +24,7 @@ import { register } from "./rest/register";
     await createConnection({
       type: "sqlite",
       database: "./database/db.sqlite3",
-      dropSchema: true,
+      dropSchema: !env.prod,
       entities: [User, Car],
       synchronize: true,
       logging: false,
