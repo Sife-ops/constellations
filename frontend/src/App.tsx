@@ -45,13 +45,17 @@ function App() {
       <BrowserRouter>
         <ul>
           <li>
-            <Link id="nav__home" to="/home">home</Link>
+            <Link className="auto-nav__home" to="/home">
+              home
+            </Link>
           </li>
           <li>
-            <Link id="nav__dev" to="/dev">dev</Link>
+            <Link className="auto-nav__dev" to="/dev">
+              dev
+            </Link>
           </li>
           <li>
-            <button id="logout" onClick={handleLogout}>
+            <button className="auto-logout" onClick={handleLogout}>
               logout
             </button>
           </li>
@@ -68,10 +72,17 @@ function App() {
     <BrowserRouter>
       <ul>
         <li>
-          <Link id="nav__login" to="/login">login</Link>
+          <Link className="auto-nav__login" to="/login">
+            login
+          </Link>
         </li>
         <li>
-          <Link id="nav__register" to="/register">register</Link>
+          <Link
+            className="auto-nav__register"
+            to="/register"
+          >
+            register
+          </Link>
         </li>
       </ul>
       <Routes>
