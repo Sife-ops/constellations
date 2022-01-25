@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import argon2 from "argon2";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -16,6 +15,7 @@ import { env } from "./utility/constant";
 import { login, logout } from "./rest/login";
 import { refresh } from "./rest/refresh";
 import { register } from "./rest/register";
+import { seed } from "./utility/mock";
 
 (async () => {
   console.log(env);
@@ -34,12 +34,7 @@ import { register } from "./rest/register";
     throw new Error("couldn't connect to database");
   }
 
-  const password = await argon2.hash("pass");
-  await User.create({
-    email: "wyatt",
-    username: "wyatt",
-    password,
-  }).save();
+  if (env.seed) seed();
 
   const origin = (): string[] => {
     const nonprod = [

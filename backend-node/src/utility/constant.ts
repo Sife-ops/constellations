@@ -5,6 +5,7 @@ export const env: Env = {
     accessToken: process.env.SECRET_ACCESS_TOKEN || "access",
     refreshToken: process.env.SECRET_REFRESH_TOKEN || "refresh",
   },
+  seed: process.env.SEED ? true : false,
 };
 
 interface Env {
@@ -14,4 +15,5 @@ interface Env {
     accessToken: string;
     refreshToken: string;
   };
+  seed: boolean;
 }
