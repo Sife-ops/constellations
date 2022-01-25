@@ -34,6 +34,7 @@ export const Login: React.FC = () => {
       >
         <div>
           <input
+            id="login-email"
             value={email}
             placeholder="email"
             type="text"
@@ -42,13 +43,14 @@ export const Login: React.FC = () => {
         </div>
         <div>
           <input
+            id="login-password"
             value={password}
             placeholder="password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">login</button>
+        <button id="login-submit" type="submit">login</button>
       </form>
     </div>
   );

@@ -39,10 +39,10 @@ export const Register: React.FC = () => {
       if (nextValue) {
         userExistsMutation({ email: nextValue }).then((res) => {
           if (res.data?.userExists) {
-            setEmailExists(<div>already registered</div>);
+            setEmailExists(<div id="email-registered">already registered</div>);
             return;
           }
-          setEmailExists(<div>available</div>);
+          setEmailExists(<div id="email-available">available</div>);
         });
       }
       setEmailExists(null);
@@ -54,10 +54,12 @@ export const Register: React.FC = () => {
       if (nextValue) {
         userExistsMutation({ username: nextValue }).then((res) => {
           if (res.data?.userExists) {
-            setUsernameExists(<div>already registered</div>);
+            setUsernameExists(
+              <div id="username-registered">already registered</div>
+            );
             return;
           }
-          setUsernameExists(<div>available</div>);
+          setUsernameExists(<div id="username-available">available</div>);
         });
       }
       setUsernameExists(null);
@@ -93,10 +95,12 @@ export const Register: React.FC = () => {
       }),
     }).then((res) => {
       if (!res.ok) {
-        setSuccessFailure(<div>Something went wrong.</div>);
+        setSuccessFailure(
+          <div id="register-failed">Something went wrong.</div>
+        );
         return;
       }
-      setSuccessFailure(<div>Success.</div>);
+      setSuccessFailure(<div id="register-success">Success.</div>);
       setTimeout(() => {
         navigate("login");
       }, 3000);
@@ -108,7 +112,7 @@ export const Register: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <input
-            //
+            id="register-email"
             value={email}
             placeholder="email"
             type="text"
@@ -118,6 +122,7 @@ export const Register: React.FC = () => {
         {emailExists}
         <div>
           <input
+            id="register-username"
             value={username}
             placeholder="username"
             type="text"
@@ -127,13 +132,16 @@ export const Register: React.FC = () => {
         {usernameExists}
         <div>
           <input
+            id="register-password"
             value={password}
             placeholder="password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">register</button>
+        <button id="register-submit" type="submit">
+          register
+        </button>
         {successFailure}
       </form>
     </div>

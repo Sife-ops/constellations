@@ -51,7 +51,9 @@ function App() {
             <Link to="/dev">dev</Link>
           </li>
           <li>
-            <button onClick={handleLogout}>logout</button>
+            <button id="logout" onClick={handleLogout}>
+              logout
+            </button>
           </li>
         </ul>
         <Routes>
