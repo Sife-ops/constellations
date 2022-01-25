@@ -1,8 +1,6 @@
 import { test } from "@playwright/test";
 
 test("login/register", async ({ page }) => {
-  await page.pause()
-
   await page.goto("http://localhost:3001");
   await page.click("text=register");
 

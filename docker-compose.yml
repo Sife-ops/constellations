@@ -1,8 +1,8 @@
 services:
   backend:
-    build: ./backend-node
+    build: ./backend
     volumes:
-      - ./backend-node/database:/app/database
+      - ./backend/database:/app/database
     environment:
       - VITE_NGROK_URL=${VITE_NGROK_URL}
   frontend:
