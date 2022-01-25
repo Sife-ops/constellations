@@ -36,5 +36,5 @@ export const logout = Router();
 
 logout.post("/logout", (_: Request, res: Response) => {
   t.clearRefreshToken(res);
-  res.json({ ok: "true" });
+  res.sendStatus(200);
 });

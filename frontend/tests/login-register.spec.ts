@@ -33,7 +33,11 @@ test("login/register", async ({ page }) => {
   await page.type("#login-email", "wyatt" + random, { delay: 20 });
   await page.type("#login-password", "pass", { delay: 20 });
   await page.click("#login-submit");
+
+  // logout
   await page.waitForSelector("#logout");
+  await page.click("#logout");
+  await page.waitForSelector("#login-email");
 });
 
 const randomString = (length: number): string => {

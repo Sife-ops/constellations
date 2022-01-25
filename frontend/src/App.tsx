@@ -30,12 +30,12 @@ function App() {
     fetch(`${apiUrl()}/logout`, {
       method: "POST",
       credentials: "include",
-    }).then((res) =>
-      res.json().then((data) => {
+    }).then((res) => {
+      if (res.ok) {
         localStorage.removeItem("yu");
         window.location.reload();
-      })
-    );
+      }
+    });
   };
 
   if (loading) return <div>loading...</div>;
