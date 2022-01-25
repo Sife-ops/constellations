@@ -1,4 +1,4 @@
 # Todo
 
-- non Type-GraphQL branch
--
+- logging
+- test suite

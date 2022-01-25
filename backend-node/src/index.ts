@@ -11,13 +11,12 @@ import { auth } from "./graphql/auth";
 import { createConnection } from "typeorm";
 import { env } from "./utility/constant";
 import { login, logout } from "./rest/login";
-// todo: @graphql-tools/schema
-import { makeExecutableSchema } from "graphql-tools";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 import { refresh } from "./rest/refresh";
 import { register } from "./rest/register";
 import { resolvers } from "./graphql/resolver";
-import { typeDefs } from "./graphql/typedef";
 import { seed } from "./utility/mock";
+import { typeDefs } from "./graphql/typedef";
 
 (async () => {
   console.log(env);

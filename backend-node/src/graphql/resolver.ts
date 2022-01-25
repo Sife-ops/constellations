@@ -15,6 +15,7 @@ export const resolvers = {
       return await Car.find({ relations: ["user"] });
     },
 
+    // todo: delete
     hello: () => {
       return "hello";
     },
