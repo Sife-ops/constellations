@@ -15,5 +15,5 @@ export const AuthTest: React.FC = () => {
     return <div>error</div>;
   }
 
-  return <div>authtest: {JSON.stringify(res.data)}</div>;
+  return <div id="authtest">authtest: {JSON.stringify(res.data)}</div>;
 };

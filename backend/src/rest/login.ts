@@ -13,11 +13,7 @@ login.post("/login", async (req: Request, res: Response) => {
 
   if (!email || !password) return res.sendStatus(400);
 
-  const user = await User.findOne({
-    where: {
-      email,
-    },
-  });
+  const user = await User.findOne({ where: { email } });
 
   if (!user) return res.sendStatus(401);
 

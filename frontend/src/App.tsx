@@ -45,10 +45,10 @@ function App() {
       <BrowserRouter>
         <ul>
           <li>
-            <Link to="/home">home</Link>
+            <Link id="nav__home" to="/home">home</Link>
           </li>
           <li>
-            <Link to="/dev">dev</Link>
+            <Link id="nav__dev" to="/dev">dev</Link>
           </li>
           <li>
             <button id="logout" onClick={handleLogout}>
