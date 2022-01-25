@@ -5,6 +5,7 @@ test("graphql auth", async ({ page }) => {
 
   // login
   await page.waitForSelector("#login-email");
+  // todo: global delay variable
   await page.type("#login-email", "wyatt", { delay: 20 });
   await page.type("#login-password", "pass", { delay: 20 });
   await page.click("#login-submit");

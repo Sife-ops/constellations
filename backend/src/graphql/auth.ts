@@ -2,6 +2,15 @@ import { env } from "../utility/constant";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { Request, Response } from "express";
 
+const operationsWithAuth = ["AuthTest", "User"];
+
+const isOperationWithAuth = (s: string): boolean => {
+  for (let i = 0; i < operationsWithAuth.length; i++) {
+    if (s === operationsWithAuth[i]) return true;
+  }
+  return false;
+};
+
 export interface AuthContext {
   req: Request;
   res: Response;
@@ -15,12 +24,7 @@ export const auth = async (
   context: AuthContext,
   info: any
 ) => {
-  const operation = context.req.body.operationName;
-  if (
-    //
-    operation === "AuthTest" ||
-    operation === "User"
-  ) {
+  if (isOperationWithAuth(context.req.body.operationName)) {
     const auth = context.req.headers.authorization as string;
     if (!auth) throw new Error("no authorization header");
 
