@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 
 test("graphql auth", async ({ page }) => {
-  await page.goto("http://localhost:3001");
+  await page.goto("/");
 
   // login
   await page.waitForSelector("#login-email");

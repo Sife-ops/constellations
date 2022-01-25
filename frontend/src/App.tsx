@@ -68,10 +68,10 @@ function App() {
     <BrowserRouter>
       <ul>
         <li>
-          <Link to="/login">login</Link>
+          <Link id="nav__login" to="/login">login</Link>
         </li>
         <li>
-          <Link to="/register">register</Link>
+          <Link id="nav__register" to="/register">register</Link>
         </li>
       </ul>
       <Routes>

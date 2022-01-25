@@ -1,8 +1,8 @@
 import { test } from "@playwright/test";
 
 test("login/register", async ({ page }) => {
-  await page.goto("http://localhost:3001");
-  await page.click("text=register");
+  await page.goto("/");
+  await page.click("#nav__register");
 
   // check email
   const random = randomString(10);
