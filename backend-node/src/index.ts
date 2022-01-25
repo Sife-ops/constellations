@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import argon2 from "argon2";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -17,6 +16,7 @@ import { refresh } from "./rest/refresh";
 import { register } from "./rest/register";
 import { resolvers } from "./graphql/resolver";
 import { typeDefs } from "./graphql/typedef";
+import { seed } from "./utility/mock";
 
 (async () => {
   console.log(env);
@@ -25,7 +25,7 @@ import { typeDefs } from "./graphql/typedef";
     await createConnection({
       type: "sqlite",
       database: "./database/db.sqlite3",
-      dropSchema: !env.prod,
+      dropSchema: env.seed,
       entities: [User, Car],
       synchronize: true,
       logging: false,
@@ -35,31 +35,7 @@ import { typeDefs } from "./graphql/typedef";
     throw new Error("couldn't connect to database");
   }
 
-  // mock data
-  const password = await argon2.hash("pass");
-  await User.create({
-    email: "wyatt",
-    username: "wyatt",
-    password,
-  }).save();
-
-  const user = await User.findOne({
-    where: {
-      username: "wyatt",
-    },
-  });
-
-  await Car.create({
-    year: 1990,
-    plate: "asdf",
-    user,
-  }).save();
-
-  await Car.create({
-    year: 1992,
-    plate: "fdsa",
-    user,
-  }).save();
+  if (env.seed) seed();
 
   // rest
   const origin = (): string[] => {
