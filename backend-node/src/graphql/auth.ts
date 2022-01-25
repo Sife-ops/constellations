@@ -1,11 +1,18 @@
 import { env } from "../utility/constant";
 import { JwtPayload, verify } from "jsonwebtoken";
+import { Request, Response } from "express";
+
+export interface AuthContext {
+  req: Request;
+  res: Response;
+  payload?: JwtPayload;
+}
 
 export const auth = async (
   resolve: any,
   root: any,
   args: any,
-  context: any,
+  context: AuthContext,
   info: any
 ) => {
   const operation = context.req.body.operationName;

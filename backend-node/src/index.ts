@@ -11,6 +11,7 @@ import { auth } from "./graphql/auth";
 import { createConnection } from "typeorm";
 import { env } from "./utility/constant";
 import { login, logout } from "./rest/login";
+// todo: @graphql-tools/schema
 import { makeExecutableSchema } from "graphql-tools";
 import { refresh } from "./rest/refresh";
 import { register } from "./rest/register";
@@ -21,6 +22,7 @@ import { seed } from "./utility/mock";
 (async () => {
   console.log(env);
 
+  // database
   try {
     await createConnection({
       type: "sqlite",
@@ -38,6 +40,8 @@ import { seed } from "./utility/mock";
   if (env.seed) seed();
 
   // rest
+  const app = express();
+
   const origin = (): string[] => {
     const nonprod = [
       "https://studio.apollographql.com",
@@ -47,8 +51,6 @@ import { seed } from "./utility/mock";
     if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
     return nonprod;
   };
-
-  const app = express();
 
   app.use(cors({ origin: origin(), credentials: true }));
   app.use(cookieParser());
@@ -60,6 +62,7 @@ import { seed } from "./utility/mock";
   app.use(refresh);
   app.use(register);
 
+  // grpahql
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   const schemaWithMiddleware = applyMiddleware(schema, auth);
 
