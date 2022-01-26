@@ -1,8 +1,10 @@
 import { test } from "@playwright/test";
 
-test("login/register", async ({ page }) => {
+test.skip("login/register", async ({ page }) => {
   await page.goto("/");
-  await page.click("#nav__register");
+  await page.click(".auto-login__registerLink");
+
+  await page.pause();
 
   // check email
   const random = randomString(10);

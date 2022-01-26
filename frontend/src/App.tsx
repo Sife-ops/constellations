@@ -40,7 +40,7 @@ function App() {
 
   if (loading) return <div>loading...</div>;
 
-  if (loggedIn)
+  if (loggedIn) {
     return (
       <BrowserRouter>
         <ul>
@@ -67,24 +67,10 @@ function App() {
         </Routes>
       </BrowserRouter>
     );
+  }
 
   return (
     <BrowserRouter>
-      <ul>
-        <li>
-          <Link className="auto-nav__login" to="/login">
-            login
-          </Link>
-        </li>
-        <li>
-          <Link
-            className="auto-nav__register"
-            to="/register"
-          >
-            register
-          </Link>
-        </li>
-      </ul>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

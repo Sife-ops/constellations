@@ -122,7 +122,7 @@ export const Login: React.FC = () => {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link className="auto-login__registerLink" href="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
