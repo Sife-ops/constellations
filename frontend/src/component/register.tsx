@@ -1,9 +1,28 @@
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import React from "react";
 import _ from "lodash";
 import { apiUrl } from "../utility/function";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
 import { userExists } from "../utility/request";
+
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from "@mui/material";
+
+enum RegisterState {
+  success = "success",
+  failure = "failure",
+  pending = "pending",
+}
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -14,55 +33,28 @@ export const Register: React.FC = () => {
 
   const [userEsxistsResult, userExistsMutation] = useMutation(userExists);
 
-  const [
-    //
-    emailExists,
-    setEmailExists,
-  ] = React.useState<JSX.Element | null>(null);
+  const [emailExists, setEmailExists] = React.useState<boolean>(false);
+  const [usernameExists, setUsernameExists] = React.useState<boolean>(false);
 
-  const [
-    //
-    usernameExists,
-    setUsernameExists,
-  ] = React.useState<JSX.Element | null>(null);
-
-  const [
-    //
-    successFailure,
-    setSuccessFailure,
-  ] = React.useState<JSX.Element | null>(null);
+  const [registerState, setRegisterState] = React.useState<RegisterState>(RegisterState.pending);
 
   // todo: abstract debounce functions
   // todo: reusable login/register component
   const debounceEmail = React.useRef(
     _.debounce((nextValue) => {
-      if (nextValue) {
-        userExistsMutation({ email: nextValue }).then((res) => {
-          if (res.data?.userExists) {
-            setEmailExists(<div id="email-registered">already registered</div>);
-            return;
-          }
-          setEmailExists(<div id="email-available">available</div>);
-        });
-      }
-      setEmailExists(null);
+      userExistsMutation({ email: nextValue }).then((res) => {
+        if (res.data?.userExists) return setEmailExists(true);
+        setEmailExists(false);
+      });
     }, 1000)
   ).current;
 
   const debounceUsername = React.useRef(
     _.debounce((nextValue) => {
-      if (nextValue) {
-        userExistsMutation({ username: nextValue }).then((res) => {
-          if (res.data?.userExists) {
-            setUsernameExists(
-              <div id="username-registered">already registered</div>
-            );
-            return;
-          }
-          setUsernameExists(<div id="username-available">available</div>);
-        });
-      }
-      setUsernameExists(null);
+      userExistsMutation({ username: nextValue }).then((res) => {
+        if (res.data?.userExists) return setUsernameExists(true);
+        setUsernameExists(false);
+      });
     }, 1000)
   ).current;
 
@@ -80,7 +72,6 @@ export const Register: React.FC = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-
     fetch(`${apiUrl()}/register`, {
       method: "POST",
       credentials: "include",
@@ -95,12 +86,10 @@ export const Register: React.FC = () => {
       }),
     }).then((res) => {
       if (!res.ok) {
-        setSuccessFailure(
-          <div id="register-failed">Something went wrong.</div>
-        );
+        setRegisterState(RegisterState.failure);
         return;
       }
-      setSuccessFailure(<div id="register-success">Success.</div>);
+      setRegisterState(RegisterState.success);
       setTimeout(() => {
         navigate("login");
       }, 3000);
@@ -108,42 +97,110 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <input
-            id="register-email"
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <AppRegistrationIcon />
+        </Avatar>
+
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            className="auto-register__emailInput"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
             value={email}
-            placeholder="email"
-            type="text"
             onChange={handleEmail}
+            error={emailExists ? true : false}
+            helperText={emailExists ? "email already registered" : ""}
           />
-        </div>
-        {emailExists}
-        <div>
-          <input
-            id="register-username"
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="username"
+            label="username"
+            type="username"
+            id="username"
+            className="auto-register__usernameInput"
+            autoComplete="username"
             value={username}
-            placeholder="username"
-            type="text"
             onChange={handleUsername}
+            error={usernameExists ? true : false}
+            helperText={usernameExists ? "username already registered" : ""}
           />
-        </div>
-        {usernameExists}
-        <div>
-          <input
-            id="register-password"
-            value={password}
-            placeholder="password"
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
             type="password"
+            id="password"
+            className="auto-register__passwordInput"
+            autoComplete="current-password"
+            value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </div>
-        <button id="register-submit" type="submit">
-          register
-        </button>
-        {successFailure}
-      </form>
-    </div>
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            className="auto-register__submit"
+            sx={{ mt: 3, mb: 2 }}
+            color={
+              registerState === "pending"
+                ? "primary"
+                : registerState === "success"
+                ? "success"
+                : "error"
+            }
+          >
+            {registerState === "pending"
+              ? "Sign up"
+              : registerState === "success"
+              ? "Success!"
+              : "Oops!"}
+          </Button>
+
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link
+                className="auto-register__registerLink"
+                href="/login"
+                variant="body2"
+              >
+                {"Already have an account? Sign In"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
