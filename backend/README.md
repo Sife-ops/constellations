@@ -1,4 +1,0 @@
-# Todo
-
-- logging
-- test suite

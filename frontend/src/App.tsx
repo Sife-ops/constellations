@@ -1,4 +1,5 @@
 import "./App.css";
+import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { Dev } from "./component/dev";
@@ -38,7 +39,27 @@ function App() {
     });
   };
 
-  if (loading) return <div>loading...</div>;
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          height: "100vh",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      </div>
+    );
+  }
 
   if (loggedIn) {
     return (
