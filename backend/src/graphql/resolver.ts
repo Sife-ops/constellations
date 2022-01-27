@@ -1,5 +1,7 @@
+import argon2 from "argon2";
 import { AuthContext } from "./auth";
 import { Car } from "../entity/car";
+import { Request, Response } from "express";
 import { User } from "../entity/user";
 
 export const resolvers = {
@@ -30,15 +32,40 @@ export const resolvers = {
     },
   },
   Mutation: {
+    register: async (
+      _: any,
+      {
+        email,
+        username,
+        password,
+      }: { email: string; username: string; password: string }
+    ) => {
+      if (!email || !username || !password)
+        throw new Error("invalid arguments");
+
+      const hashed = await argon2.hash(password);
+
+      const user = await User.create({
+        email,
+        username,
+        password: hashed,
+      }).save();
+
+      return { email: user.email, username: user.username };
+    },
+
     userExists: async (
       _: any,
       { email, username }: { email: string; username: string }
     ): Promise<boolean> => {
       if (!email && !username) throw new Error("invalid arguments");
+
       const user = await User.findOne({
         where: email ? { email } : { username },
       });
+
       if (!user) return false;
+
       return true;
     },
   },

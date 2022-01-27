@@ -16,6 +16,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
+    register(email: String, username: String, password: String): User
     userExists(email: String, username: String): Boolean
   }
 

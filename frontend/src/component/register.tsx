@@ -1,10 +1,11 @@
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import React from "react";
 import _ from "lodash";
-import { apiUrl } from "../utility/function";
+import { apiUrl, validateUsername } from "../utility/function";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
-import { userExists } from "../utility/request";
+import { userExists, register } from "../utility/request";
+import { validateEmail, validatePassword } from "../utility/function";
 
 import {
   Avatar,
@@ -26,36 +27,72 @@ enum RegisterState {
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
+  const [userExistsResult, userExistsMutation] = useMutation(userExists);
+  const [registerResult, registerMutation] = useMutation(register);
 
   const [email, setEmail] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const [userEsxistsResult, userExistsMutation] = useMutation(userExists);
-
   const [emailExists, setEmailExists] = React.useState<boolean>(false);
   const [usernameExists, setUsernameExists] = React.useState<boolean>(false);
 
-  const [registerState, setRegisterState] = React.useState<RegisterState>(RegisterState.pending);
+  const [emailSuccess, setEmailSuccess] = React.useState<boolean>(false);
+  const [usernameSuccess, setUsernameSuccess] = React.useState<boolean>(false);
 
-  // todo: abstract debounce functions
+  const [registerState, setRegisterState] = React.useState<RegisterState>(
+    RegisterState.pending
+  );
+
+  enum DebounceArg {
+    email = "email",
+    username = "username",
+  }
+
+  const debounceInputCb = (
+    arg: DebounceArg,
+    setInputExists: (value: React.SetStateAction<boolean>) => void,
+    setInputSuccess: (value: React.SetStateAction<boolean>) => void
+  ) => {
+    return async (nextValue: string) => {
+      if (!nextValue) {
+        setInputExists(false);
+        setInputSuccess(false);
+        return;
+      }
+      const res = await userExistsMutation({ [arg]: nextValue });
+      if (res.data?.userExists) {
+        setInputExists(true);
+        setInputSuccess(false);
+        return;
+      }
+      setInputExists(false);
+      setInputSuccess(true);
+    };
+  };
+
   // todo: reusable login/register component
   const debounceEmail = React.useRef(
-    _.debounce((nextValue) => {
-      userExistsMutation({ email: nextValue }).then((res) => {
-        if (res.data?.userExists) return setEmailExists(true);
-        setEmailExists(false);
-      });
-    }, 1000)
+    _.debounce(
+      debounceInputCb(
+        //
+        DebounceArg.email,
+        setEmailExists,
+        setEmailSuccess
+      ),
+      1000
+    )
   ).current;
 
   const debounceUsername = React.useRef(
-    _.debounce((nextValue) => {
-      userExistsMutation({ username: nextValue }).then((res) => {
-        if (res.data?.userExists) return setUsernameExists(true);
-        setUsernameExists(false);
-      });
-    }, 1000)
+    _.debounce(
+      debounceInputCb(
+        DebounceArg.username,
+        setUsernameExists,
+        setUsernameSuccess
+      ),
+      1000
+    )
   ).current;
 
   const handleEmail = (e: any) => {
@@ -70,30 +107,73 @@ export const Register: React.FC = () => {
     debounceUsername(nextValue);
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    fetch(`${apiUrl()}/register`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        username,
-        password,
-      }),
-    }).then((res) => {
-      if (!res.ok) {
-        setRegisterState(RegisterState.failure);
-        return;
-      }
-      setRegisterState(RegisterState.success);
-      setTimeout(() => {
-        navigate("login");
-      }, 3000);
+    const res = await registerMutation({
+      email,
+      username,
+      password,
     });
+    console.log(res);
+    if (res.error) {
+      setRegisterState(RegisterState.failure);
+      return;
+    }
+    setRegisterState(RegisterState.success);
+    setTimeout(() => {
+      navigate("login");
+    }, 2000);
+  };
+
+  interface InputError {
+    isError: boolean;
+    helperText: JSX.Element | string;
+  }
+
+  const bad = { isError: true };
+  const good = { isError: false, helperText: "" };
+
+  const emailError = (): InputError => {
+    if (emailExists) {
+      return { ...bad, helperText: "email already registered" };
+    }
+    if (email && !validateEmail(email)) {
+      return { ...bad, helperText: "invalid email" };
+    }
+    return good;
+  };
+
+  const usernameError = (): InputError => {
+    if (usernameExists) {
+      return { ...bad, helperText: "username already exists" };
+    }
+    if (username && !validateUsername(username)) {
+      return {
+        ...bad,
+        helperText: "5-15 characters, letters and number only",
+      };
+    }
+    return good;
+  };
+
+  const passwordError = (): InputError => {
+    if (password && !validatePassword(password)) {
+      return {
+        ...bad,
+        helperText: "at least 8 characters, at least one special character",
+      };
+    }
+    return good;
+  };
+
+  const passwordSuccess = (): boolean => {
+    return password !== "" && validatePassword(password);
+  };
+
+  const registerEnabled = (): boolean => {
+    if (!passwordSuccess()) return false;
+    if (!emailSuccess || !usernameSuccess) return false;
+    return true;
   };
 
   return (
@@ -128,8 +208,9 @@ export const Register: React.FC = () => {
             autoFocus
             value={email}
             onChange={handleEmail}
-            error={emailExists ? true : false}
-            helperText={emailExists ? "email already registered" : ""}
+            error={emailError().isError}
+            helperText={emailError().helperText}
+            color={email && emailSuccess ? "success" : "primary"}
           />
 
           <TextField
@@ -144,8 +225,9 @@ export const Register: React.FC = () => {
             autoComplete="username"
             value={username}
             onChange={handleUsername}
-            error={usernameExists ? true : false}
-            helperText={usernameExists ? "username already registered" : ""}
+            error={usernameError().isError}
+            helperText={usernameError().helperText}
+            color={username && usernameSuccess ? "success" : "primary"}
           />
 
           <TextField
@@ -160,6 +242,9 @@ export const Register: React.FC = () => {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={passwordError().isError}
+            helperText={passwordError().helperText}
+            color={passwordSuccess() ? "success" : "primary"}
           />
 
           <Button
@@ -168,6 +253,7 @@ export const Register: React.FC = () => {
             variant="contained"
             className="auto-register__submit"
             sx={{ mt: 3, mb: 2 }}
+            disabled={!registerEnabled()}
             color={
               registerState === "pending"
                 ? "primary"
