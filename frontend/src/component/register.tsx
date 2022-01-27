@@ -1,11 +1,11 @@
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import React from "react";
 import _ from "lodash";
-import { apiUrl, validateUsername } from "../utility/function";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
 import { userExists, register } from "../utility/request";
 import { validateEmail, validatePassword } from "../utility/function";
+import { validateUsername } from "../utility/function";
 
 import {
   Avatar,
@@ -109,12 +109,7 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const res = await registerMutation({
-      email,
-      username,
-      password,
-    });
-    console.log(res);
+    const res = await registerMutation({ email, username, password });
     if (res.error) {
       setRegisterState(RegisterState.failure);
       return;
@@ -127,12 +122,13 @@ export const Register: React.FC = () => {
 
   interface InputError {
     isError: boolean;
-    helperText: JSX.Element | string;
+    helperText: string;
   }
 
   const bad = { isError: true };
   const good = { isError: false, helperText: "" };
 
+  // todo: emailIsError, emailHelperText
   const emailError = (): InputError => {
     if (emailExists) {
       return { ...bad, helperText: "email already registered" };

@@ -1,7 +1,7 @@
+import * as t from "../utility/token";
 import argon2 from "argon2";
 import { AuthContext } from "./auth";
 import { Car } from "../entity/car";
-import { Request, Response } from "express";
 import { User } from "../entity/user";
 
 export const resolvers = {
@@ -10,7 +10,7 @@ export const resolvers = {
     authTest: (_: any, __: any, context: AuthContext) => {
       console.log("authTest");
       console.log(context.payload);
-      return `Hello "world"}!`;
+      return `Hello "world"!`;
     },
 
     cars: async (): Promise<Car[]> => {
@@ -31,15 +31,30 @@ export const resolvers = {
       return await User.find({ relations: ["cars"] });
     },
   },
+
   Mutation: {
+    login: async (
+      _: any,
+      { email, password }: LoginInput,
+      { res }: AuthContext
+    ): Promise<User> => {
+      if (!email || !password) throw new Error("invalid arguments");
+
+      const user = await User.findOne({ where: { email } });
+      if (!user) throw new Error("user not found");
+
+      const verified = await argon2.verify(user.password, password);
+      if (!verified) throw new Error("wrong password");
+
+      t.sendRefreshToken(res, { id: user.id });
+
+      return user;
+    },
+
     register: async (
       _: any,
-      {
-        email,
-        username,
-        password,
-      }: { email: string; username: string; password: string }
-    ) => {
+      { email, username, password }: RegisterInput
+    ): Promise<{ email: string; username: string }> => {
       if (!email || !username || !password)
         throw new Error("invalid arguments");
 
@@ -56,7 +71,7 @@ export const resolvers = {
 
     userExists: async (
       _: any,
-      { email, username }: { email: string; username: string }
+      { email, username }: UserExistsInput
     ): Promise<boolean> => {
       if (!email && !username) throw new Error("invalid arguments");
 
@@ -70,3 +85,19 @@ export const resolvers = {
     },
   },
 };
+
+interface LoginInput {
+  email: string;
+  password: string;
+}
+
+interface RegisterInput {
+  email: string;
+  username: string;
+  password: string;
+}
+
+interface UserExistsInput {
+  email?: string;
+  username?: string;
+}

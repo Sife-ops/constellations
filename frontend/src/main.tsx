@@ -13,6 +13,9 @@ const theme = createTheme();
 
 const client = createClient({
   url: `${apiUrl()}/graphql`,
+  fetchOptions: {
+    credentials: "include"
+  },
   exchanges: [
     authExchange(authConfig),
     fetchExchange, // needed

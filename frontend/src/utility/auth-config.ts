@@ -12,9 +12,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
   getAuth: async ({ authState }) => {
     if (!authState) {
       const accessToken = localStorage.getItem("yu");
-      if (accessToken) {
-        return { accessToken };
-      }
+      if (accessToken) return { accessToken };
       return null;
     }
 

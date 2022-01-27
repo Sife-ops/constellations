@@ -32,6 +32,7 @@ export const auth = async (
     if (!accessToken) throw new Error("no token");
 
     try {
+      // throws if expired
       const payload: JwtPayload = verify(
         accessToken,
         env.secret.accessToken

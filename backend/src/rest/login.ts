@@ -14,15 +14,12 @@ login.post("/login", async (req: Request, res: Response) => {
   if (!email || !password) return res.sendStatus(400);
 
   const user = await User.findOne({ where: { email } });
-
   if (!user) return res.sendStatus(401);
 
   const verified = await argon2.verify(user.password, password);
-
   if (!verified) return res.sendStatus(401);
 
   t.sendRefreshToken(res, { id: user.id });
-
   const accessToken = t.newAccessToken({ id: user.id });
 
   res.json({ accessToken });

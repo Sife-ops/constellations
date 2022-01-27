@@ -1,7 +1,7 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import React from "react";
-import { apiUrl } from "../utility/function";
-import { createTheme } from "@mui/material/styles";
+import { login } from "../utility/request";
+import { useMutation } from "urql";
 
 import {
   Avatar,
@@ -18,33 +18,19 @@ import {
 } from "@mui/material";
 
 export const Login: React.FC = () => {
-  const theme = createTheme();
-
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const handleSubmit = (e: any) => {
+  const [loginResult, loginMutation] = useMutation(login);
+
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    fetch(`${apiUrl()}/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    }).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem("yu", data.accessToken);
-      } else {
-        localStorage.removeItem("yu");
-      }
-      window.location.reload();
-    });
+    const res = await loginMutation({ email, password });
+    if (res.error) {
+      localStorage.removeItem("yu");
+      return;
+    }
+    window.location.reload();
   };
 
   return (
