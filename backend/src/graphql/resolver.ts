@@ -18,9 +18,7 @@ export const resolvers = {
     },
 
     // todo: delete
-    hello: () => {
-      return "hello";
-    },
+    hello: () => "hello",
 
     user: async (_: any, __: any, context: AuthContext): Promise<User> => {
       return await User.findOneOrFail(context.payload!.id);
@@ -57,8 +55,9 @@ export const resolvers = {
       _: any,
       { email, username, password }: RegisterInput
     ): Promise<{ email: string; username: string }> => {
-      if (!email || !username || !password)
+      if (!email || !username || !password) {
         throw new Error("invalid arguments");
+      }
 
       const hashed = await argon2.hash(password);
 

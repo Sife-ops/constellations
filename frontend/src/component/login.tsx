@@ -110,7 +110,7 @@ export const Login: React.FC = () => {
           <Grid container>
             <Grid item xs>
               {/* todo: reset password sequence */}
-              <Link href="#" variant="body2">
+              <Link href="/reset" variant="body2">
                 Forgot password?
               </Link>
             </Grid>

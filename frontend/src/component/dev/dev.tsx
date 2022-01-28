@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthTest } from "./auth-test";
-import { isValid } from "../utility/token";
+import { isValid } from "../../utility/token";
 
 export const Dev: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { useQuery } from "urql";
-import { user } from "../utility/request";
+import { user } from "../../utility/request";
 
 export const AuthTest: React.FC = () => {
   const [res, reexec] = useQuery({

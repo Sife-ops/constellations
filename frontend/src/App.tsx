@@ -2,10 +2,11 @@ import "./App.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
-import { Dev } from "./component/dev";
+import { Dev } from "./component/dev/dev";
 import { Home } from "./component/home";
 import { Login } from "./component/login";
 import { Register } from "./component/register";
+import { Reset } from "./component/reset";
 import { apiUrl } from "./utility/function";
 
 function App() {
@@ -95,6 +96,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/reset" element={<Reset />} />
         <Route path="*" element={<Navigate replace to="/login" />} />
       </Routes>
     </BrowserRouter>
