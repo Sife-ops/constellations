@@ -9,6 +9,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
     if (!isValid(authState.accessToken)) return true;
     return false;
   },
+
   getAuth: async ({ authState }) => {
     if (!authState) {
       const accessToken = localStorage.getItem("yu");
@@ -29,6 +30,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
 
     return { accessToken: data.accessToken };
   },
+
   addAuthToOperation: ({ authState, operation }): Operation<any, any> => {
     if (!authState || !authState.accessToken) {
       return operation;
