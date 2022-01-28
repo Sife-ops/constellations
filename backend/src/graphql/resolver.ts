@@ -35,10 +35,12 @@ export const resolvers = {
   Mutation: {
     login: async (
       _: any,
-      { email, password }: LoginInput,
+      { email, password, remember }: LoginInput,
       { res }: AuthContext
     ): Promise<User> => {
-      if (!email || !password) throw new Error("invalid arguments");
+      if (!email || !password || remember === undefined) {
+        throw new Error("invalid arguments");
+      }
 
       const user = await User.findOne({ where: { email } });
       if (!user) throw new Error("user not found");
@@ -46,7 +48,7 @@ export const resolvers = {
       const verified = await argon2.verify(user.password, password);
       if (!verified) throw new Error("wrong password");
 
-      t.sendRefreshToken(res, { id: user.id });
+      t.sendRefreshToken(res, { id: user.id, remember });
 
       return user;
     },
@@ -89,6 +91,7 @@ export const resolvers = {
 interface LoginInput {
   email: string;
   password: string;
+  remember: boolean;
 }
 
 interface RegisterInput {

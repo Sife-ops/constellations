@@ -6,12 +6,15 @@ import { User } from "../entity/user";
 export const login = Router();
 
 login.post("/login", async (req: Request, res: Response) => {
-  const { email, password } = req.body as {
+  const { email, password, remember } = req.body as {
     email: string;
     password: string;
+    remember: boolean;
   };
 
-  if (!email || !password) return res.sendStatus(400);
+  if (!email || !password || remember === undefined) {
+    return res.sendStatus(400);
+  }
 
   const user = await User.findOne({ where: { email } });
   if (!user) return res.sendStatus(401);
@@ -19,7 +22,8 @@ login.post("/login", async (req: Request, res: Response) => {
   const verified = await argon2.verify(user.password, password);
   if (!verified) return res.sendStatus(401);
 
-  t.sendRefreshToken(res, { id: user.id });
+  // todo: implement 'remember me' for rest
+  t.sendRefreshToken(res, { id: user.id, remember });
   const accessToken = t.newAccessToken({ id: user.id });
 
   res.json({ accessToken });

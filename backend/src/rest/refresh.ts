@@ -15,13 +15,14 @@ refresh.post("/refresh", (req: Request, res: Response) => {
 
   try {
     // throws if expired
-    const payload = verify(refreshToken, env.secret.refreshToken) as JwtPayload;
+    const { id, remember } = verify(
+      refreshToken,
+      env.secret.refreshToken
+    ) as JwtPayload;
 
-    const newPayload = { id: payload.id };
+    t.sendRefreshToken(res, { id, remember });
 
-    t.sendRefreshToken(res, newPayload);
-
-    res.json({ accessToken: t.newAccessToken(newPayload) });
+    res.json({ accessToken: t.newAccessToken({ id }) });
   } catch (e) {
     console.log(e);
     return res.sendStatus(401);

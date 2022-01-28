@@ -20,12 +20,13 @@ import {
 export const Login: React.FC = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [remember, setRemember] = React.useState<boolean>(false);
 
   const [loginResult, loginMutation] = useMutation(login);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const res = await loginMutation({ email, password });
+    const res = await loginMutation({ email, password, remember });
     if (res.error) {
       localStorage.removeItem("yu");
       return;
@@ -83,7 +84,16 @@ export const Login: React.FC = () => {
 
           {/* todo: longer token for 'remember me'? */}
           <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
+            control={
+              <Checkbox
+                value="remember"
+                color="primary"
+                checked={remember}
+                onChange={(e) => {
+                  setRemember((s) => (s ? false : true));
+                }}
+              />
+            }
             label="Remember me"
           />
 

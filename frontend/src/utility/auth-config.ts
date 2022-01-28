@@ -4,7 +4,7 @@ import { apiUrl } from "../utility/function";
 import { isValid } from "./token";
 
 export const authConfig: AuthConfig<{ accessToken: string }> = {
-  willAuthError: ({ authState, operation }) => {
+  willAuthError: ({ authState }) => {
     if (!authState) return true;
     if (!isValid(authState.accessToken)) return true;
     return false;

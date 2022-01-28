@@ -1,10 +1,9 @@
 # Todo
 
 - logging
-- user graphql login/register instead of rest
-- login input validation
 - dark mode
-- register automated test
+- 'remember me' gives longer token
+- reset password sequence
 
 # NGROK
 
