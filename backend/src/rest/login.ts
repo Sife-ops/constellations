@@ -22,7 +22,6 @@ login.post("/login", async (req: Request, res: Response) => {
   const verified = await argon2.verify(user.password, password);
   if (!verified) return res.sendStatus(401);
 
-  // todo: implement 'remember me' for rest
   t.sendRefreshToken(res, { id: user.id, remember });
   const accessToken = t.newAccessToken({ id: user.id });
 

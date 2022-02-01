@@ -27,19 +27,6 @@ function App() {
     });
   }, []);
 
-  const handleLogout = () => {
-    console.log("logout");
-    fetch(`${apiUrl()}/logout`, {
-      method: "POST",
-      credentials: "include",
-    }).then((res) => {
-      if (res.ok) {
-        localStorage.removeItem("yu");
-        window.location.reload();
-      }
-    });
-  };
-
   if (loading) {
     return (
       <div
@@ -65,23 +52,6 @@ function App() {
   if (loggedIn) {
     return (
       <BrowserRouter>
-        <ul>
-          <li>
-            <Link className="auto-nav__home" to="/home">
-              home
-            </Link>
-          </li>
-          <li>
-            <Link className="auto-nav__dev" to="/dev">
-              dev
-            </Link>
-          </li>
-          <li>
-            <button className="auto-logout" onClick={handleLogout}>
-              logout
-            </button>
-          </li>
-        </ul>
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/dev" element={<Dev />} />
