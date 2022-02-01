@@ -1,10 +1,12 @@
-# Todo
+# jwt-auth
+
+## Todo
 
 - logging
 - dark mode
 - reset password sequence
 
-# NGROK
+## NGROK
 
 start ngrok
 ```bash
@@ -21,9 +23,7 @@ run docker script in project root
 ./docker.sh
 ```
 
-# Authentication Flow
-
-## Login
+## Login Process
 
 0. On application mount, client sends a POST request to server.
 

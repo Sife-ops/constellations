@@ -4,8 +4,12 @@ import _ from "lodash";
 import { useMutation } from "urql";
 import { useNavigate } from "react-router-dom";
 import { userExists, register } from "../utility/request";
-import { validateEmail, validatePassword } from "../utility/function";
-import { validateUsername } from "../utility/function";
+
+import {
+  emailIsValid,
+  passwordIsValid,
+  usernameIsValid,
+} from "../utility/function";
 
 import {
   Avatar,
@@ -19,14 +23,22 @@ import {
   Typography,
 } from "@mui/material";
 
-enum RegisterState {
-  success = "success",
-  failure = "failure",
-  pending = "pending",
+enum Tristate {
+  true = "true",
+  false = "false",
+  default = "default",
 }
+
+enum RegisterVariable {
+  email = "email",
+  username = "username",
+}
+
+type InputError = [boolean, string];
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
+
   const [userExistsResult, userExistsMutation] = useMutation(userExists);
   const [registerResult, registerMutation] = useMutation(register);
 
@@ -34,142 +46,121 @@ export const Register: React.FC = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
-  const [emailExists, setEmailExists] = React.useState<boolean>(false);
-  const [usernameExists, setUsernameExists] = React.useState<boolean>(false);
-
-  const [emailSuccess, setEmailSuccess] = React.useState<boolean>(false);
-  const [usernameSuccess, setUsernameSuccess] = React.useState<boolean>(false);
-
-  const [registerState, setRegisterState] = React.useState<RegisterState>(
-    RegisterState.pending
+  // todo: change to emailAvailable?
+  const [emailExists, setEmailExists] = React.useState<Tristate>(
+    Tristate.default
+  );
+  const [usernameExists, setUsernameExists] = React.useState<Tristate>(
+    Tristate.default
   );
 
-  enum DebounceArg {
-    email = "email",
-    username = "username",
-  }
+  const [registerSuccess, setRegisterSuccess] = React.useState<boolean>(false);
 
   const debounceInputCb = (
-    arg: DebounceArg,
-    setInputExists: (value: React.SetStateAction<boolean>) => void,
-    setInputSuccess: (value: React.SetStateAction<boolean>) => void
+    variable: RegisterVariable,
+    setInputExists: React.Dispatch<React.SetStateAction<Tristate>>
   ) => {
     return async (nextValue: string) => {
-      if (!nextValue) {
-        setInputExists(false);
-        setInputSuccess(false);
-        return;
-      }
-      const res = await userExistsMutation({ [arg]: nextValue });
+      const res = await userExistsMutation({ [variable]: nextValue });
       if (res.data?.userExists) {
-        setInputExists(true);
-        setInputSuccess(false);
+        setInputExists(Tristate.true);
         return;
       }
-      setInputExists(false);
-      setInputSuccess(true);
+      setInputExists(Tristate.false);
     };
   };
 
-  // todo: reusable login/register component
   const debounceEmail = React.useRef(
-    _.debounce(
-      debounceInputCb(
-        //
-        DebounceArg.email,
-        setEmailExists,
-        setEmailSuccess
-      ),
-      1000
-    )
+    _.debounce(debounceInputCb(RegisterVariable.email, setEmailExists), 1000)
   ).current;
 
   const debounceUsername = React.useRef(
     _.debounce(
-      debounceInputCb(
-        DebounceArg.username,
-        setUsernameExists,
-        setUsernameSuccess
-      ),
+      debounceInputCb(RegisterVariable.username, setUsernameExists),
       1000
     )
   ).current;
 
   const handleEmail = (e: any) => {
-    const { value: nextValue } = e.target;
-    setEmail(nextValue);
-    debounceEmail(nextValue);
+    setEmailExists(Tristate.default);
+    setEmail(e.target.value);
+    debounceEmail(e.target.value);
   };
 
   const handleUsername = (e: any) => {
-    const { value: nextValue } = e.target;
-    setUsername(nextValue);
-    debounceUsername(nextValue);
+    setUsernameExists(Tristate.default);
+    setUsername(e.target.value);
+    debounceUsername(e.target.value);
   };
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const res = await registerMutation({ email, username, password });
-    if (res.error) {
-      setRegisterState(RegisterState.failure);
-      return;
-    }
-    setRegisterState(RegisterState.success);
+    if (res.error) return;
+    setRegisterSuccess(true);
     setTimeout(() => {
       navigate("login");
     }, 2000);
   };
 
-  interface InputError {
-    isError: boolean;
-    helperText: string;
-  }
-
-  const bad = { isError: true };
-  const good = { isError: false, helperText: "" };
-
-  // todo: emailIsError, emailHelperText
   const emailError = (): InputError => {
-    if (emailExists) {
-      return { ...bad, helperText: "email already registered" };
+    if (email !== "" && !emailIsValid(email)) {
+      return [true, "invalid email"];
     }
-    if (email && !validateEmail(email)) {
-      return { ...bad, helperText: "invalid email" };
+    if (emailExists === Tristate.true) {
+      return [true, "already registered"];
     }
-    return good;
+    return [false, ""];
   };
 
   const usernameError = (): InputError => {
-    if (usernameExists) {
-      return { ...bad, helperText: "username already exists" };
+    if (username !== "" && !usernameIsValid(username)) {
+      return [true, "5-15 characters, letters and number only"];
     }
-    if (username && !validateUsername(username)) {
-      return {
-        ...bad,
-        helperText: "5-15 characters, letters and number only",
-      };
+    if (usernameExists === Tristate.true) {
+      return [true, "username unavailable"];
     }
-    return good;
+    return [false, ""];
   };
 
   const passwordError = (): InputError => {
-    if (password && !validatePassword(password)) {
-      return {
-        ...bad,
-        helperText: "at least 8 characters, at least one special character",
-      };
+    if (password !== "" && !passwordIsValid(password)) {
+      return [
+        true,
+        "Use at least 8 characters, one number, and one special character.",
+      ];
     }
-    return good;
+    return [false, ""];
   };
 
-  const passwordSuccess = (): boolean => {
-    return password !== "" && validatePassword(password);
+  const [emailIsError, emailHelperText] = emailError();
+  const [usernameIsError, usernameHelperText] = usernameError();
+  const [passwordIsError, passwordHelperText] = passwordError();
+
+  const emailColor = () => {
+    if (emailExists === Tristate.false) return "success";
+    return "primary";
   };
 
-  const registerEnabled = (): boolean => {
-    if (!passwordSuccess()) return false;
-    if (!emailSuccess || !usernameSuccess) return false;
-    return true;
+  const usernameColor = () => {
+    if (usernameExists === Tristate.false) return "success";
+    return "primary";
+  };
+
+  const passwordColor = () => {
+    if (password !== "" && passwordIsValid(password)) return "success";
+    return "primary";
+  };
+
+  const registerDisabled = (): boolean => {
+    if (emailExists !== Tristate.false || !emailIsValid(email)) {
+      return true;
+    }
+    if (usernameExists !== Tristate.false || !usernameIsValid(username)) {
+      return true;
+    }
+    if (!passwordIsValid(password)) return true;
+    return false;
   };
 
   return (
@@ -204,9 +195,9 @@ export const Register: React.FC = () => {
             autoFocus
             value={email}
             onChange={handleEmail}
-            error={emailError().isError}
-            helperText={emailError().helperText}
-            color={email && emailSuccess ? "success" : "primary"}
+            error={emailIsError}
+            helperText={emailHelperText}
+            color={emailColor()}
           />
 
           <TextField
@@ -221,9 +212,9 @@ export const Register: React.FC = () => {
             autoComplete="username"
             value={username}
             onChange={handleUsername}
-            error={usernameError().isError}
-            helperText={usernameError().helperText}
-            color={username && usernameSuccess ? "success" : "primary"}
+            error={usernameIsError}
+            helperText={usernameHelperText}
+            color={usernameColor()}
           />
 
           <TextField
@@ -238,9 +229,9 @@ export const Register: React.FC = () => {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            error={passwordError().isError}
-            helperText={passwordError().helperText}
-            color={passwordSuccess() ? "success" : "primary"}
+            error={passwordIsError}
+            helperText={passwordHelperText}
+            color={passwordColor()}
           />
 
           <Button
@@ -249,20 +240,10 @@ export const Register: React.FC = () => {
             variant="contained"
             className="auto-register__submit"
             sx={{ mt: 3, mb: 2 }}
-            disabled={!registerEnabled()}
-            color={
-              registerState === "pending"
-                ? "primary"
-                : registerState === "success"
-                ? "success"
-                : "error"
-            }
+            disabled={registerDisabled()}
+            color={registerSuccess ? "success" : "primary"}
           >
-            {registerState === "pending"
-              ? "Sign up"
-              : registerState === "success"
-              ? "Success!"
-              : "Oops!"}
+            {registerSuccess ? "Done" : "Sign Up"}
           </Button>
 
           <Grid container>

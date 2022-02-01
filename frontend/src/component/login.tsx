@@ -18,17 +18,19 @@ import {
 } from "@mui/material";
 
 export const Login: React.FC = () => {
+  const [loginResult, loginMutation] = useMutation(login);
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [remember, setRemember] = React.useState<boolean>(false);
 
-  const [loginResult, loginMutation] = useMutation(login);
+  const [error, setError] = React.useState<boolean>(false);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const res = await loginMutation({ email, password, remember });
     if (res.error) {
-      localStorage.removeItem("yu");
+      setError(true);
       return;
     }
     window.location.reload();
@@ -66,6 +68,7 @@ export const Login: React.FC = () => {
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            error={error}
           />
 
           <TextField
@@ -80,9 +83,10 @@ export const Login: React.FC = () => {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={error}
+            helperText={error ? "Incorrect email or password." : ""}
           />
 
-          {/* todo: longer token for 'remember me'? */}
           <FormControlLabel
             control={
               <Checkbox
@@ -103,13 +107,13 @@ export const Login: React.FC = () => {
             variant="contained"
             className="auto-login__submit"
             sx={{ mt: 3, mb: 2 }}
+            disabled={email && password ? false : true}
           >
             Sign In
           </Button>
 
           <Grid container>
             <Grid item xs>
-              {/* todo: reset password sequence */}
               <Link href="/reset" variant="body2">
                 Forgot password?
               </Link>
