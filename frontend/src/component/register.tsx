@@ -23,6 +23,7 @@ import {
   Typography,
 } from "@mui/material";
 
+// todo: use union type
 enum Tristate {
   true = "true",
   false = "false",

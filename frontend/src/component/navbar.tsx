@@ -10,7 +10,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { apiUrl } from "../utility/function";
 
-export const Navbar: React.FC = () => {
+interface Props {
+  toggleDrawer: (
+    open: boolean
+  ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+}
+
+export const Navbar: React.FC<Props> = ({ toggleDrawer }) => {
   const handleLogout = () => {
     console.log("logout");
     fetch(`${apiUrl()}/logout`, {
@@ -45,6 +51,7 @@ export const Navbar: React.FC = () => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
+            onClick={toggleDrawer(true)}
           >
             <MenuIcon />
           </IconButton>

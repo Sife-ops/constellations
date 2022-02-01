@@ -2,6 +2,7 @@ import "./App.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { C2 } from "./component/c2";
 import { Dev } from "./component/dev/dev";
 import { Home } from "./component/home";
 import { Login } from "./component/login";
@@ -13,6 +14,21 @@ import { apiUrl } from "./utility/function";
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+
+  const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
+
+  const toggleDrawer = (open: boolean) => {
+    return (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+      setDrawerOpen(open);
+    };
+  };
 
   React.useEffect(() => {
     fetch(`${apiUrl()}/refresh`, {
@@ -27,6 +43,10 @@ function App() {
       setLoading(false);
     });
   }, []);
+
+  React.useEffect(() => {
+    console.log(drawerOpen);
+  }, [drawerOpen]);
 
   if (loading) {
     return (
@@ -53,7 +73,8 @@ function App() {
   if (loggedIn) {
     return (
       <BrowserRouter>
-        <Navbar />
+        <C2 open={drawerOpen} toggle={toggleDrawer} />
+        <Navbar toggleDrawer={toggleDrawer} />
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/dev" element={<Dev />} />
