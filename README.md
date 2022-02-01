@@ -10,7 +10,7 @@
 
 start ngrok
 ```bash
-ngrok http 3001
+ngrok http 3000
 ```
 
 set VITE_NGROK_URL to ngrok https url
