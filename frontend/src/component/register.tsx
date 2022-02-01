@@ -139,12 +139,12 @@ export const Register: React.FC = () => {
   const [passwordIsError, passwordHelperText] = passwordError();
 
   const emailColor = () => {
-    if (emailExists === Tristate.false) return "success";
+    if (email !== "" && emailExists === Tristate.false) return "success";
     return "primary";
   };
 
   const usernameColor = () => {
-    if (usernameExists === Tristate.false) return "success";
+    if (username !== "" && usernameExists === Tristate.false) return "success";
     return "primary";
   };
 
