@@ -38,6 +38,7 @@ export const Navbar: React.FC = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
+          {/* todo: show drawer */}
           <IconButton
             size="large"
             edge="start"

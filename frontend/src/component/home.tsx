@@ -1,10 +1,9 @@
 import React from "react";
-import { isValid } from "../utility/token";
+import { C1 } from "./c1";
 
 export const Home: React.FC = () => {
   return (
-    <div>
-      home
-    </div>
-  );
+    //
+    <C1 />
+  )
 };
