@@ -45,6 +45,7 @@ import { typeDefs } from "./graphql/typedef";
     const nonprod = [
       "https://studio.apollographql.com",
       "http://localhost:3000",
+      "http://localhost:3001",
     ];
     if (env.prod) return ["prod url"];
     if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
