@@ -1,10 +1,11 @@
 import "./App.css";
 import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
-import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Dev } from "./component/dev/dev";
 import { Home } from "./component/home";
 import { Login } from "./component/login";
+import { Navbar } from "./component/navbar";
 import { Register } from "./component/register";
 import { Reset } from "./component/reset";
 import { apiUrl } from "./utility/function";
@@ -52,6 +53,7 @@ function App() {
   if (loggedIn) {
     return (
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/dev" element={<Dev />} />

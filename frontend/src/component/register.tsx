@@ -29,7 +29,7 @@ enum Tristate {
   default = "default",
 }
 
-enum RegisterVariable {
+enum UserExistsVariable {
   email = "email",
   username = "username",
 }
@@ -57,7 +57,7 @@ export const Register: React.FC = () => {
   const [registerSuccess, setRegisterSuccess] = React.useState<boolean>(false);
 
   const debounceInputCb = (
-    variable: RegisterVariable,
+    variable: UserExistsVariable,
     setInputExists: React.Dispatch<React.SetStateAction<Tristate>>
   ) => {
     return async (nextValue: string) => {
@@ -71,16 +71,17 @@ export const Register: React.FC = () => {
   };
 
   const debounceEmail = React.useRef(
-    _.debounce(debounceInputCb(RegisterVariable.email, setEmailExists), 1000)
+    _.debounce(debounceInputCb(UserExistsVariable.email, setEmailExists), 1000)
   ).current;
 
   const debounceUsername = React.useRef(
     _.debounce(
-      debounceInputCb(RegisterVariable.username, setUsernameExists),
+      debounceInputCb(UserExistsVariable.username, setUsernameExists),
       1000
     )
   ).current;
 
+  // todo: use event types
   const handleEmail = (e: any) => {
     setEmailExists(Tristate.default);
     setEmail(e.target.value);
