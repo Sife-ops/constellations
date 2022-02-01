@@ -1,32 +1,18 @@
 import * as t from "../utility/token";
 import argon2 from "argon2";
 import { AuthContext } from "./auth";
-import { Car } from "../entity/car";
 import { User } from "../entity/user";
 
 export const resolvers = {
   Query: {
-    // todo: delete
-    authTest: (_: any, __: any, context: AuthContext) => {
-      console.log("authTest");
-      console.log(context.payload);
-      return `Hello "world"!`;
+    _dev0: () => "hello",
+
+    _dev1: async (): Promise<User[]> => {
+      return await User.find({ relations: ["bookmarks", "categories"] });
     },
 
-    cars: async (): Promise<Car[]> => {
-      return await Car.find({ relations: ["user"] });
-    },
-
-    // todo: delete
-    hello: () => "hello",
-
-    user: async (_: any, __: any, context: AuthContext): Promise<User> => {
+    _dev2: async (_: any, __: any, context: AuthContext): Promise<User> => {
       return await User.findOneOrFail(context.payload!.id);
-    },
-
-    // todo: delete
-    users: async (): Promise<User[]> => {
-      return await User.find({ relations: ["cars"] });
     },
   },
 

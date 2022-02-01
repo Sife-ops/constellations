@@ -1,5 +1,6 @@
 import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { Car } from "./car";
+import { Bookmark } from "./bookmark";
+import { Category } from "./category";
 
 @Entity()
 export class User extends BaseEntity {
@@ -15,6 +16,9 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(() => Car, (car) => car.user)
-  cars: Car[];
+  @OneToMany(() => Bookmark, (bookmark) => bookmark.user)
+  bookmarks: Bookmark[];
+
+  @OneToMany(() => Category, (category) => category.user)
+  categories: Category[];
 }

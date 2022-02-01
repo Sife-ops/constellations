@@ -4,7 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { Car } from "./entity/car";
+import { Bookmark } from "./entity/bookmark";
+import { Category } from "./entity/category";
 import { User } from "./entity/user";
 import { applyMiddleware } from "graphql-middleware";
 import { auth } from "./graphql/auth";
@@ -27,7 +28,7 @@ import { typeDefs } from "./graphql/typedef";
       type: "sqlite",
       database: "./database/db.sqlite3",
       dropSchema: env.seed,
-      entities: [User, Car],
+      entities: [User, Bookmark, Category],
       synchronize: true,
       logging: false,
     });

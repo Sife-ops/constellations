@@ -1,5 +1,13 @@
 import gql from "graphql-tag";
 
+export const _dev2 = gql`
+  query _dev2 {
+    _dev2 {
+      id
+    }
+  }
+`;
+
 export const login = gql`
   mutation Login($email: String, $password: String, $remember: Boolean) {
     login(email: $email, password: $password, remember: $remember) {
@@ -19,24 +27,8 @@ export const register = gql`
   }
 `;
 
-export const user = gql`
-  query User {
-    user {
-      id
-      email
-      username
-    }
-  }
-`;
-
 export const userExists = gql`
   mutation UserExists($email: String, $username: String) {
     userExists(email: $email, username: $username)
-  }
-`;
-
-export const authTest = gql`
-  query AuthTest {
-    authTest
   }
 `;

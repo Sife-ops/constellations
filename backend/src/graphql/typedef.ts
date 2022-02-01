@@ -1,10 +1,18 @@
 import { gql } from "apollo-server-core";
 
 export const typeDefs = gql`
-  type Car {
+  type Bookmark {
     id: Int
-    year: Int
-    plate: String
+    url: String
+    description: String
+    categories: [Category]
+    user: User
+  }
+
+  type Category {
+    id: Int
+    name: String
+    bookmarks: [Bookmark]
     user: User
   }
 
@@ -12,7 +20,8 @@ export const typeDefs = gql`
     id: Int
     email: String
     username: String
-    cars: [Car!]
+    bookmarks: [Bookmark]
+    categories: [Category]
   }
 
   type Mutation {
@@ -22,10 +31,8 @@ export const typeDefs = gql`
   }
 
   type Query {
-    authTest: String
-    cars: [Car]
-    hello: String
-    user: User
-    users: [User]
+    _dev0: String
+    _dev1: [User]
+    _dev2: User
   }
 `;

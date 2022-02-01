@@ -1,0 +1,52 @@
+[
+  {
+    "email": "wyatt@gmail.com",
+    "username": "wyatt",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "yuki@gmail.com",
+    "username": "yuki",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "noah@gmail.com",
+    "username": "noah",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "steve@gmail.com",
+    "username": "steve",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "bob@gmail.com",
+    "username": "bob",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "greg@gmail.com",
+    "username": "greg",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "tom@gmail.com",
+    "username": "tom",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "pete@gmail.com",
+    "username": "pete",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "alex@gmail.com",
+    "username": "alex",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
+    "email": "jim@gmail.com",
+    "username": "jim",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  }
+]
