@@ -2,8 +2,9 @@ import { env } from "../utility/constant";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { Request, Response } from "express";
 
-const operationsWithAuth = ["_dev2"];
+const operationsWithAuth = ["_dev2", "Categories"];
 
+// todo: use Array.prototype.find
 const isOperationWithAuth = (s: string): boolean => {
   for (let i = 0; i < operationsWithAuth.length; i++) {
     if (s === operationsWithAuth[i]) return true;

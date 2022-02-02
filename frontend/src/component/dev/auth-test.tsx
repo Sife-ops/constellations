@@ -1,10 +1,10 @@
 import React from "react";
 import { useQuery } from "urql";
-import { _dev2 } from "../../utility/request";
+import { _dev2, categories } from "../../utility/request";
 
 export const AuthTest: React.FC = () => {
   const [res, reexec] = useQuery({
-    query: _dev2,
+    query: categories,
     requestPolicy: "network-only",
   });
 

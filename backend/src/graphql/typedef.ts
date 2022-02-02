@@ -24,15 +24,16 @@ export const typeDefs = gql`
     categories: [Category]
   }
 
-  type Mutation {
-    login(email: String, password: String, remember: Boolean): User
-    register(email: String, username: String, password: String): User
-    userExists(email: String, username: String): Boolean
-  }
-
   type Query {
     _dev0: String
     _dev1: [User]
     _dev2: User
+    categories: [Category]
+  }
+
+  type Mutation {
+    login(email: String, password: String, remember: Boolean): User
+    register(email: String, username: String, password: String): User
+    userExists(email: String, username: String): Boolean
   }
 `;

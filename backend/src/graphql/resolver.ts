@@ -1,6 +1,7 @@
 import * as t from "../utility/token";
 import argon2 from "argon2";
 import { AuthContext } from "./auth";
+import { Category } from "../entity/category";
 import { User } from "../entity/user";
 
 export const resolvers = {
@@ -12,7 +13,19 @@ export const resolvers = {
     },
 
     _dev2: async (_: any, __: any, context: AuthContext): Promise<User> => {
-      return await User.findOneOrFail(context.payload!.id);
+      if (!context.payload) throw new Error("missing payload");
+      return await User.findOneOrFail(context.payload.id);
+    },
+
+    categories: async (
+      _: any,
+      __: any,
+      context: AuthContext
+    ): Promise<Category[]> => {
+      if (!context.payload) throw new Error("missing payload");
+      const user = await User.findOne(context.payload.id);
+      if (!user) throw new Error("user not found");
+      return await Category.find({ where: { user } });
     },
   },
 

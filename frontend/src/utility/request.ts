@@ -8,6 +8,15 @@ export const _dev2 = gql`
   }
 `;
 
+export const categories = gql`
+  query Categories {
+    categories {
+      id
+      name
+    }
+  }
+`;
+
 export const login = gql`
   mutation Login($email: String, $password: String, $remember: Boolean) {
     login(email: $email, password: $password, remember: $remember) {
