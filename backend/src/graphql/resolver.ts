@@ -1,16 +1,16 @@
-import * as t from "../utility/token";
-import argon2 from "argon2";
-import { AuthContext } from "./auth";
-import { Bookmark } from "../entity/bookmark";
-import { Category } from "../entity/category";
-import { User } from "../entity/user";
+import * as t from '../utility/token';
+import argon2 from 'argon2';
+import { AuthContext } from './auth';
+import { Bookmark } from '../entity/bookmark';
+import { Category } from '../entity/category';
+import { User } from '../entity/user';
 
 export const resolvers = {
   Bookmark: {
     // todo: use dataloader
     categories: async (parent: Bookmark) => {
       const bookmark = await Bookmark.findOne(parent.id, {
-        relations: ["categories"],
+        relations: ['categories'],
       });
       if (!bookmark) return [];
       return bookmark?.categories;
@@ -20,7 +20,7 @@ export const resolvers = {
   Category: {
     bookmarks: async (parent: Category) => {
       const category = await Category.findOne(parent.id, {
-        relations: ["bookmarks"],
+        relations: ['bookmarks'],
       });
       if (!category) return [];
       return category.bookmarks;
@@ -28,14 +28,14 @@ export const resolvers = {
   },
 
   Query: {
-    _dev0: () => "hello",
+    _dev0: () => 'hello',
 
     _dev1: async (): Promise<User[]> => {
-      return await User.find({ relations: ["bookmarks", "categories"] });
+      return await User.find({ relations: ['bookmarks', 'categories'] });
     },
 
     _dev2: async (_: any, __: any, context: AuthContext): Promise<User> => {
-      if (!context.payload) throw new Error("missing payload");
+      if (!context.payload) throw new Error('missing payload');
       return await User.findOneOrFail(context.payload.id);
     },
 
@@ -44,9 +44,9 @@ export const resolvers = {
       __: any,
       context: AuthContext
     ): Promise<Category[]> => {
-      if (!context.payload) throw new Error("missing payload");
+      if (!context.payload) throw new Error('missing payload');
       const user = await User.findOne(context.payload.id);
-      if (!user) throw new Error("user not found");
+      if (!user) throw new Error('user not found');
       return await Category.find({ where: { user } });
     },
   },
@@ -58,14 +58,14 @@ export const resolvers = {
       { res }: AuthContext
     ): Promise<User> => {
       if (!email || !password || remember === undefined) {
-        throw new Error("invalid arguments");
+        throw new Error('invalid arguments');
       }
 
       const user = await User.findOne({ where: { email } });
-      if (!user) throw new Error("user not found");
+      if (!user) throw new Error('user not found');
 
       const verified = await argon2.verify(user.password, password);
-      if (!verified) throw new Error("wrong password");
+      if (!verified) throw new Error('wrong password');
 
       t.sendRefreshToken(res, { id: user.id, remember });
 
@@ -77,7 +77,7 @@ export const resolvers = {
       { email, username, password }: RegisterInput
     ): Promise<{ email: string; username: string }> => {
       if (!email || !username || !password) {
-        throw new Error("invalid arguments");
+        throw new Error('invalid arguments');
       }
 
       const hashed = await argon2.hash(password);
@@ -95,7 +95,7 @@ export const resolvers = {
       _: any,
       { email, username }: UserExistsInput
     ): Promise<boolean> => {
-      if (!email && !username) throw new Error("invalid arguments");
+      if (!email && !username) throw new Error('invalid arguments');
 
       const user = await User.findOne({
         where: email ? { email } : { username },

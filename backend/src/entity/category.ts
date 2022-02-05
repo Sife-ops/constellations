@@ -1,5 +1,5 @@
-import { Bookmark } from "./bookmark";
-import { User } from "./user";
+import { Bookmark } from './bookmark';
+import { User } from './user';
 
 import {
   BaseEntity,
@@ -8,19 +8,19 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
   ManyToOne,
-} from "typeorm";
+} from 'typeorm';
 
 @Entity()
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("text")
+  @Column('text')
   name: string;
 
   @ManyToMany(() => Bookmark, (bookmark) => bookmark.categories)
   bookmarks: Bookmark[];
 
-  @ManyToOne(() => User, (user) => user.categories, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.categories, { onDelete: 'CASCADE' })
   user: User;
 }

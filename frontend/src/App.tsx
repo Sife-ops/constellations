@@ -1,15 +1,15 @@
-import "./App.css";
-import CircularProgress from "@mui/material/CircularProgress";
-import React from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { C2 } from "./component/c2";
-import { Dev } from "./component/dev/dev";
-import { Home } from "./component/home";
-import { Login } from "./component/login";
-import { Navbar } from "./component/navbar";
-import { Register } from "./component/register";
-import { Reset } from "./component/reset";
-import { apiUrl } from "./utility/function";
+import './App.css';
+import CircularProgress from '@mui/material/CircularProgress';
+import React from 'react';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { C2 } from './component/c2';
+import { Dev } from './component/dev/dev';
+import { Home } from './component/home';
+import { Login } from './component/login';
+import { Navbar } from './component/navbar';
+import { Register } from './component/register';
+import { Reset } from './component/reset';
+import { apiUrl } from './utility/function';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -20,9 +20,9 @@ function App() {
   const toggleDrawer = (open: boolean) => {
     return (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
+        event.type === 'keydown' &&
+        ((event as React.KeyboardEvent).key === 'Tab' ||
+          (event as React.KeyboardEvent).key === 'Shift')
       ) {
         return;
       }
@@ -32,12 +32,12 @@ function App() {
 
   React.useEffect(() => {
     fetch(`${apiUrl()}/refresh`, {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
     }).then(async (res) => {
       if (res.ok) {
         const data = await res.json();
-        localStorage.setItem("yu", data.accessToken);
+        localStorage.setItem('yu', data.accessToken);
         setLoggedIn(true);
       }
       setLoading(false);
@@ -52,16 +52,16 @@ function App() {
     return (
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          height: "100vh",
+          display: 'flex',
+          justifyContent: 'center',
+          height: '100vh',
         }}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
           }}
         >
           <CircularProgress />

@@ -1,6 +1,6 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
-import { Bookmark } from "./bookmark";
-import { Category } from "./category";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { Bookmark } from './bookmark';
+import { Category } from './category';
 
 @Entity()
 export class User extends BaseEntity {

@@ -1,13 +1,13 @@
-import * as t from "../utility/token";
-import { Request, Response, Router } from "express";
-import { env } from "../utility/constant";
-import { verify, JwtPayload } from "jsonwebtoken";
+import * as t from '../utility/token';
+import { Request, Response, Router } from 'express';
+import { env } from '../utility/constant';
+import { verify, JwtPayload } from 'jsonwebtoken';
 
 export const refresh = Router();
 
-refresh.post("/refresh", (req: Request, res: Response) => {
+refresh.post('/refresh', (req: Request, res: Response) => {
   // todo: logging utility
-  console.log("refresh.ts - request cookies:", req.cookies);
+  console.log('refresh.ts - request cookies:', req.cookies);
 
   const refreshToken = req.cookies.wg;
 

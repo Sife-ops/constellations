@@ -1,7 +1,7 @@
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import React from "react";
-import { login } from "../utility/request";
-import { useMutation } from "urql";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import React from 'react';
+import { login } from '../utility/request';
+import { useMutation } from 'urql';
 
 import {
   Avatar,
@@ -15,13 +15,13 @@ import {
   Link,
   TextField,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
 export const Login: React.FC = () => {
   const [loginResult, loginMutation] = useMutation(login);
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [remember, setRemember] = React.useState<boolean>(false);
 
   const [error, setError] = React.useState<boolean>(false);
@@ -42,12 +42,12 @@ export const Login: React.FC = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
 
@@ -84,7 +84,7 @@ export const Login: React.FC = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={error}
-            helperText={error ? "Incorrect email or password." : ""}
+            helperText={error ? 'Incorrect email or password.' : ''}
           />
 
           <FormControlLabel

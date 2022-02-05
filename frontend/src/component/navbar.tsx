@@ -1,14 +1,14 @@
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import React from "react";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { apiUrl } from "../utility/function";
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import React from 'react';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { apiUrl } from '../utility/function';
 
 interface Props {
   toggleDrawer: (
@@ -18,13 +18,13 @@ interface Props {
 
 export const Navbar: React.FC<Props> = ({ toggleDrawer }) => {
   const handleLogout = () => {
-    console.log("logout");
+    console.log('logout');
     fetch(`${apiUrl()}/logout`, {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
     }).then((res) => {
       if (res.ok) {
-        localStorage.removeItem("yu");
+        localStorage.removeItem('yu');
         window.location.reload();
       }
     });
@@ -73,13 +73,13 @@ export const Navbar: React.FC<Props> = ({ toggleDrawer }) => {
               id="menu-appbar"
               anchorEl={anchorEl}
               anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+                vertical: 'top',
+                horizontal: 'right',
               }}
               open={Boolean(anchorEl)}
               onClose={handleClose}

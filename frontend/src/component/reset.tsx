@@ -1,5 +1,5 @@
-import React from "react";
-import EmailIcon from "@mui/icons-material/Email";
+import React from 'react';
+import EmailIcon from '@mui/icons-material/Email';
 
 import {
   Avatar,
@@ -11,7 +11,7 @@ import {
   Link,
   TextField,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 
 export const Reset: React.FC = () => {
   return (
@@ -20,12 +20,12 @@ export const Reset: React.FC = () => {
       <Box
         sx={{
           marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <EmailIcon />
         </Avatar>
 
@@ -74,7 +74,7 @@ export const Reset: React.FC = () => {
                 href="/login"
                 variant="body2"
               >
-                {"Already have an account? Sign In"}
+                {'Already have an account? Sign In'}
               </Link>
             </Grid>
           </Grid>

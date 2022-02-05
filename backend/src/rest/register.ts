@@ -1,10 +1,10 @@
-import argon2 from "argon2";
-import { Request, Response, Router } from "express";
-import { User } from "../entity/user";
+import argon2 from 'argon2';
+import { Request, Response, Router } from 'express';
+import { User } from '../entity/user';
 
 export const register = Router();
 
-register.post("/register", async (req: Request, res: Response) => {
+register.post('/register', async (req: Request, res: Response) => {
   const { email, username, password } = req.body as {
     email: string;
     username: string;

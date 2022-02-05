@@ -15,7 +15,7 @@ export const AuthTest: React.FC = () => {
     return <div>error</div>;
   }
 
-  console.log(res.data)
+  console.log(res.data);
 
   return (
     <div className="auto-authTest">

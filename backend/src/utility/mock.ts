@@ -1,14 +1,14 @@
-import { Bookmark } from "../entity/bookmark";
-import { Category } from "../entity/category";
-import { User } from "../entity/user";
+import { Bookmark } from '../entity/bookmark';
+import { Category } from '../entity/category';
+import { User } from '../entity/user';
 
-const mockBookmarks = require("../../mock-data/bookmark.json").slice(
+const mockBookmarks = require('../../mock-data/bookmark.json').slice(
   0,
   100
 ) as Bookmark[];
 
-const mockUsers = require("../../mock-data/user.json").slice(0, 3) as User[];
-const mockCategories = require("../../mock-data/category.json") as Category[];
+const mockUsers = require('../../mock-data/user.json').slice(0, 3) as User[];
+const mockCategories = require('../../mock-data/category.json') as Category[];
 
 export const seed = async () => {
   for (const user of mockUsers) {
@@ -45,7 +45,7 @@ export const seed = async () => {
 
   for (const mockBookmark of mockBookmarks) {
     const user = await User.findOne(randomInd(mockUsers) + 1, {
-      relations: ["categories", "bookmarks"],
+      relations: ['categories', 'bookmarks'],
     });
     if (!user) continue;
 
@@ -67,7 +67,7 @@ export const seed = async () => {
 
     for (const categoryId of categoryIds) {
       const category = await Category.findOne(categoryId, {
-        relations: ["bookmarks"],
+        relations: ['bookmarks'],
       });
       if (!category) continue;
       category.bookmarks = category.bookmarks.concat(bookmark);
@@ -75,7 +75,7 @@ export const seed = async () => {
     }
   }
 
-  console.log("finished seed");
+  console.log('finished seed');
 };
 
 const randomInd = (arr: any[], plus: number = 0) => {

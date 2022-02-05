@@ -1,7 +1,7 @@
-import { AuthConfig } from "@urql/exchange-auth";
-import { Operation } from "urql";
-import { apiUrl } from "../utility/function";
-import { isValid } from "./token";
+import { AuthConfig } from '@urql/exchange-auth';
+import { Operation } from 'urql';
+import { apiUrl } from '../utility/function';
+import { isValid } from './token';
 
 export const authConfig: AuthConfig<{ accessToken: string }> = {
   willAuthError: ({ authState }) => {
@@ -12,21 +12,21 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
 
   getAuth: async ({ authState }) => {
     if (!authState) {
-      const accessToken = localStorage.getItem("yu");
+      const accessToken = localStorage.getItem('yu');
       if (accessToken) return { accessToken };
       return null;
     }
 
     const res = await fetch(`${apiUrl()}/refresh`, {
-      method: "POST",
-      credentials: "include",
+      method: 'POST',
+      credentials: 'include',
     });
 
     if (!res.ok) return null;
 
     const data = await res.json();
 
-    localStorage.setItem("yu", data.accessToken);
+    localStorage.setItem('yu', data.accessToken);
 
     return { accessToken: data.accessToken };
   },
@@ -37,7 +37,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
     }
 
     const fetchOptions: RequestInit = {
-      credentials: "include",
+      credentials: 'include',
     };
 
     // can't use 'makeOperation'

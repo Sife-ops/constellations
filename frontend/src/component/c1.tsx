@@ -1,17 +1,17 @@
 // import Checkbox from "@mui/material/Checkbox";
 // import FormControlLabel from "@mui/material/FormControlLabel";
 // import FormGroup from "@mui/material/FormGroup";
-import Avatar from "@mui/material/Avatar";
-import Box from "@mui/material/Box";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FolderIcon from "@mui/icons-material/Folder";
-import IconButton from "@mui/material/IconButton";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import React from "react";
-import { styled } from "@mui/material/styles";
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import DeleteIcon from '@mui/icons-material/Delete';
+import FolderIcon from '@mui/icons-material/Folder';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemText from '@mui/material/ListItemText';
+import React from 'react';
+import { styled } from '@mui/material/styles';
 
 function generate(element: React.ReactElement) {
   return [0, 1, 2].map((value) =>
@@ -21,7 +21,7 @@ function generate(element: React.ReactElement) {
   );
 }
 
-const Demo = styled("div")(({ theme }) => ({
+const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
@@ -69,7 +69,7 @@ export const C1: React.FC = () => {
             </ListItemAvatar>
             <ListItemText
               primary="Single-line item"
-              secondary={secondary ? "Secondary text" : null}
+              secondary={secondary ? 'Secondary text' : null}
             />
           </ListItem>
         )}

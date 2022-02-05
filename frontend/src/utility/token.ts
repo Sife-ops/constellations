@@ -1,6 +1,6 @@
-import decode, { JwtPayload } from "jwt-decode";
+import decode, { JwtPayload } from 'jwt-decode';
 
-let token: string = "";
+let token: string = '';
 
 export const getAccessToken = (): string => token;
 
