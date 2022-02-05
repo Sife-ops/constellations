@@ -17,7 +17,7 @@ interface Props {
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
-export const C2: React.FC<Props> = ({ open, toggle }) => {
+export const AppDrawer: React.FC<Props> = ({ open, toggle }) => {
   return (
     <Drawer
       //   anchor={anchor}

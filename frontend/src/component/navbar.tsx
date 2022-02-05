@@ -11,12 +11,12 @@ import Typography from '@mui/material/Typography';
 import { apiUrl } from '../utility/function';
 
 interface Props {
-  toggleDrawer: (
+  drawerToggle: (
     open: boolean
   ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
-export const Navbar: React.FC<Props> = ({ toggleDrawer }) => {
+export const Navbar: React.FC<Props> = ({ drawerToggle }) => {
   const handleLogout = () => {
     console.log('logout');
     fetch(`${apiUrl()}/logout`, {
@@ -51,7 +51,7 @@ export const Navbar: React.FC<Props> = ({ toggleDrawer }) => {
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={toggleDrawer(true)}
+            onClick={drawerToggle(true)}
           >
             <MenuIcon />
           </IconButton>
