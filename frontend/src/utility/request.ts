@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const _dev2 = gql`
   query _dev2 {
@@ -13,6 +13,15 @@ export const categories = gql`
     categories {
       id
       name
+      bookmarks {
+        id
+        url
+        description
+        categories {
+          id
+          name
+        }
+      }
     }
   }
 `;

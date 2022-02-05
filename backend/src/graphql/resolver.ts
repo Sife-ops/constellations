@@ -1,10 +1,32 @@
 import * as t from "../utility/token";
 import argon2 from "argon2";
 import { AuthContext } from "./auth";
+import { Bookmark } from "../entity/bookmark";
 import { Category } from "../entity/category";
 import { User } from "../entity/user";
 
 export const resolvers = {
+  Bookmark: {
+    // todo: use dataloader
+    categories: async (parent: Bookmark) => {
+      const bookmark = await Bookmark.findOne(parent.id, {
+        relations: ["categories"],
+      });
+      if (!bookmark) return [];
+      return bookmark?.categories;
+    },
+  },
+
+  Category: {
+    bookmarks: async (parent: Category) => {
+      const category = await Category.findOne(parent.id, {
+        relations: ["bookmarks"],
+      });
+      if (!category) return [];
+      return category.bookmarks;
+    },
+  },
+
   Query: {
     _dev0: () => "hello",
 

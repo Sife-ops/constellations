@@ -1,11 +1,11 @@
-import React from "react";
-import { useQuery } from "urql";
-import { _dev2, categories } from "../../utility/request";
+import React from 'react';
+import { useQuery } from 'urql';
+import { _dev2, categories } from '../../utility/request';
 
 export const AuthTest: React.FC = () => {
   const [res, reexec] = useQuery({
     query: categories,
-    requestPolicy: "network-only",
+    requestPolicy: 'network-only',
   });
 
   if (res.fetching) return <div>loading...</div>;
@@ -15,5 +15,12 @@ export const AuthTest: React.FC = () => {
     return <div>error</div>;
   }
 
-  return <div className="auto-authTest">authtest: {JSON.stringify(res.data)}</div>;
+  console.log(res.data)
+
+  return (
+    <div className="auto-authTest">
+      {/* // */}
+      authtest: {JSON.stringify(res.data)}
+    </div>
+  );
 };

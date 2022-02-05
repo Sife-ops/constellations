@@ -1,8 +1,8 @@
-import { env } from "../utility/constant";
-import { JwtPayload, verify } from "jsonwebtoken";
-import { Request, Response } from "express";
+import { env } from '../utility/constant';
+import { JwtPayload, verify } from 'jsonwebtoken';
+import { Request, Response } from 'express';
 
-const operationsWithAuth = ["_dev2", "Categories"];
+const operationsWithAuth = ['_dev2', 'Categories'];
 
 // todo: use Array.prototype.find
 const isOperationWithAuth = (s: string): boolean => {
@@ -27,21 +27,18 @@ export const auth = async (
 ) => {
   if (isOperationWithAuth(context.req.body.operationName)) {
     const auth = context.req.headers.authorization as string;
-    if (!auth) throw new Error("no authorization header");
+    if (!auth) throw new Error('no authorization header');
 
-    const accessToken = auth.split(" ")[1];
-    if (!accessToken) throw new Error("no token");
+    const accessToken = auth.split(' ')[1];
+    if (!accessToken) throw new Error('no token');
 
     try {
       // throws if expired
-      const payload: JwtPayload = verify(
-        accessToken,
-        env.secret.accessToken
-      ) as JwtPayload;
+      const payload = verify(accessToken, env.secret.accessToken) as JwtPayload;
       context.payload = payload;
     } catch (e) {
       console.log(e);
-      throw new Error("bad token");
+      throw new Error('bad token');
     }
   }
 
