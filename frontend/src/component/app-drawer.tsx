@@ -10,8 +10,31 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import React from 'react';
 import { LoadingSpinner } from './loading-spinner';
-import { categories } from '../utility/request';
+import { categories as categoriesQuery } from '../utility/request';
 import { useQuery } from 'urql';
+
+interface User {
+  id: number;
+  email?: string;
+  username?: string;
+  bookmarks?: Bookmark[];
+  categories?: Category[];
+}
+
+interface Bookmark {
+  id: number;
+  url?: string;
+  description?: string;
+  categories?: Category[];
+  user?: User;
+}
+
+interface Category {
+  id: number;
+  name?: string;
+  bookmarks?: Bookmark[];
+  user?: User;
+}
 
 interface Props {
   open: boolean;
@@ -22,21 +45,33 @@ interface Props {
 
 export const AppDrawer: React.FC<Props> = ({ open, toggle }) => {
   const [res, reexec] = useQuery({
-    query: categories,
+    query: categoriesQuery,
   });
 
-  if (res.fetching) return <div>loading...</div>;
+  if (res.fetching) return null;
 
+  // error page?
   if (res.error) {
     console.log(res.error);
     return <div>error</div>;
   }
 
+  const categories = res.data.categories as Category[];
+
+  const mapCategories = (category: Category): JSX.Element => (
+    <ListItem button key={category.id}>
+      {/* todo: add icon to datamodel */}
+      <ListItemIcon>
+        <InboxIcon />
+      </ListItemIcon>
+      <ListItemText primary={category.name} />
+    </ListItem>
+  );
+
   return (
     <Drawer
       anchor="left"
-      // open={open}
-      open={true}
+      open={open}
       onClose={toggle(false)}
     >
       <Box
@@ -45,35 +80,7 @@ export const AppDrawer: React.FC<Props> = ({ open, toggle }) => {
         onClick={toggle(false)}
         onKeyDown={toggle(false)}
       >
-        {res.fetching ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            <List>
-              {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-                (text, index) => (
-                  <ListItem button key={text}>
-                    <ListItemIcon>
-                      {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                    </ListItemIcon>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                )
-              )}
-            </List>
-            <Divider />
-            <List>
-              {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                <ListItem button key={text}>
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              ))}
-            </List>
-          </>
-        )}
+        <List>{categories.map(mapCategories)}</List>
       </Box>
     </Drawer>
   );

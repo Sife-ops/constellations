@@ -13,7 +13,7 @@ export const resolvers = {
         relations: ['categories'],
       });
       if (!bookmark) return [];
-      return bookmark?.categories;
+      return bookmark.categories;
     },
   },
 
