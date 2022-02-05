@@ -1,10 +1,10 @@
 import './App.css';
-import CircularProgress from '@mui/material/CircularProgress';
 import React from 'react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppDrawer } from './component/app-drawer';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Dev } from './component/dev/dev';
 import { Home } from './component/home';
+import { LoadingSpinner } from './component/loading-spinner';
 import { Login } from './component/login';
 import { Navbar } from './component/navbar';
 import { Register } from './component/register';
@@ -44,27 +44,7 @@ function App() {
     };
   };
 
-  if (loading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          height: '100vh',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          <CircularProgress />
-        </div>
-      </div>
-    );
-  }
+  if (loading) return <LoadingSpinner />
 
   if (loggedIn) {
     return (
