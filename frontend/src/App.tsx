@@ -6,6 +6,7 @@ import { Dev } from './component/dev/dev';
 import { Home } from './component/home';
 import { LoadingSpinner } from './component/loading-spinner';
 import { Login } from './component/login';
+import { Login2 } from './component/login2';
 import { Navbar } from './component/navbar';
 import { Register } from './component/register';
 import { Reset } from './component/reset';
@@ -44,7 +45,7 @@ function App() {
     };
   };
 
-  if (loading) return <LoadingSpinner />
+  if (loading) return <LoadingSpinner />;
 
   if (loggedIn) {
     return (
@@ -64,6 +65,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/login2" element={<Login2 />} />
         <Route path="/register" element={<Register />} />
         <Route path="/reset" element={<Reset />} />
         <Route path="*" element={<Navigate replace to="/login" />} />
