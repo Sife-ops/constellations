@@ -1,5 +1,6 @@
 import React from 'react';
 import { AuthTest } from './auth-test';
+import { CodegenTest } from './codegen-test';
 import { apiUrl } from '../../utility/function';
 import { isValid } from '../../utility/token';
 
@@ -28,9 +29,14 @@ export const Dev: React.FC = () => {
         logout
       </button>
       <br />
+
       <button onClick={handleLogToken}>log access token</button>
       <br />
+
       <AuthTest />
+      <br />
+
+      <CodegenTest />
     </div>
   );
 };

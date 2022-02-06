@@ -6,8 +6,11 @@ generates:
     plugins:
       - "typescript-graphql-files-modules"
 
-  src/generated/graphql.ts:
+  src/generated/graphql.tsx:
     plugins:
       - "typescript"
       - "typescript-operations"
       - "urql-introspection"
+      - "typescript-urql"
+    config:
+      withComponent: true
