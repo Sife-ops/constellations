@@ -1,9 +1,12 @@
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import React from 'react';
 import _ from 'lodash';
-import { useMutation } from 'urql';
 import { useNavigate } from 'react-router-dom';
-import { userExists, register } from '../utility/request';
+
+import {
+  useRegisterMutation,
+  useUserExistsMutation,
+} from '../generated/graphql';
 
 import {
   emailIsValid,
@@ -30,18 +33,15 @@ enum Tristate {
   default = 'default',
 }
 
-enum UserExistsVariable {
-  email = 'email',
-  username = 'username',
-}
+type UserExistsVariable = 'email' | 'username';
 
 type InputError = [boolean, string];
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
 
-  const [userExistsResult, userExistsMutation] = useMutation(userExists);
-  const [registerResult, registerMutation] = useMutation(register);
+  const [userExistsResult, userExistsMutation] = useUserExistsMutation();
+  const [registerResult, registerMutation] = useRegisterMutation();
 
   const [email, setEmail] = React.useState('');
   const [username, setUsername] = React.useState('');
@@ -72,12 +72,12 @@ export const Register: React.FC = () => {
   };
 
   const debounceEmail = React.useRef(
-    _.debounce(debounceInputCb(UserExistsVariable.email, setEmailExists), 1000)
+    _.debounce(debounceInputCb('email', setEmailExists), 1000)
   ).current;
 
   const debounceUsername = React.useRef(
     _.debounce(
-      debounceInputCb(UserExistsVariable.username, setUsernameExists),
+      debounceInputCb('username', setUsernameExists),
       1000
     )
   ).current;
@@ -97,7 +97,7 @@ export const Register: React.FC = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const res = await registerMutation({ email, username, password });
+    const res = await registerMutation({ email, password, username });
     if (res.error) return;
     setRegisterSuccess(true);
     setTimeout(() => {

@@ -100,6 +100,23 @@ export type _Dev3QueryVariables = Exact<{
 
 export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
 
+export type RegisterMutationVariables = Exact<{
+  password: Scalars['String'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+}>;
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', email?: string | null, username?: string | null } | null };
+
+export type UserExistsMutationVariables = Exact<{
+  email?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type UserExistsMutation = { __typename?: 'Mutation', userExists?: boolean | null };
+
 import { IntrospectionQuery } from 'graphql';
 export default {
   "__schema": {
@@ -486,4 +503,35 @@ export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3Quer
 
 export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
+};
+export const RegisterDocument = gql`
+    mutation Register($password: String!, $username: String!, $email: String!) {
+  register(password: $password, username: $username, email: $email) {
+    email
+    username
+  }
+}
+    `;
+
+export const RegisterComponent = (props: Omit<Urql.MutationProps<RegisterMutation, RegisterMutationVariables>, 'query'> & { variables?: RegisterMutationVariables }) => (
+  <Urql.Mutation {...props} query={RegisterDocument} />
+);
+
+
+export function useRegisterMutation() {
+  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument);
+};
+export const UserExistsDocument = gql`
+    mutation UserExists($email: String, $username: String) {
+  userExists(email: $email, username: $username)
+}
+    `;
+
+export const UserExistsComponent = (props: Omit<Urql.MutationProps<UserExistsMutation, UserExistsMutationVariables>, 'query'> & { variables?: UserExistsMutationVariables }) => (
+  <Urql.Mutation {...props} query={UserExistsDocument} />
+);
+
+
+export function useUserExistsMutation() {
+  return Urql.useMutation<UserExistsMutation, UserExistsMutationVariables>(UserExistsDocument);
 };
