@@ -1,9 +1,9 @@
 import React from 'react';
-import { C1 } from './c1';
+import { BookmarkList } from './bookmark-list';
 
 export const Home: React.FC = () => {
   return (
     //
-    <C1 />
+    <BookmarkList />
   );
 };

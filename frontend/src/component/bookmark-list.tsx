@@ -25,7 +25,7 @@ const Demo = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export const C1: React.FC = () => {
+export const BookmarkList: React.FC = () => {
   // todo: show dense, show secondary text
   const [dense, setDense] = React.useState(false);
   const [secondary, setSecondary] = React.useState(false);
