@@ -1,0 +1,16 @@
+query _dev1 {
+  _dev1 {
+    id
+    email
+    username
+    bookmarks {
+      id
+      url
+      description
+    }
+    categories {
+      id
+      name
+    }
+  }
+}

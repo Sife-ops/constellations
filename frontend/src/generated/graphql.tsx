@@ -65,7 +65,13 @@ export type Query = {
   _dev0?: Maybe<Scalars['String']>;
   _dev1?: Maybe<Array<Maybe<User>>>;
   _dev2?: Maybe<User>;
+  _dev3?: Maybe<User>;
   categories?: Maybe<Array<Maybe<Category>>>;
+};
+
+
+export type Query_Dev3Args = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type User = {
@@ -81,6 +87,18 @@ export type _Dev0QueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type _Dev0Query = { __typename?: 'Query', _dev0?: string | null };
+
+export type _Dev1QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type _Dev1Query = { __typename?: 'Query', _dev1?: Array<{ __typename?: 'User', id?: number | null, email?: string | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null };
+
+export type _Dev3QueryVariables = Exact<{
+  dev3Id?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -315,6 +333,23 @@ export default {
             "args": []
           },
           {
+            "name": "_dev3",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
             "name": "categories",
             "type": {
               "kind": "LIST",
@@ -406,4 +441,49 @@ export const _Dev0Component = (props: Omit<Urql.QueryProps<_Dev0Query, _Dev0Quer
 
 export function use_Dev0Query(options?: Omit<Urql.UseQueryArgs<_Dev0QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev0Query>({ query: _Dev0Document, ...options });
+};
+export const _Dev1Document = gql`
+    query _dev1 {
+  _dev1 {
+    id
+    email
+    username
+    bookmarks {
+      id
+      url
+      description
+    }
+    categories {
+      id
+      name
+    }
+  }
+}
+    `;
+
+export const _Dev1Component = (props: Omit<Urql.QueryProps<_Dev1Query, _Dev1QueryVariables>, 'query'> & { variables?: _Dev1QueryVariables }) => (
+  <Urql.Query {...props} query={_Dev1Document} />
+);
+
+
+export function use_Dev1Query(options?: Omit<Urql.UseQueryArgs<_Dev1QueryVariables>, 'query'>) {
+  return Urql.useQuery<_Dev1Query>({ query: _Dev1Document, ...options });
+};
+export const _Dev3Document = gql`
+    query _dev3($dev3Id: Int) {
+  _dev3(id: $dev3Id) {
+    id
+    email
+    username
+  }
+}
+    `;
+
+export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3QueryVariables>, 'query'> & { variables?: _Dev3QueryVariables }) => (
+  <Urql.Query {...props} query={_Dev3Document} />
+);
+
+
+export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
+  return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
 };

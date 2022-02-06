@@ -1,0 +1,7 @@
+query _dev3($dev3Id: Int) {
+  _dev3(id: $dev3Id) {
+    id
+    email
+    username
+  }
+}

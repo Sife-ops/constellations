@@ -28,6 +28,7 @@ export const typeDefs = gql`
     _dev0: String
     _dev1: [User]
     _dev2: User
+    _dev3(id: Int): User
     categories: [Category]
   }
 

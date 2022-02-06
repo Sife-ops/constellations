@@ -5,6 +5,23 @@ import { Bookmark } from '../entity/bookmark';
 import { Category } from '../entity/category';
 import { User } from '../entity/user';
 
+interface LoginInput {
+  email: string;
+  password: string;
+  remember: boolean;
+}
+
+interface RegisterInput {
+  email: string;
+  username: string;
+  password: string;
+}
+
+interface UserExistsInput {
+  email?: string;
+  username?: string;
+}
+
 export const resolvers = {
   Bookmark: {
     // todo: use dataloader
@@ -37,6 +54,11 @@ export const resolvers = {
     _dev2: async (_: any, __: any, context: AuthContext): Promise<User> => {
       if (!context.payload) throw new Error('missing payload');
       return await User.findOneOrFail(context.payload.id);
+    },
+
+    _dev3: async (_: any, { id }: { id: number }): Promise<User> => {
+      if (!id) throw new Error('invalid arguments');
+      return await User.findOneOrFail(id);
     },
 
     categories: async (
@@ -107,20 +129,3 @@ export const resolvers = {
     },
   },
 };
-
-interface LoginInput {
-  email: string;
-  password: string;
-  remember: boolean;
-}
-
-interface RegisterInput {
-  email: string;
-  username: string;
-  password: string;
-}
-
-interface UserExistsInput {
-  email?: string;
-  username?: string;
-}
