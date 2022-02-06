@@ -1,7 +1,6 @@
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import React from 'react';
-import { login } from '../utility/request';
-import { useMutation } from 'urql';
+import { useLoginMutation } from '../generated/graphql';
 
 import {
   Avatar,
@@ -18,7 +17,7 @@ import {
 } from '@mui/material';
 
 export const Login: React.FC = () => {
-  const [loginResult, loginMutation] = useMutation(login);
+  const [loginResult, loginMutation] = useLoginMutation();
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');

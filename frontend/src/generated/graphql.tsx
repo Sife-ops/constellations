@@ -100,6 +100,15 @@ export type _Dev3QueryVariables = Exact<{
 
 export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
 
+export type LoginMutationVariables = Exact<{
+  email?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
+  remember?: InputMaybe<Scalars['Boolean']>;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+
 export type RegisterMutationVariables = Exact<{
   password: Scalars['String'];
   username: Scalars['String'];
@@ -503,6 +512,24 @@ export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3Quer
 
 export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
+};
+export const LoginDocument = gql`
+    mutation Login($email: String, $password: String, $remember: Boolean) {
+  login(email: $email, password: $password, remember: $remember) {
+    id
+    email
+    username
+  }
+}
+    `;
+
+export const LoginComponent = (props: Omit<Urql.MutationProps<LoginMutation, LoginMutationVariables>, 'query'> & { variables?: LoginMutationVariables }) => (
+  <Urql.Mutation {...props} query={LoginDocument} />
+);
+
+
+export function useLoginMutation() {
+  return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const RegisterDocument = gql`
     mutation Register($password: String!, $username: String!, $email: String!) {

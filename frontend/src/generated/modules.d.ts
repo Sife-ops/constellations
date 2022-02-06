@@ -26,6 +26,15 @@ declare module '*/_dev3.graphql' {
 }
     
 
+declare module '*/login.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const Login: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/register.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
