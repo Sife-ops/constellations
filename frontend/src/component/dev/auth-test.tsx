@@ -1,10 +1,8 @@
 import React from 'react';
-import { useQuery } from 'urql';
-import { _dev2, categories } from '../../utility/request';
+import { use_Dev2Query } from '../../generated/graphql';
 
 export const AuthTest: React.FC = () => {
-  const [res, reexec] = useQuery({
-    query: categories,
+  const [res, reexec] = use_Dev2Query({
     requestPolicy: 'network-only',
   });
 
@@ -14,8 +12,6 @@ export const AuthTest: React.FC = () => {
     console.log(res.error);
     return <div>error</div>;
   }
-
-  // console.log(res.data);
 
   return (
     <div className="auto-authTest">

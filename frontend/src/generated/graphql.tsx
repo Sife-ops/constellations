@@ -93,12 +93,22 @@ export type _Dev1QueryVariables = Exact<{ [key: string]: never; }>;
 
 export type _Dev1Query = { __typename?: 'Query', _dev1?: Array<{ __typename?: 'User', id?: number | null, email?: string | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null };
 
+export type _Dev2QueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type _Dev2Query = { __typename?: 'Query', _dev2?: { __typename?: 'User', id?: number | null } | null };
+
 export type _Dev3QueryVariables = Exact<{
   dev3Id?: InputMaybe<Scalars['Int']>;
 }>;
 
 
 export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = { __typename?: 'Query', categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null };
 
 export type LoginMutationVariables = Exact<{
   email?: InputMaybe<Scalars['String']>;
@@ -495,6 +505,22 @@ export const _Dev1Component = (props: Omit<Urql.QueryProps<_Dev1Query, _Dev1Quer
 export function use_Dev1Query(options?: Omit<Urql.UseQueryArgs<_Dev1QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev1Query>({ query: _Dev1Document, ...options });
 };
+export const _Dev2Document = gql`
+    query _dev2 {
+  _dev2 {
+    id
+  }
+}
+    `;
+
+export const _Dev2Component = (props: Omit<Urql.QueryProps<_Dev2Query, _Dev2QueryVariables>, 'query'> & { variables?: _Dev2QueryVariables }) => (
+  <Urql.Query {...props} query={_Dev2Document} />
+);
+
+
+export function use_Dev2Query(options?: Omit<Urql.UseQueryArgs<_Dev2QueryVariables>, 'query'>) {
+  return Urql.useQuery<_Dev2Query>({ query: _Dev2Document, ...options });
+};
 export const _Dev3Document = gql`
     query _dev3($dev3Id: Int) {
   _dev3(id: $dev3Id) {
@@ -512,6 +538,32 @@ export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3Quer
 
 export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
+};
+export const CategoriesDocument = gql`
+    query Categories {
+  categories {
+    id
+    name
+    bookmarks {
+      id
+      url
+      description
+      categories {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+
+export const CategoriesComponent = (props: Omit<Urql.QueryProps<CategoriesQuery, CategoriesQueryVariables>, 'query'> & { variables?: CategoriesQueryVariables }) => (
+  <Urql.Query {...props} query={CategoriesDocument} />
+);
+
+
+export function useCategoriesQuery(options?: Omit<Urql.UseQueryArgs<CategoriesQueryVariables>, 'query'>) {
+  return Urql.useQuery<CategoriesQuery>({ query: CategoriesDocument, ...options });
 };
 export const LoginDocument = gql`
     mutation Login($email: String, $password: String, $remember: Boolean) {
