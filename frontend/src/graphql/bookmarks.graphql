@@ -1,0 +1,11 @@
+query Bookmarks {
+  bookmarks {
+    id
+    url
+    description
+    categories {
+      id
+      name
+    }
+  }
+}

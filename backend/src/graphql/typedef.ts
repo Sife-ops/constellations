@@ -29,7 +29,9 @@ export const typeDefs = gql`
     _dev1: [User]
     _dev2: User
     _dev3(id: Int): User
+    bookmarks: [Bookmark]
     categories: [Category]
+    user: User
   }
 
   type Mutation {

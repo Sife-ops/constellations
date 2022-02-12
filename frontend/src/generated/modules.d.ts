@@ -35,6 +35,15 @@ declare module '*/_dev3.graphql' {
 }
     
 
+declare module '*/bookmarks.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const Bookmarks: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/categories.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
@@ -66,6 +75,15 @@ declare module '*/user-exists.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const UserExists: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/user.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const User: DocumentNode;
 
   export default defaultDocument;
 }

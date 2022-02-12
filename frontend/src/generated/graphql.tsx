@@ -66,7 +66,9 @@ export type Query = {
   _dev1?: Maybe<Array<Maybe<User>>>;
   _dev2?: Maybe<User>;
   _dev3?: Maybe<User>;
+  bookmarks?: Maybe<Array<Maybe<Bookmark>>>;
   categories?: Maybe<Array<Maybe<Category>>>;
+  user?: Maybe<User>;
 };
 
 
@@ -105,6 +107,11 @@ export type _Dev3QueryVariables = Exact<{
 
 export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
 
+export type BookmarksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type BookmarksQuery = { __typename?: 'Query', bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null };
+
 export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -135,6 +142,11 @@ export type UserExistsMutationVariables = Exact<{
 
 
 export type UserExistsMutation = { __typename?: 'Mutation', userExists?: boolean | null };
+
+export type UserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null } | null };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -386,6 +398,18 @@ export default {
             ]
           },
           {
+            "name": "bookmarks",
+            "type": {
+              "kind": "LIST",
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Bookmark",
+                "ofType": null
+              }
+            },
+            "args": []
+          },
+          {
             "name": "categories",
             "type": {
               "kind": "LIST",
@@ -394,6 +418,15 @@ export default {
                 "name": "Category",
                 "ofType": null
               }
+            },
+            "args": []
+          },
+          {
+            "name": "user",
+            "type": {
+              "kind": "OBJECT",
+              "name": "User",
+              "ofType": null
             },
             "args": []
           }
@@ -539,6 +572,28 @@ export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3Quer
 export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
 };
+export const BookmarksDocument = gql`
+    query Bookmarks {
+  bookmarks {
+    id
+    url
+    description
+    categories {
+      id
+      name
+    }
+  }
+}
+    `;
+
+export const BookmarksComponent = (props: Omit<Urql.QueryProps<BookmarksQuery, BookmarksQueryVariables>, 'query'> & { variables?: BookmarksQueryVariables }) => (
+  <Urql.Query {...props} query={BookmarksDocument} />
+);
+
+
+export function useBookmarksQuery(options?: Omit<Urql.UseQueryArgs<BookmarksQueryVariables>, 'query'>) {
+  return Urql.useQuery<BookmarksQuery>({ query: BookmarksDocument, ...options });
+};
 export const CategoriesDocument = gql`
     query Categories {
   categories {
@@ -613,4 +668,44 @@ export const UserExistsComponent = (props: Omit<Urql.MutationProps<UserExistsMut
 
 export function useUserExistsMutation() {
   return Urql.useMutation<UserExistsMutation, UserExistsMutationVariables>(UserExistsDocument);
+};
+export const UserDocument = gql`
+    query User {
+  user {
+    id
+    email
+    username
+    bookmarks {
+      id
+      url
+      description
+      categories {
+        id
+        name
+      }
+    }
+    categories {
+      id
+      name
+      bookmarks {
+        id
+        url
+        description
+        categories {
+          id
+          name
+        }
+      }
+    }
+  }
+}
+    `;
+
+export const UserComponent = (props: Omit<Urql.QueryProps<UserQuery, UserQueryVariables>, 'query'> & { variables?: UserQueryVariables }) => (
+  <Urql.Query {...props} query={UserDocument} />
+);
+
+
+export function useUserQuery(options?: Omit<Urql.UseQueryArgs<UserQueryVariables>, 'query'>) {
+  return Urql.useQuery<UserQuery>({ query: UserDocument, ...options });
 };

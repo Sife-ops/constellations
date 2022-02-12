@@ -61,6 +61,17 @@ export const resolvers = {
       return await User.findOneOrFail(id);
     },
 
+    bookmarks: async (
+      _: any,
+      __: any,
+      context: AuthContext
+    ): Promise<Bookmark[]> => {
+      if (!context.payload) throw new Error('missing payload');
+      const user = await User.findOne(context.payload.id);
+      if (!user) throw new Error('user not found');
+      return await Bookmark.find({ where: { user } });
+    },
+
     categories: async (
       _: any,
       __: any,
@@ -71,6 +82,18 @@ export const resolvers = {
       if (!user) throw new Error('user not found');
       return await Category.find({ where: { user } });
     },
+
+    user: async (
+      _: any,
+      __: any,
+      context: AuthContext
+    ): Promise<User> => {
+      if (!context.payload) throw new Error('missing payload');
+      const user = await User.findOne(context.payload.id);
+      if (!user) throw new Error('user not found');
+      return user;
+    },
+
   },
 
   Mutation: {
