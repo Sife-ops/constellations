@@ -36,6 +36,8 @@ export type Category = {
 export type Mutation = {
   __typename?: 'Mutation';
   bookmarkAdd?: Maybe<Bookmark>;
+  bookmarkDelete?: Maybe<Bookmark>;
+  bookmarkUpdate?: Maybe<Bookmark>;
   login?: Maybe<User>;
   register?: Maybe<User>;
   userExists?: Maybe<Scalars['Boolean']>;
@@ -44,6 +46,18 @@ export type Mutation = {
 
 export type MutationBookmarkAddArgs = {
   description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationBookmarkDeleteArgs = {
+  id?: InputMaybe<Scalars['Int']>;
+};
+
+
+export type MutationBookmarkUpdateArgs = {
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
   url?: InputMaybe<Scalars['String']>;
 };
 
@@ -121,6 +135,22 @@ export type BookmarkAddMutationVariables = Exact<{
 
 
 export type BookmarkAddMutation = { __typename?: 'Mutation', bookmarkAdd?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null };
+
+export type BookmarkDeleteMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type BookmarkDeleteMutation = { __typename?: 'Mutation', bookmarkDelete?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null };
+
+export type BookmarkUpdateMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']>;
+  description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type BookmarkUpdateMutation = { __typename?: 'Mutation', bookmarkUpdate?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null };
 
 export type BookmarksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -284,6 +314,54 @@ export default {
             "args": [
               {
                 "name": "description",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "url",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "bookmarkDelete",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Bookmark",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "bookmarkUpdate",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Bookmark",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "description",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "id",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -632,6 +710,42 @@ export const BookmarkAddComponent = (props: Omit<Urql.MutationProps<BookmarkAddM
 
 export function useBookmarkAddMutation() {
   return Urql.useMutation<BookmarkAddMutation, BookmarkAddMutationVariables>(BookmarkAddDocument);
+};
+export const BookmarkDeleteDocument = gql`
+    mutation BookmarkDelete($id: Int) {
+  bookmarkDelete(id: $id) {
+    id
+    url
+    description
+  }
+}
+    `;
+
+export const BookmarkDeleteComponent = (props: Omit<Urql.MutationProps<BookmarkDeleteMutation, BookmarkDeleteMutationVariables>, 'query'> & { variables?: BookmarkDeleteMutationVariables }) => (
+  <Urql.Mutation {...props} query={BookmarkDeleteDocument} />
+);
+
+
+export function useBookmarkDeleteMutation() {
+  return Urql.useMutation<BookmarkDeleteMutation, BookmarkDeleteMutationVariables>(BookmarkDeleteDocument);
+};
+export const BookmarkUpdateDocument = gql`
+    mutation BookmarkUpdate($id: Int, $description: String, $url: String) {
+  bookmarkUpdate(id: $id, description: $description, url: $url) {
+    id
+    url
+    description
+  }
+}
+    `;
+
+export const BookmarkUpdateComponent = (props: Omit<Urql.MutationProps<BookmarkUpdateMutation, BookmarkUpdateMutationVariables>, 'query'> & { variables?: BookmarkUpdateMutationVariables }) => (
+  <Urql.Mutation {...props} query={BookmarkUpdateDocument} />
+);
+
+
+export function useBookmarkUpdateMutation() {
+  return Urql.useMutation<BookmarkUpdateMutation, BookmarkUpdateMutationVariables>(BookmarkUpdateDocument);
 };
 export const BookmarksDocument = gql`
     query Bookmarks {

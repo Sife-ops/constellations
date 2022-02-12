@@ -37,7 +37,7 @@ import { typeDefs } from './graphql/typedef';
     throw new Error("couldn't connect to database");
   }
 
-  if (env.seed) seed();
+  if (env.seed) await seed();
 
   // rest
   const app = express();

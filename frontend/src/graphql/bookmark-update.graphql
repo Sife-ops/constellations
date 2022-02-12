@@ -1,0 +1,7 @@
+mutation BookmarkUpdate($id: Int, $description: String, $url: String) {
+  bookmarkUpdate(id: $id, description: $description, url: $url) {
+    id
+    url
+    description
+  }
+}

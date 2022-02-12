@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Dev } from './component/dev/dev';
-import { Home } from './component/home';
+import { Home } from './component/home/home';
 import { Login } from './component/login';
 import { Register } from './component/register';
 import { Reset } from './component/reset';

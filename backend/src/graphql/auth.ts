@@ -3,11 +3,13 @@ import { JwtPayload, verify } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
 const operationsWithAuth = [
-  '_dev2',
   'BookmarkAdd',
+  'BookmarkDelete',
+  'BookmarkUpdate',
   'Bookmarks',
   'Categories',
   'User',
+  '_dev2',
 ];
 
 // todo: use Array.prototype.find

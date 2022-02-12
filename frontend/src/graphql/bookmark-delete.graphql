@@ -1,0 +1,7 @@
+mutation BookmarkDelete($id: Int) {
+  bookmarkDelete(id: $id) {
+    id
+    url
+    description
+  }
+}

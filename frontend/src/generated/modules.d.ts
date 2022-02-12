@@ -35,10 +35,28 @@ declare module '*/_dev3.graphql' {
 }
     
 
-declare module '*/bookmarkAdd.graphql' {
+declare module '*/bookmark-add.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const BookmarkAdd: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/bookmark-delete.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const BookmarkDelete: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
+declare module '*/bookmark-update.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const BookmarkUpdate: DocumentNode;
 
   export default defaultDocument;
 }
