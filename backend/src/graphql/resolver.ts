@@ -83,17 +83,14 @@ export const resolvers = {
       return await Category.find({ where: { user } });
     },
 
-    user: async (
-      _: any,
-      __: any,
-      context: AuthContext
-    ): Promise<User> => {
+    user: async (_: any, __: any, context: AuthContext): Promise<User> => {
       if (!context.payload) throw new Error('missing payload');
-      const user = await User.findOne(context.payload.id);
+      const user = await User.findOne(context.payload.id, {
+        relations: ['bookmarks', 'categories'],
+      });
       if (!user) throw new Error('user not found');
       return user;
     },
-
   },
 
   Mutation: {
