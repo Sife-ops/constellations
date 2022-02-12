@@ -1,17 +1,30 @@
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import React from 'react';
 import _ from 'lodash';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
+import {
+  Avatar,
+  Box,
+  Button,
+  Container,
+  CssBaseline,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+} from '@mui/material';
 
 import {
   useRegisterMutation,
   useUserExistsMutation,
-} from '../generated/graphql';
+} from '../../generated/graphql';
 
 import {
   emailIsValid,
   passwordIsValid,
   usernameIsValid,
-} from '../utility/function';
+} from '../../utility/function';
 
 // todo: use union type
 enum Tristate {
@@ -63,7 +76,10 @@ export const Register: React.FC = () => {
   ).current;
 
   const debounceUsername = React.useRef(
-    _.debounce(debounceInputCb('username', setUsernameExists), 1000)
+    _.debounce(
+      debounceInputCb('username', setUsernameExists),
+      1000
+    )
   ).current;
 
   // todo: use event types
@@ -150,31 +166,106 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        //
-        onChange={handleEmail}
-        placeholder="email"
-        value={email}
-      />
-      <br />
-      <input
-        onChange={handleUsername}
-        placeholder="username"
-        value={username}
-      />
-      <br />
-      <input
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="password"
-        value={password}
-      />
-      <br />
-      <button type="submit">submit</button>
-      <br />
-      <Link to="/reset">Forgot password?</Link>
-      <br />
-      <Link to="/login">{'Already have an account? Sign In'}</Link>
-    </form>
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <AppRegistrationIcon />
+        </Avatar>
+
+        <Typography component="h1" variant="h5">
+          Sign up
+        </Typography>
+
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            className="auto-register__emailInput"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={handleEmail}
+            error={emailIsError}
+            helperText={emailHelperText}
+            color={emailColor()}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="username"
+            label="username"
+            type="username"
+            id="username"
+            className="auto-register__usernameInput"
+            autoComplete="username"
+            value={username}
+            onChange={handleUsername}
+            error={usernameIsError}
+            helperText={usernameHelperText}
+            color={usernameColor()}
+          />
+
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            className="auto-register__passwordInput"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            error={passwordIsError}
+            helperText={passwordHelperText}
+            color={passwordColor()}
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            className="auto-register__submit"
+            sx={{ mt: 3, mb: 2 }}
+            disabled={registerDisabled()}
+            color={registerSuccess ? 'success' : 'primary'}
+          >
+            {registerSuccess ? 'Done' : 'Sign Up'}
+          </Button>
+
+          <Grid container>
+            <Grid item xs>
+              <Link href="/reset" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link
+                className="auto-register__registerLink"
+                href="/login"
+                variant="body2"
+              >
+                {'Already have an account? Sign In'}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
