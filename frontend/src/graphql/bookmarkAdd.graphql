@@ -1,0 +1,11 @@
+mutation BookmarkAdd($description: String, $url: String) {
+  bookmarkAdd(description: $description, url: $url) {
+    id
+    url
+    description
+    categories {
+      id
+      name
+    }
+  }
+}

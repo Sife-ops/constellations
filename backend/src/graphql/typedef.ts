@@ -35,6 +35,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
+    bookmarkAdd(description: String, url: String): Bookmark
     login(email: String, password: String, remember: Boolean): User
     register(email: String, username: String, password: String): User
     userExists(email: String, username: String): Boolean

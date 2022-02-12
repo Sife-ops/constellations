@@ -5,6 +5,11 @@ import { Bookmark } from '../entity/bookmark';
 import { Category } from '../entity/category';
 import { User } from '../entity/user';
 
+interface AddBookmarkInput {
+  description: string;
+  url: string;
+}
+
 interface LoginInput {
   email: string;
   password: string;
@@ -52,7 +57,7 @@ export const resolvers = {
     },
 
     _dev2: async (_: any, __: any, context: AuthContext): Promise<User> => {
-      if (!context.payload) throw new Error('missing payload');
+      if (!context.payload) throw new Error('missing token');
       return await User.findOneOrFail(context.payload.id);
     },
 
@@ -66,7 +71,7 @@ export const resolvers = {
       __: any,
       context: AuthContext
     ): Promise<Bookmark[]> => {
-      if (!context.payload) throw new Error('missing payload');
+      if (!context.payload) throw new Error('missing token');
       const user = await User.findOne(context.payload.id);
       if (!user) throw new Error('user not found');
       return await Bookmark.find({ where: { user } });
@@ -77,14 +82,14 @@ export const resolvers = {
       __: any,
       context: AuthContext
     ): Promise<Category[]> => {
-      if (!context.payload) throw new Error('missing payload');
+      if (!context.payload) throw new Error('missing token');
       const user = await User.findOne(context.payload.id);
       if (!user) throw new Error('user not found');
       return await Category.find({ where: { user } });
     },
 
     user: async (_: any, __: any, context: AuthContext): Promise<User> => {
-      if (!context.payload) throw new Error('missing payload');
+      if (!context.payload) throw new Error('missing token');
       const user = await User.findOne(context.payload.id, {
         relations: ['bookmarks', 'categories'],
       });
@@ -94,6 +99,25 @@ export const resolvers = {
   },
 
   Mutation: {
+    bookmarkAdd: async (
+      _: any,
+      { description, url }: AddBookmarkInput,
+      { payload }: AuthContext
+    ): Promise<Bookmark> => {
+      //
+      if (!description || !url) throw new Error('invalid arguments');
+      if (!payload) throw new Error('missing token');
+      const user = await User.findOne(payload.id, {
+        relations: ['bookmarks'],
+      });
+      const bookmark = await Bookmark.create({
+        description,
+        url,
+        user,
+      }).save();
+      return bookmark;
+    },
+
     login: async (
       _: any,
       { email, password, remember }: LoginInput,

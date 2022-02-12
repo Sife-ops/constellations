@@ -35,9 +35,16 @@ export type Category = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  bookmarkAdd?: Maybe<Bookmark>;
   login?: Maybe<User>;
   register?: Maybe<User>;
   userExists?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type MutationBookmarkAddArgs = {
+  description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -106,6 +113,14 @@ export type _Dev3QueryVariables = Exact<{
 
 
 export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+
+export type BookmarkAddMutationVariables = Exact<{
+  description?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type BookmarkAddMutation = { __typename?: 'Mutation', bookmarkAdd?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null };
 
 export type BookmarksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -259,6 +274,30 @@ export default {
         "kind": "OBJECT",
         "name": "Mutation",
         "fields": [
+          {
+            "name": "bookmarkAdd",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Bookmark",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "description",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "url",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
           {
             "name": "login",
             "type": {
@@ -571,6 +610,28 @@ export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3Quer
 
 export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
+};
+export const BookmarkAddDocument = gql`
+    mutation BookmarkAdd($description: String, $url: String) {
+  bookmarkAdd(description: $description, url: $url) {
+    id
+    url
+    description
+    categories {
+      id
+      name
+    }
+  }
+}
+    `;
+
+export const BookmarkAddComponent = (props: Omit<Urql.MutationProps<BookmarkAddMutation, BookmarkAddMutationVariables>, 'query'> & { variables?: BookmarkAddMutationVariables }) => (
+  <Urql.Mutation {...props} query={BookmarkAddDocument} />
+);
+
+
+export function useBookmarkAddMutation() {
+  return Urql.useMutation<BookmarkAddMutation, BookmarkAddMutationVariables>(BookmarkAddDocument);
 };
 export const BookmarksDocument = gql`
     query Bookmarks {

@@ -1,14 +1,20 @@
 import React from 'react';
-import { useUserQuery, useBookmarksQuery } from '../generated/graphql';
+import { Filter } from './filter';
+import { useUserQuery, Bookmark } from '../generated/graphql';
 
 export const Home: React.FC = () => {
-  // const [userResult] = useBookmarksQuery();
-  const [userResult] = useUserQuery();
+  const [userResult, userReexec] = useUserQuery();
 
   if (userResult.fetching) return <div>loading...</div>;
   if (userResult.error) return <div>error</div>;
 
-  console.log(userResult.data);
+  const { user } = userResult.data!;
 
-  return <div>home</div>;
+  return (
+    //
+    <div>
+      <h1>home</h1>
+      <Filter bookmarks={user?.bookmarks!} />
+    </div>
+  );
 };

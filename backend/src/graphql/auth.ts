@@ -2,7 +2,13 @@ import { env } from '../utility/constant';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { Request, Response } from 'express';
 
-const operationsWithAuth = ['_dev2', 'Bookmarks', 'Categories', 'User'];
+const operationsWithAuth = [
+  '_dev2',
+  'BookmarkAdd',
+  'Bookmarks',
+  'Categories',
+  'User',
+];
 
 // todo: use Array.prototype.find
 const isOperationWithAuth = (s: string): boolean => {
