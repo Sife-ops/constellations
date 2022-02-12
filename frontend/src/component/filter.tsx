@@ -9,11 +9,15 @@ import {
 } from '../generated/graphql';
 
 interface Props {
-  userQuery?: UseQueryResponse<UserQuery, object>;
-  bookmarks: (Bookmark | null)[];
+  userQuery: UseQueryResponse<UserQuery, object>;
+  bookmarks?: (Bookmark | null)[];
 }
 
-export const Filter: React.FC<Props> = ({ bookmarks }) => {
+export const Filter: React.FC<Props> = ({
+  userQuery: [{ data }, userReexec],
+}) => {
+  const bookmarks = data?.user?.bookmarks;
+
   const [bookmarkAddResult, bookmarkAddMutation] = useBookmarkAddMutation();
 
   const bookmarkList = bookmarks?.map((e) => (
@@ -33,9 +37,9 @@ export const Filter: React.FC<Props> = ({ bookmarks }) => {
       <Formik
         initialValues={{ description: '', url: '' }}
         onSubmit={async ({ description, url }) => {
-          //
           const res = await bookmarkAddMutation({ description, url });
-          console.log(res);
+          if (res.error) return;
+          userReexec();
         }}
       >
         {({ handleChange, handleSubmit, values }) => (
