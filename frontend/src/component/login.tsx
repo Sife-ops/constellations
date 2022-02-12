@@ -55,7 +55,7 @@ export const Login: React.FC = () => {
           <label>Remember me</label>
           <br />
           <button disabled={isSubmitting} type="submit">
-            submit
+            Sign In
           </button>
           <br />
           <Link to="/reset">Forgot password?</Link>

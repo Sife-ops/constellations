@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import React from 'react';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { apiUrl } from '../utility/function';
+import { apiUrl } from '../../utility/function';
 
 interface Props {
   drawerToggle: (

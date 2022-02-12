@@ -1,12 +1,9 @@
 import './App.css';
 import React from 'react';
-import { AppDrawer } from './component/app-drawer';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Dev } from './component/dev/dev';
 import { Home } from './component/home';
-import { LoadingSpinner } from './component/loading-spinner';
 import { Login } from './component/login';
-import { Navbar } from './component/navbar';
 import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { apiUrl } from './utility/function';
@@ -29,28 +26,25 @@ function App() {
     });
   }, []);
 
-  const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false);
-
-  const drawerToggle = (open: boolean) => {
-    return (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return;
+  const handleLogout = () => {
+    console.log('logout');
+    fetch(`${apiUrl()}/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    }).then((res) => {
+      if (res.ok) {
+        localStorage.removeItem('yu');
+        window.location.reload();
       }
-      setDrawerOpen(open);
-    };
+    });
   };
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) return <div>loading...</div>;
 
   if (loggedIn) {
     return (
       <BrowserRouter>
-        <AppDrawer open={drawerOpen} toggle={drawerToggle} />
-        <Navbar drawerToggle={drawerToggle} />
+        <button onClick={handleLogout}>Sign Out</button>
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/dev" element={<Dev />} />

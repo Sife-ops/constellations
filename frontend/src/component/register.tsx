@@ -45,7 +45,7 @@ export const Register: React.FC = () => {
           />
           <br />
           <button disabled={isSubmitting} type="submit">
-            submit
+            Sign Up
           </button>
           <br />
           <Link to="/reset">Forgot password?</Link>
