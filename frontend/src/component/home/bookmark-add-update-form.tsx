@@ -5,13 +5,14 @@ import { useBookmarkAddMutation, useBookmarkUpdateMutation, Bookmark } from '../
 
 interface Props {
   bookmark?: Bookmark | null;
+  setShowForm: (value: React.SetStateAction<boolean>) => void;
   type: 'add' | 'update';
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
 export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
-  const [bookmarkAddResult, bookmarkAddMutation] = useBookmarkAddMutation();
-  const [bookmarkUpdateResult, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
+  const [_, bookmarkAddMutation] = useBookmarkAddMutation();
+  const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
 
   return (
     <Formik
@@ -26,6 +27,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
         }
         if (res?.error) return;
         p.userReexec();
+        p.setShowForm(false);
       }}
     >
       {({ handleChange, handleSubmit, values }) => (

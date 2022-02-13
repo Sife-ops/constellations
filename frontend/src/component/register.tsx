@@ -7,7 +7,7 @@ import { useRegisterMutation } from '../generated/graphql';
 export const Register: React.FC = () => {
   const navigate = useNavigate();
 
-  const [registerResult, registerMutation] = useRegisterMutation();
+  const [_, registerMutation] = useRegisterMutation();
 
   return (
     <Formik

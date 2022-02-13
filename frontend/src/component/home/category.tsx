@@ -4,15 +4,21 @@ import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
 import { useCategoryUpdateMutation, useCategoryDeleteMutation } from '../../generated/graphql';
 
-interface Props {
+interface PropsCommon {
   category: SelectableCategory | null;
-  toggleCategorySelected: (category: SelectableCategory | null) => void;
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
-export const Category: React.FC<Props> = (p) => {
+interface PropsCategory {
+  toggleCategorySelected: (category: SelectableCategory | null) => void;
+}
+
+interface PropsCategoryForm {
+  setShowEdit: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const Category: React.FC<PropsCommon & PropsCategory> = (p) => {
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
-  const [_, categoryUpdateMutation] = useCategoryUpdateMutation();
   const [__, categoryDeleteMutation] = useCategoryDeleteMutation();
 
   const handleDelete: React.MouseEventHandler = async (e) => {
@@ -33,30 +39,44 @@ export const Category: React.FC<Props> = (p) => {
       <label>{p.category?.name}</label>
       <button onClick={() => setShowEdit((s) => !s)}>Edit</button>
       {showEdit && (
-        <Formik
-          initialValues={{ name: '' }}
-          onSubmit={async ({ name }) => {
-            const res = await categoryUpdateMutation({ id: p.category?.id, name });
-            if (res.error) return;
-            p.userReexec();
-          }}
-        >
-          {({ handleChange, handleSubmit, values }) => (
-            //
-            <form onSubmit={handleSubmit}>
-              <input
-                //
-                name="name"
-                onChange={handleChange}
-                placeholder="name"
-                value={values.name}
-              />
-              <button type="submit">Submit</button>
-            </form>
-          )}
-        </Formik>
+        <CategoryUpdateForm
+          //
+          category={p.category}
+          setShowEdit={setShowEdit}
+          userReexec={p.userReexec}
+        />
       )}
       <button onClick={handleDelete}>Delete</button>
     </div>
+  );
+};
+
+const CategoryUpdateForm: React.FC<PropsCommon & PropsCategoryForm> = (p) => {
+  const [_, categoryUpdateMutation] = useCategoryUpdateMutation();
+
+  return (
+    <Formik
+      initialValues={{ name: '' }}
+      onSubmit={async ({ name }) => {
+        const res = await categoryUpdateMutation({ id: p.category?.id, name });
+        if (res.error) return;
+        p.userReexec();
+        p.setShowEdit(false);
+      }}
+    >
+      {({ handleChange, handleSubmit, values }) => (
+        //
+        <form onSubmit={handleSubmit}>
+          <input
+            //
+            name="name"
+            onChange={handleChange}
+            placeholder="name"
+            value={values.name}
+          />
+          <button type="submit">Submit</button>
+        </form>
+      )}
+    </Formik>
   );
 };

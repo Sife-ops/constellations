@@ -1,8 +1,8 @@
 import React from 'react';
 import { useCategoriesState } from './use-categories-state';
-import { Bookmark, useUserQuery } from '../../generated/graphql';
+import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { BookmarkRow } from './bookmark-row';
+import { Bookmark } from './bookmark';
 import { Category } from './category';
 
 export const Home: React.FC = () => {
@@ -53,7 +53,7 @@ export const Home: React.FC = () => {
   /**
    * Bookmark table
    */
-  const [bookmarks, setBookmarks] = React.useState<(Bookmark | null)[] | null>(null);
+  const [bookmarks, setBookmarks] = React.useState<(BookmarkType | null)[] | null>(null);
 
   React.useEffect(() => {
     const bookmarks = userRes.data?.user?.bookmarks;
@@ -63,7 +63,7 @@ export const Home: React.FC = () => {
   }, [userRes.fetching]);
 
   const BookmarkRows = bookmarks?.map((e) => (
-    <BookmarkRow
+    <Bookmark
       //
       bookmark={e}
       key={e?.id}
@@ -91,6 +91,7 @@ export const Home: React.FC = () => {
       {showAdd && (
         <BookmarkAddUpdateForm
           //
+          setShowForm={setShowAdd}
           type="add"
           userReexec={userReexec}
         />

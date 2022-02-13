@@ -6,7 +6,7 @@ import { useLoginMutation } from '../generated/graphql';
 export const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const [loginResult, loginMutation] = useLoginMutation();
+  const [_, loginMutation] = useLoginMutation();
 
   return (
     <Formik
