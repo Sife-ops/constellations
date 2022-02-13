@@ -135,6 +135,21 @@ export const resolvers = {
       return updated;
     },
 
+    categoryAdd: async (_: any, { name }: { name: string }, { payload }: AuthContext): Promise<Category> => {
+      if (!name) throw new Error('invalid arguments');
+      if (!payload) throw new Error('missing token');
+
+      const user = await User.findOne(payload.id, {
+        relations: ['categories'],
+      });
+
+      const category = await Category.create({
+        name,
+      }).save();
+
+      return category;
+    },
+
     categoryDelete: async (_: any, { id }: { id: number }): Promise<Category> => {
       if (!id) throw new Error('invalid arguments');
 

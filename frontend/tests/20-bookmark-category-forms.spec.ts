@@ -1,8 +1,6 @@
 import { login as l } from './selector';
 import { test, Page } from '@playwright/test';
-import { user } from './constant';
-
-const delay = 200;
+import { typeDelay as delay, user } from './constant';
 
 test.describe('Bookmark and Category Forms', async () => {
   let page: Page;

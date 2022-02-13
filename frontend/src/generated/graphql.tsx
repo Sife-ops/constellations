@@ -38,6 +38,7 @@ export type Mutation = {
   bookmarkAdd?: Maybe<Bookmark>;
   bookmarkDelete?: Maybe<Bookmark>;
   bookmarkUpdate?: Maybe<Bookmark>;
+  categoryAdd?: Maybe<Category>;
   categoryDelete?: Maybe<Category>;
   categoryUpdate?: Maybe<Category>;
   login?: Maybe<User>;
@@ -61,6 +62,11 @@ export type MutationBookmarkUpdateArgs = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   url?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationCategoryAddArgs = {
+  name?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -174,6 +180,13 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null };
+
+export type CategoryAddMutationVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CategoryAddMutation = { __typename?: 'Mutation', categoryAdd?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type CategoryDeleteMutationVariables = Exact<{
   id?: InputMaybe<Scalars['Int']>;
@@ -397,6 +410,23 @@ export default {
               },
               {
                 "name": "url",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "categoryAdd",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Category",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "name",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -863,6 +893,23 @@ export const CategoriesComponent = (props: Omit<Urql.QueryProps<CategoriesQuery,
 
 export function useCategoriesQuery(options?: Omit<Urql.UseQueryArgs<CategoriesQueryVariables>, 'query'>) {
   return Urql.useQuery<CategoriesQuery>({ query: CategoriesDocument, ...options });
+};
+export const CategoryAddDocument = gql`
+    mutation CategoryAdd($name: String) {
+  categoryAdd(name: $name) {
+    id
+    name
+  }
+}
+    `;
+
+export const CategoryAddComponent = (props: Omit<Urql.MutationProps<CategoryAddMutation, CategoryAddMutationVariables>, 'query'> & { variables?: CategoryAddMutationVariables }) => (
+  <Urql.Mutation {...props} query={CategoryAddDocument} />
+);
+
+
+export function useCategoryAddMutation() {
+  return Urql.useMutation<CategoryAddMutation, CategoryAddMutationVariables>(CategoryAddDocument);
 };
 export const CategoryDeleteDocument = gql`
     mutation CategoryDelete($id: Int) {

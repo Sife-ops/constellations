@@ -14,6 +14,8 @@ export const Home: React.FC = () => {
   /**
    * Categories
    */
+  const [showAddCategory, setShowAddCategory] = React.useState<boolean>(false);
+
   const {
     //
     categories,
@@ -42,13 +44,11 @@ export const Home: React.FC = () => {
    * Filter bar
    */
   const [filter, setFilter] = React.useState<string>('');
-  const handleFilter: React.ChangeEventHandler<HTMLInputElement> = (e) => setFilter(e.target.value);
 
   /**
    * Add bookmark
    */
-  const [showAdd, setShowAdd] = React.useState<boolean>(false);
-  const handleShowAdd: React.MouseEventHandler = (e) => setShowAdd((s) => !s);
+  const [showAddBookmark, setShowAddBookmark] = React.useState<boolean>(false);
 
   /**
    * Bookmark table
@@ -73,29 +73,43 @@ export const Home: React.FC = () => {
 
   return (
     <div>
+      {/* todo */}
+      <button>Add Category</button>
+
       {Categories && (
         <div>
           {/* // */}
           {Categories}
         </div>
       )}
+
+      {/* todo */}
+      <label>Filter Type</label>
+      <select>
+        <option>AND</option>
+        <option>OR</option>
+      </select>
+      <br />
+
       <input
         //
         name="filter"
-        onChange={handleFilter}
+        onChange={(e) => setFilter(e.target.value)}
         placeholder="filter"
         value={filter}
       />
       <br />
-      <button onClick={handleShowAdd}>Add Bookmark</button>
-      {showAdd && (
+
+      <button onClick={() => setShowAddBookmark((s) => !s)}>Add Bookmark</button>
+      {showAddBookmark && (
         <BookmarkAddUpdateForm
           //
-          setShowForm={setShowAdd}
+          setShowForm={setShowAddBookmark}
           type="add"
           userReexec={userReexec}
         />
       )}
+
       {BookmarkRows && (
         <table>
           <tbody>{BookmarkRows}</tbody>

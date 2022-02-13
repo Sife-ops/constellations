@@ -8,6 +8,7 @@ const operationsWithAuth = [
   'BookmarkUpdate',
   'Bookmarks',
   'Categories',
+  'CategoryAdd',
   'CategoryDelete',
   'CategoryUpdate',
   'User',
