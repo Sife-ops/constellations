@@ -38,6 +38,7 @@ export type Mutation = {
   bookmarkAdd?: Maybe<Bookmark>;
   bookmarkDelete?: Maybe<Bookmark>;
   bookmarkUpdate?: Maybe<Bookmark>;
+  categoryUpdate?: Maybe<Category>;
   login?: Maybe<User>;
   register?: Maybe<User>;
   userExists?: Maybe<Scalars['Boolean']>;
@@ -59,6 +60,12 @@ export type MutationBookmarkUpdateArgs = {
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   url?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationCategoryUpdateArgs = {
+  id?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -161,6 +168,14 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type CategoriesQuery = { __typename?: 'Query', categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null };
+
+export type CategoryUpdateMutationVariables = Exact<{
+  id?: InputMaybe<Scalars['Int']>;
+  name?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type CategoryUpdateMutation = { __typename?: 'Mutation', categoryUpdate?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
   email?: InputMaybe<Scalars['String']>;
@@ -369,6 +384,30 @@ export default {
               },
               {
                 "name": "url",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              }
+            ]
+          },
+          {
+            "name": "categoryUpdate",
+            "type": {
+              "kind": "OBJECT",
+              "name": "Category",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Any"
+                }
+              },
+              {
+                "name": "name",
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
@@ -794,6 +833,23 @@ export const CategoriesComponent = (props: Omit<Urql.QueryProps<CategoriesQuery,
 
 export function useCategoriesQuery(options?: Omit<Urql.UseQueryArgs<CategoriesQueryVariables>, 'query'>) {
   return Urql.useQuery<CategoriesQuery>({ query: CategoriesDocument, ...options });
+};
+export const CategoryUpdateDocument = gql`
+    mutation CategoryUpdate($id: Int, $name: String) {
+  categoryUpdate(id: $id, name: $name) {
+    id
+    name
+  }
+}
+    `;
+
+export const CategoryUpdateComponent = (props: Omit<Urql.MutationProps<CategoryUpdateMutation, CategoryUpdateMutationVariables>, 'query'> & { variables?: CategoryUpdateMutationVariables }) => (
+  <Urql.Mutation {...props} query={CategoryUpdateDocument} />
+);
+
+
+export function useCategoryUpdateMutation() {
+  return Urql.useMutation<CategoryUpdateMutation, CategoryUpdateMutationVariables>(CategoryUpdateDocument);
 };
 export const LoginDocument = gql`
     mutation Login($email: String, $password: String, $remember: Boolean) {

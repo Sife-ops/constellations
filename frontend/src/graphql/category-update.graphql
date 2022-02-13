@@ -1,0 +1,6 @@
+mutation CategoryUpdate($id: Int, $name: String) {
+  categoryUpdate(id: $id, name: $name) {
+    id
+    name
+  }
+}

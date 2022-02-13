@@ -3,7 +3,7 @@ import { useCategoriesState } from './use-categories-state';
 import { Bookmark, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkRow } from './bookmark-row';
-import { CategorySelect } from './category-select';
+import { Category } from './category';
 
 export const Home: React.FC = () => {
   /**
@@ -29,11 +29,12 @@ export const Home: React.FC = () => {
   }, [userRes.fetching]);
 
   const Categories = categories?.map((e) => (
-    <CategorySelect
+    <Category
       //
       category={e}
       key={e?.id}
       toggleCategorySelected={toggleCategorySelected}
+      userReexec={userReexec}
     />
   ));
 

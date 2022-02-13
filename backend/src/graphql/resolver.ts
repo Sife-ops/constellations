@@ -114,7 +114,7 @@ export const resolvers = {
       if (!id) throw new Error('invalid arguments');
 
       const bookmark = await Bookmark.findOne(id);
-      if (!bookmark) throw new Error('bookmark not found')
+      if (!bookmark) throw new Error('bookmark not found');
 
       const result = await bookmark.remove();
 
@@ -131,6 +131,18 @@ export const resolvers = {
       if (description) bookmark.description = description;
       if (url) bookmark.url = url;
       const updated = bookmark.save();
+
+      return updated;
+    },
+
+    categoryUpdate: async (_: any, { id, name }: { id: number; name: string }): Promise<Category> => {
+      if (!id || !name) throw new Error('invalid arguments');
+
+      const category = await Category.findOne(id);
+      if (!category) throw new Error('category not found');
+
+      category.name = name;
+      const updated = category.save();
 
       return updated;
     },
