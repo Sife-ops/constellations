@@ -1,5 +1,10 @@
 [
   {
+    "email": "playwright@test.com",
+    "username": "playwright",
+    "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"
+  },
+  {
     "email": "wyatt@gmail.com",
     "username": "wyatt",
     "password": "$argon2i$v=19$m=4096,t=3,p=1$X9/DDDorN73zRoegwn5uJg$FmZ+XG/6WUOIaPqF3IGGeRhQhCovBgX0TMkjcowui4o"

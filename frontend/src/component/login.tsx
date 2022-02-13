@@ -24,15 +24,10 @@ export const Login: React.FC = () => {
         window.location.reload();
       }}
     >
-      {({
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        setFieldValue,
-        values,
-      }) => (
+      {({ handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
         <form onSubmit={handleSubmit}>
           <input
+            id="at-loginForm__email"
             name="email"
             onChange={handleChange}
             placeholder="email"
@@ -40,6 +35,7 @@ export const Login: React.FC = () => {
           />
           <br />
           <input
+            id="at-loginForm__password"
             name="password"
             onChange={handleChange}
             placeholder="password"
@@ -48,13 +44,14 @@ export const Login: React.FC = () => {
           />
           <br />
           <input
-            type="checkbox"
             checked={values.remember}
+            id="at-loginForm__remember"
             onChange={() => setFieldValue('remember', !values.remember)}
+            type="checkbox"
           />
           <label>Remember me</label>
           <br />
-          <button disabled={isSubmitting} type="submit">
+          <button disabled={isSubmitting} id="at-loginForm__submit" type="submit">
             Sign In
           </button>
           <br />
