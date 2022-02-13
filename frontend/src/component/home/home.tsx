@@ -1,8 +1,9 @@
 import React from 'react';
 import { useCategoriesState } from './use-categories-state';
-import { Bookmark, useUserQuery, Category } from '../../generated/graphql';
+import { Bookmark, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkRow } from './bookmark-row';
+import { CategorySelect } from './category-select';
 
 export const Home: React.FC = () => {
   /**
@@ -28,10 +29,12 @@ export const Home: React.FC = () => {
   }, [userRes.fetching]);
 
   const Categories = categories?.map((e) => (
-    <div key={e?.id}>
-      <input type="checkbox" checked={e?.selected} />
-      <label>{e?.name}</label>
-    </div>
+    <CategorySelect
+      //
+      category={e}
+      key={e?.id}
+      toggleCategorySelected={toggleCategorySelected}
+    />
   ));
 
   /**
