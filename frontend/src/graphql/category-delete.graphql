@@ -1,0 +1,6 @@
+mutation CategoryDelete($id: Int) {
+  categoryDelete(id: $id) {
+    id
+    name
+  }
+}

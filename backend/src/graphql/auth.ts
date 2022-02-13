@@ -8,6 +8,7 @@ const operationsWithAuth = [
   'BookmarkUpdate',
   'Bookmarks',
   'Categories',
+  'CategoryDelete',
   'CategoryUpdate',
   'User',
   '_dev2',
@@ -27,13 +28,7 @@ export interface AuthContext {
   payload?: JwtPayload;
 }
 
-export const auth = async (
-  resolve: any,
-  root: any,
-  args: any,
-  context: AuthContext,
-  info: any
-) => {
+export const auth = async (resolve: any, root: any, args: any, context: AuthContext, info: any) => {
   if (isOperationWithAuth(context.req.body.operationName)) {
     const auth = context.req.headers.authorization as string;
     if (!auth) throw new Error('no authorization header');

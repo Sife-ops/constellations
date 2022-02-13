@@ -38,6 +38,7 @@ export const typeDefs = gql`
     bookmarkAdd(description: String, url: String): Bookmark
     bookmarkDelete(id: Int): Bookmark
     bookmarkUpdate(id: Int, description: String, url: String): Bookmark
+    categoryDelete(id: Int): Category
     categoryUpdate(id: Int, name: String): Category
     login(email: String, password: String, remember: Boolean): User
     register(email: String, username: String, password: String): User

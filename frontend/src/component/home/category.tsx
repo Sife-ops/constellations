@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
-import { useCategoryUpdateMutation } from '../../generated/graphql';
+import { useCategoryUpdateMutation, useCategoryDeleteMutation } from '../../generated/graphql';
 
 interface Props {
   category: SelectableCategory | null;
@@ -13,6 +13,14 @@ interface Props {
 export const Category: React.FC<Props> = (p) => {
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
   const [_, categoryUpdateMutation] = useCategoryUpdateMutation();
+  const [__, categoryDeleteMutation] = useCategoryDeleteMutation();
+
+  const handleDelete: React.MouseEventHandler = async (e) => {
+    const res = await categoryDeleteMutation({ id: p.category?.id });
+    if (res.error) return;
+    console.log(res);
+    p.userReexec();
+  };
 
   return (
     <div>
@@ -29,11 +37,7 @@ export const Category: React.FC<Props> = (p) => {
           initialValues={{ name: '' }}
           onSubmit={async ({ name }) => {
             const res = await categoryUpdateMutation({ id: p.category?.id, name });
-            if (res.error) {
-              console.log(res.error);
-              return;
-            }
-            console.log(res);
+            if (res.error) return;
             p.userReexec();
           }}
         >
@@ -52,7 +56,7 @@ export const Category: React.FC<Props> = (p) => {
           )}
         </Formik>
       )}
-      <button>Delete</button>
+      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 };

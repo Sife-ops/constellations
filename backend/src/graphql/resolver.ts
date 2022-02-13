@@ -135,6 +135,17 @@ export const resolvers = {
       return updated;
     },
 
+    categoryDelete: async (_: any, { id }: { id: number }): Promise<Category> => {
+      if (!id) throw new Error('invalid arguments');
+
+      const category = await Category.findOne(id);
+      if (!category) throw new Error('category not found');
+
+      const result = await category.remove();
+
+      return result;
+    },
+
     categoryUpdate: async (_: any, { id, name }: { id: number; name: string }): Promise<Category> => {
       if (!id || !name) throw new Error('invalid arguments');
 

@@ -80,6 +80,15 @@ declare module '*/categories.graphql' {
 }
     
 
+declare module '*/category-delete.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const CategoryDelete: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/category-update.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
