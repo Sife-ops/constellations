@@ -1,5 +1,6 @@
 import React from 'react';
-import { Bookmark, useUserQuery } from '../../generated/graphql';
+import { useCategoriesState } from './use-categories-state';
+import { Bookmark, useUserQuery, Category } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkRow } from './bookmark-row';
 
@@ -8,6 +9,30 @@ export const Home: React.FC = () => {
    * User query
    */
   const [userRes, userReexec] = useUserQuery();
+
+  /**
+   * Categories
+   */
+  const {
+    //
+    categories,
+    toggleCategorySelected,
+    updateCategories,
+  } = useCategoriesState(null);
+
+  React.useEffect(() => {
+    const categories = userRes.data?.user?.categories;
+    if (!userRes.fetching && !userRes.error && categories) {
+      updateCategories(categories);
+    }
+  }, [userRes.fetching]);
+
+  const Categories = categories?.map((e) => (
+    <div key={e?.id}>
+      <input type="checkbox" checked={e?.selected} />
+      <label>{e?.name}</label>
+    </div>
+  ));
 
   /**
    * Filter bar
@@ -24,16 +49,16 @@ export const Home: React.FC = () => {
   /**
    * Bookmark table
    */
-  const [bookmarkRows, setBookmarkRows] = React.useState<(Bookmark | null)[] | null>(null);
+  const [bookmarks, setBookmarks] = React.useState<(Bookmark | null)[] | null>(null);
 
   React.useEffect(() => {
     const bookmarks = userRes.data?.user?.bookmarks;
     if (!userRes.fetching && !userRes.error && bookmarks) {
-      setBookmarkRows(bookmarks);
+      setBookmarks(bookmarks);
     }
   }, [userRes.fetching]);
 
-  const BookmarkRows = bookmarkRows?.map((e) => (
+  const BookmarkRows = bookmarks?.map((e) => (
     <BookmarkRow
       //
       bookmark={e}
@@ -44,7 +69,12 @@ export const Home: React.FC = () => {
 
   return (
     <div>
-      <h1>home</h1>
+      {Categories && (
+        <div>
+          {/* // */}
+          {Categories}
+        </div>
+      )}
       <input
         //
         name="filter"
