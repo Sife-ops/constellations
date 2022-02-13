@@ -145,6 +145,7 @@ export const resolvers = {
 
       const category = await Category.create({
         name,
+        user,
       }).save();
 
       return category;

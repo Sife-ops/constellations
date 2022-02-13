@@ -5,7 +5,7 @@ import { SelectableCategory } from '../../utility/type';
 import { useCategoryUpdateMutation, useCategoryAddMutation } from '../../generated/graphql';
 
 interface Props {
-  category: SelectableCategory | null;
+  category?: SelectableCategory | null;
   setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
   type: 'add' | 'update';
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
@@ -27,6 +27,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
           res = await categoryUpdateMutation({ id: p.category?.id, name });
         }
         if (res?.error) return;
+        console.log(res)
         p.userReexec();
         p.setShowForm(false);
       }}

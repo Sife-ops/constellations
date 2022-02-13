@@ -2,6 +2,7 @@ import React from 'react';
 import { useCategoriesState } from './use-categories-state';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
+import { CategoryAddUpdateForm } from './category-add-update-form';
 import { Bookmark } from './bookmark';
 import { Category } from './category';
 
@@ -74,7 +75,16 @@ export const Home: React.FC = () => {
   return (
     <div>
       {/* todo */}
-      <button>Add Category</button>
+      <button onClick={() => setShowAddCategory((s) => !s)}>Add Category</button>
+
+      {showAddCategory && (
+        <CategoryAddUpdateForm
+          //
+          setShowForm={setShowAddCategory}
+          type="add"
+          userReexec={userReexec}
+        />
+      )}
 
       {Categories && (
         <div>

@@ -12,7 +12,7 @@ interface Props {
 
 export const Category: React.FC<Props> = (p) => {
   const [showEdit, setShowEdit] = React.useState<boolean>(false);
-  const [__, categoryDeleteMutation] = useCategoryDeleteMutation();
+  const [_, categoryDeleteMutation] = useCategoryDeleteMutation();
 
   const handleDelete: React.MouseEventHandler = async (e) => {
     const res = await categoryDeleteMutation({ id: p.category?.id });
