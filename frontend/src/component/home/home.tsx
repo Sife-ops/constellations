@@ -2,6 +2,7 @@ import React from 'react';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { Bookmark } from './bookmark';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
+import { Button } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { useCategoriesState } from './use-categories-state';
@@ -100,7 +101,7 @@ export const Home: React.FC = () => {
     <div>
       {/* todo */}
 
-      <button onClick={() => setShowAddCategory((s) => !s)}>Add Category</button>
+      <Button onClick={() => setShowAddCategory((s) => !s)}>Add Category</Button>
 
       {showAddCategory && (
         <CategoryAddUpdateForm
