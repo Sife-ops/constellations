@@ -1,7 +1,11 @@
-mutation BookmarkUpdate($id: Int, $description: String, $url: String) {
-  bookmarkUpdate(id: $id, description: $description, url: $url) {
+mutation BookmarkUpdate($id: Int, $description: String, $url: String, $categoryIds: [Int]) {
+  bookmarkUpdate(id: $id, description: $description, url: $url, categoryIds: $categoryIds) {
     id
     url
     description
+    categories {
+      id
+      name
+    }
   }
 }

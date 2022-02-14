@@ -90,6 +90,7 @@ export const Home: React.FC = () => {
     <Bookmark
       //
       bookmark={e}
+      categories={categories}
       key={e?.id}
       userReexec={userReexec}
     />
@@ -139,6 +140,7 @@ export const Home: React.FC = () => {
       {showAddBookmark && (
         <BookmarkAddUpdateForm
           //
+          categories={categories}
           setShowForm={setShowAddBookmark}
           type="add"
           userReexec={userReexec}

@@ -6,8 +6,8 @@ import { useCategoryDeleteMutation } from '../../generated/graphql';
 
 interface Props {
   category: SelectableCategory | null;
-  userReexec: (opts?: Partial<OperationContext> | undefined) => void;
   toggleCategorySelected: (category: SelectableCategory | null) => void;
+  userReexec?: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
 export const Category: React.FC<Props> = (p) => {
@@ -17,8 +17,7 @@ export const Category: React.FC<Props> = (p) => {
   const handleDelete: React.MouseEventHandler = async (e) => {
     const res = await categoryDeleteMutation({ id: p.category?.id });
     if (res.error) return;
-    console.log(res);
-    p.userReexec();
+    if (p.userReexec) p.userReexec();
   };
 
   return (
@@ -30,17 +29,21 @@ export const Category: React.FC<Props> = (p) => {
         onChange={() => p.toggleCategorySelected(p.category)}
       />
       <label>{p.category?.name}</label>
-      <button onClick={() => setShowEdit((s) => !s)}>Edit</button>
-      {showEdit && (
-        <CategoryAddUpdateForm
-          //
-          category={p.category}
-          setShowForm={setShowEdit}
-          type="update"
-          userReexec={p.userReexec}
-        />
+      {p.userReexec && (
+        <div>
+          <button onClick={() => setShowEdit((s) => !s)}>Edit</button>
+          {showEdit && (
+            <CategoryAddUpdateForm
+              //
+              category={p.category}
+              setShowForm={setShowEdit}
+              type="update"
+              userReexec={p.userReexec}
+            />
+          )}
+          <button onClick={handleDelete}>Delete</button>
+        </div>
       )}
-      <button onClick={handleDelete}>Delete</button>
     </div>
   );
 };

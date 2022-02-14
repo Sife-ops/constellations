@@ -35,9 +35,9 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    bookmarkAdd(description: String, url: String): Bookmark
+    bookmarkAdd(description: String, url: String, categoryIds: [Int]): Bookmark
     bookmarkDelete(id: Int): Bookmark
-    bookmarkUpdate(id: Int, description: String, url: String): Bookmark
+    bookmarkUpdate(id: Int, description: String, url: String, categoryIds: [Int]): Bookmark
     categoryAdd(name: String): Category
     categoryDelete(id: Int): Category
     categoryUpdate(id: Int, name: String): Category

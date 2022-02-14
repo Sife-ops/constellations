@@ -48,6 +48,7 @@ export type Mutation = {
 
 
 export type MutationBookmarkAddArgs = {
+  categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   description?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
 };
@@ -59,6 +60,7 @@ export type MutationBookmarkDeleteArgs = {
 
 
 export type MutationBookmarkUpdateArgs = {
+  categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   description?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   url?: InputMaybe<Scalars['String']>;
@@ -150,6 +152,7 @@ export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', 
 export type BookmarkAddMutationVariables = Exact<{
   description?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
+  categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
 }>;
 
 
@@ -166,10 +169,11 @@ export type BookmarkUpdateMutationVariables = Exact<{
   id?: InputMaybe<Scalars['Int']>;
   description?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
+  categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
 }>;
 
 
-export type BookmarkUpdateMutation = { __typename?: 'Mutation', bookmarkUpdate?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null };
+export type BookmarkUpdateMutation = { __typename?: 'Mutation', bookmarkUpdate?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null };
 
 export type BookmarksQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -354,6 +358,16 @@ export default {
             },
             "args": [
               {
+                "name": "categoryIds",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
                 "name": "description",
                 "type": {
                   "kind": "SCALAR",
@@ -394,6 +408,16 @@ export default {
               "ofType": null
             },
             "args": [
+              {
+                "name": "categoryIds",
+                "type": {
+                  "kind": "LIST",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
               {
                 "name": "description",
                 "type": {
@@ -789,8 +813,8 @@ export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariabl
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
 };
 export const BookmarkAddDocument = gql`
-    mutation BookmarkAdd($description: String, $url: String) {
-  bookmarkAdd(description: $description, url: $url) {
+    mutation BookmarkAdd($description: String, $url: String, $categoryIds: [Int]) {
+  bookmarkAdd(description: $description, url: $url, categoryIds: $categoryIds) {
     id
     url
     description
@@ -829,11 +853,20 @@ export function useBookmarkDeleteMutation() {
   return Urql.useMutation<BookmarkDeleteMutation, BookmarkDeleteMutationVariables>(BookmarkDeleteDocument);
 };
 export const BookmarkUpdateDocument = gql`
-    mutation BookmarkUpdate($id: Int, $description: String, $url: String) {
-  bookmarkUpdate(id: $id, description: $description, url: $url) {
+    mutation BookmarkUpdate($id: Int, $description: String, $url: String, $categoryIds: [Int]) {
+  bookmarkUpdate(
+    id: $id
+    description: $description
+    url: $url
+    categoryIds: $categoryIds
+  ) {
     id
     url
     description
+    categories {
+      id
+      name
+    }
   }
 }
     `;

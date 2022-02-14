@@ -7,6 +7,7 @@ import { User } from '../entity/user';
 
 interface AddUpdateBookmarkInput {
   id?: number;
+  categoryIds: number[];
   description: string;
   url: string;
 }
@@ -94,25 +95,29 @@ export const resolvers = {
   Mutation: {
     bookmarkAdd: async (
       _: any,
-      { description, url }: AddUpdateBookmarkInput,
+      { description, url, categoryIds }: AddUpdateBookmarkInput,
       { payload }: AuthContext
     ): Promise<Bookmark> => {
-      if (!description || !url) throw new Error('invalid arguments');
+      if (!description || !url || !categoryIds) throw new Error('invalid arguments');
       if (!payload) throw new Error('missing token');
+
       const user = await User.findOne(payload.id, {
         relations: ['bookmarks'],
       });
+
+      const categories = await Category.findByIds(categoryIds);
+
       const bookmark = await Bookmark.create({
         description,
         url,
         user,
+        categories,
       }).save();
+
       return bookmark;
     },
 
     bookmarkDelete: async (_: any, { id }: { id: number }): Promise<Bookmark> => {
-      if (!id) throw new Error('invalid arguments');
-
       const bookmark = await Bookmark.findOne(id);
       if (!bookmark) throw new Error('bookmark not found');
 
@@ -121,15 +126,18 @@ export const resolvers = {
       return result;
     },
 
-    bookmarkUpdate: async (_: any, { id, description, url }: AddUpdateBookmarkInput): Promise<Bookmark> => {
-      if (!id) throw new Error('invalid arguments');
-      if (!description && !url) throw new Error('invalid arguments');
-
+    bookmarkUpdate: async (
+      _: any,
+      { id, description, url, categoryIds }: AddUpdateBookmarkInput
+    ): Promise<Bookmark> => {
       const bookmark = await Bookmark.findOne(id);
       if (!bookmark) throw new Error('bookmark not found');
 
+      const categories = await Category.findByIds(categoryIds);
+
       if (description) bookmark.description = description;
       if (url) bookmark.url = url;
+      bookmark.categories = categories;
       const updated = bookmark.save();
 
       return updated;
@@ -152,8 +160,6 @@ export const resolvers = {
     },
 
     categoryDelete: async (_: any, { id }: { id: number }): Promise<Category> => {
-      if (!id) throw new Error('invalid arguments');
-
       const category = await Category.findOne(id);
       if (!category) throw new Error('category not found');
 
@@ -163,7 +169,7 @@ export const resolvers = {
     },
 
     categoryUpdate: async (_: any, { id, name }: { id: number; name: string }): Promise<Category> => {
-      if (!id || !name) throw new Error('invalid arguments');
+      if (!name) throw new Error('invalid arguments');
 
       const category = await Category.findOne(id);
       if (!category) throw new Error('category not found');

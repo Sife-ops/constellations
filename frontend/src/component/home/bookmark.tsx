@@ -2,9 +2,11 @@ import React from 'react';
 import { Bookmark as BookmarkType, useBookmarkDeleteMutation } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { OperationContext } from 'urql';
+import { CategoriesStateType } from './use-categories-state';
 
 interface Props {
   bookmark: BookmarkType | null;
+  categories: CategoriesStateType;
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
@@ -33,6 +35,7 @@ export const Bookmark: React.FC<Props> = (p) => {
           <BookmarkAddUpdateForm
             //
             bookmark={p.bookmark}
+            categories={p.categories}
             setShowForm={setShowEdit}
             type="update"
             userReexec={p.userReexec}

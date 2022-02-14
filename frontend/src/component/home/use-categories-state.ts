@@ -2,7 +2,7 @@ import React from 'react';
 import { Category } from '../../generated/graphql';
 import { SelectableCategory } from '../../utility/type';
 
-type CategoriesStateType = (SelectableCategory | null)[] | null;
+export type CategoriesStateType = (SelectableCategory | null)[] | null;
 
 /**
  * Custom hook for categories state.
