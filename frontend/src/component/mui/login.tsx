@@ -57,10 +57,7 @@ export const Login: React.FC = () => {
             if (email) errors.email = email;
             return errors;
           }}
-          onSubmit={async (
-            { email, password, remember },
-            { setSubmitting }
-          ) => {
+          onSubmit={async ({ email, password, remember }, { setSubmitting }) => {
             setSubmitting(true);
             const res = await loginMutation({
               email,
@@ -82,12 +79,7 @@ export const Login: React.FC = () => {
             setFieldValue,
             values,
           }) => (
-            <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -149,11 +141,7 @@ export const Login: React.FC = () => {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link
-                    className="auto-login__registerLink"
-                    href="/register"
-                    variant="body2"
-                  >
+                  <Link className="auto-login__registerLink" href="/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

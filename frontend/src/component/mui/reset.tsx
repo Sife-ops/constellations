@@ -1,17 +1,7 @@
 import React from 'react';
 import EmailIcon from '@mui/icons-material/Email';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography } from '@mui/material';
 
 export const Reset: React.FC = () => {
   return (
@@ -57,23 +47,13 @@ export const Reset: React.FC = () => {
             // onChange={(e) => setEmail(e.target.value)}
           />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            className="auto-login__submit"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" className="auto-login__submit" sx={{ mt: 3, mb: 2 }}>
             Reset
           </Button>
 
           <Grid container>
             <Grid item>
-              <Link
-                className="auto-login__registerLink"
-                href="/login"
-                variant="body2"
-              >
+              <Link className="auto-login__registerLink" href="/login" variant="body2">
                 {'Already have an account? Sign In'}
               </Link>
             </Grid>

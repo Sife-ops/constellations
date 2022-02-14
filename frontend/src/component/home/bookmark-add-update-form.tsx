@@ -19,7 +19,6 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   /**
    * categories
    */
-  // todo: make custom hook
   const initialCategories = (): CategoriesStateType => {
     if (p.categories) {
       return p.categories?.map((e1) => {
@@ -34,7 +33,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   };
 
   const {
-    //
+    // todo: use normal names
     categories: bookmarkCategories,
     toggleCategorySelected: toggleBookmarkCategorySelected,
   } = useCategoriesState(initialCategories());
@@ -57,8 +56,11 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   return (
     <div>
       {BookmarkCategories && (
-        <div>
-          {/* // */}
+        <div
+          style={{
+            display: 'flex',
+          }}
+        >
           {BookmarkCategories}
         </div>
       )}

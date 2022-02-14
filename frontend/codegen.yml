@@ -1,16 +1,16 @@
 overwrite: true
-schema: "http://localhost:4000/graphql"
-documents: "src/**/*.graphql"
+schema: 'http://localhost:4000/graphql'
+documents: 'src/**/*.graphql'
 generates:
   src/generated/modules.d.ts:
     plugins:
-      - "typescript-graphql-files-modules"
+      - 'typescript-graphql-files-modules'
 
   src/generated/graphql.tsx:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "urql-introspection"
-      - "typescript-urql"
+      - 'typescript'
+      - 'typescript-operations'
+      - 'urql-introspection'
+      - 'typescript-urql'
     config:
       withComponent: true

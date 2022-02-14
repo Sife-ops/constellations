@@ -67,10 +67,7 @@ export const BookmarkList: React.FC = () => {
                 <FolderIcon />
               </Avatar>
             </ListItemAvatar>
-            <ListItemText
-              primary="Single-line item"
-              secondary={secondary ? 'Secondary text' : null}
-            />
+            <ListItemText primary="Single-line item" secondary={secondary ? 'Secondary text' : null} />
           </ListItem>
         )}
       </List>

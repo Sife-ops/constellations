@@ -12,12 +12,7 @@ export const Reset: React.FC = () => {
     >
       {({ handleChange, handleSubmit, isSubmitting, values }) => (
         <form onSubmit={handleSubmit}>
-          <input
-            name="email"
-            onChange={handleChange}
-            placeholder="email"
-            value={values.email}
-          />
+          <input name="email" onChange={handleChange} placeholder="email" value={values.email} />
           <br />
           <button disabled={isSubmitting} type="submit">
             submit

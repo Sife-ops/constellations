@@ -112,7 +112,11 @@ export const Home: React.FC = () => {
       )}
 
       {Categories && (
-        <div>
+        <div
+          style={{
+            display: 'flex',
+          }}
+        >
           {/* // */}
           {Categories}
         </div>

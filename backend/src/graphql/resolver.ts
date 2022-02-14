@@ -68,14 +68,22 @@ export const resolvers = {
       return await User.findOneOrFail(id);
     },
 
-    bookmarks: async (_: any, __: any, context: AuthContext): Promise<Bookmark[]> => {
+    bookmarks: async (
+      _: any,
+      __: any,
+      context: AuthContext
+    ): Promise<Bookmark[]> => {
       if (!context.payload) throw new Error('missing token');
       const user = await User.findOne(context.payload.id);
       if (!user) throw new Error('user not found');
       return await Bookmark.find({ where: { user } });
     },
 
-    categories: async (_: any, __: any, context: AuthContext): Promise<Category[]> => {
+    categories: async (
+      _: any,
+      __: any,
+      context: AuthContext
+    ): Promise<Category[]> => {
       if (!context.payload) throw new Error('missing token');
       const user = await User.findOne(context.payload.id);
       if (!user) throw new Error('user not found');
@@ -98,7 +106,8 @@ export const resolvers = {
       { description, url, categoryIds }: AddUpdateBookmarkInput,
       { payload }: AuthContext
     ): Promise<Bookmark> => {
-      if (!description || !url || !categoryIds) throw new Error('invalid arguments');
+      if (!description || !url || !categoryIds)
+        throw new Error('invalid arguments');
       if (!payload) throw new Error('missing token');
 
       const user = await User.findOne(payload.id, {
@@ -117,7 +126,10 @@ export const resolvers = {
       return bookmark;
     },
 
-    bookmarkDelete: async (_: any, { id }: { id: number }): Promise<Bookmark> => {
+    bookmarkDelete: async (
+      _: any,
+      { id }: { id: number }
+    ): Promise<Bookmark> => {
       const bookmark = await Bookmark.findOne(id);
       if (!bookmark) throw new Error('bookmark not found');
 
@@ -143,7 +155,11 @@ export const resolvers = {
       return updated;
     },
 
-    categoryAdd: async (_: any, { name }: { name: string }, { payload }: AuthContext): Promise<Category> => {
+    categoryAdd: async (
+      _: any,
+      { name }: { name: string },
+      { payload }: AuthContext
+    ): Promise<Category> => {
       if (!name) throw new Error('invalid arguments');
       if (!payload) throw new Error('missing token');
 
@@ -159,7 +175,10 @@ export const resolvers = {
       return category;
     },
 
-    categoryDelete: async (_: any, { id }: { id: number }): Promise<Category> => {
+    categoryDelete: async (
+      _: any,
+      { id }: { id: number }
+    ): Promise<Category> => {
       const category = await Category.findOne(id);
       if (!category) throw new Error('category not found');
 
@@ -168,7 +187,10 @@ export const resolvers = {
       return result;
     },
 
-    categoryUpdate: async (_: any, { id, name }: { id: number; name: string }): Promise<Category> => {
+    categoryUpdate: async (
+      _: any,
+      { id, name }: { id: number; name: string }
+    ): Promise<Category> => {
       if (!name) throw new Error('invalid arguments');
 
       const category = await Category.findOne(id);
@@ -180,7 +202,11 @@ export const resolvers = {
       return updated;
     },
 
-    login: async (_: any, { email, password, remember }: LoginInput, { res }: AuthContext): Promise<User> => {
+    login: async (
+      _: any,
+      { email, password, remember }: LoginInput,
+      { res }: AuthContext
+    ): Promise<User> => {
       if (!email || !password || remember === undefined) {
         throw new Error('invalid arguments');
       }
@@ -215,7 +241,10 @@ export const resolvers = {
       return { email: user.email, username: user.username };
     },
 
-    userExists: async (_: any, { email, username }: UserExistsInput): Promise<boolean> => {
+    userExists: async (
+      _: any,
+      { email, username }: UserExistsInput
+    ): Promise<boolean> => {
       if (!email && !username) throw new Error('invalid arguments');
 
       const user = await User.findOne({

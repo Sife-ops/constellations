@@ -3,28 +3,11 @@ import React from 'react';
 import _ from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Avatar, Box, Button, Container, CssBaseline, Grid, Link, TextField, Typography } from '@mui/material';
 
-import {
-  useRegisterMutation,
-  useUserExistsMutation,
-} from '../../generated/graphql';
+import { useRegisterMutation, useUserExistsMutation } from '../../generated/graphql';
 
-import {
-  emailIsValid,
-  passwordIsValid,
-  usernameIsValid,
-} from '../../utility/function';
+import { emailIsValid, passwordIsValid, usernameIsValid } from '../../utility/function';
 
 // todo: use union type
 enum Tristate {
@@ -48,12 +31,8 @@ export const Register: React.FC = () => {
   const [password, setPassword] = React.useState('');
 
   // todo: change to emailAvailable?
-  const [emailExists, setEmailExists] = React.useState<Tristate>(
-    Tristate.default
-  );
-  const [usernameExists, setUsernameExists] = React.useState<Tristate>(
-    Tristate.default
-  );
+  const [emailExists, setEmailExists] = React.useState<Tristate>(Tristate.default);
+  const [usernameExists, setUsernameExists] = React.useState<Tristate>(Tristate.default);
 
   const [registerSuccess, setRegisterSuccess] = React.useState<boolean>(false);
 
@@ -71,16 +50,9 @@ export const Register: React.FC = () => {
     };
   };
 
-  const debounceEmail = React.useRef(
-    _.debounce(debounceInputCb('email', setEmailExists), 1000)
-  ).current;
+  const debounceEmail = React.useRef(_.debounce(debounceInputCb('email', setEmailExists), 1000)).current;
 
-  const debounceUsername = React.useRef(
-    _.debounce(
-      debounceInputCb('username', setUsernameExists),
-      1000
-    )
-  ).current;
+  const debounceUsername = React.useRef(_.debounce(debounceInputCb('username', setUsernameExists), 1000)).current;
 
   // todo: use event types
   const handleEmail = (e: any) => {
@@ -127,10 +99,7 @@ export const Register: React.FC = () => {
 
   const passwordError = (): InputError => {
     if (password !== '' && !passwordIsValid(password)) {
-      return [
-        true,
-        'Use at least 8 characters, one number, and one special character.',
-      ];
+      return [true, 'Use at least 8 characters, one number, and one special character.'];
     }
     return [false, ''];
   };
@@ -255,11 +224,7 @@ export const Register: React.FC = () => {
               </Link>
             </Grid>
             <Grid item>
-              <Link
-                className="auto-register__registerLink"
-                href="/login"
-                variant="body2"
-              >
+              <Link className="auto-register__registerLink" href="/login" variant="body2">
                 {'Already have an account? Sign In'}
               </Link>
             </Grid>

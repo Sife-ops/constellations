@@ -29,12 +29,7 @@ export const Register: React.FC = () => {
             value={values.email}
           />
           <br />
-          <input
-            name="username"
-            onChange={handleChange}
-            placeholder="username"
-            value={values.username}
-          />
+          <input name="username" onChange={handleChange} placeholder="username" value={values.username} />
           <br />
           <input
             name="password"

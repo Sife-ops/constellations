@@ -11,9 +11,7 @@ import Typography from '@mui/material/Typography';
 import { apiUrl } from '../../utility/function';
 
 interface Props {
-  drawerToggle: (
-    open: boolean
-  ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+  drawerToggle: (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 export const Navbar: React.FC<Props> = ({ drawerToggle }) => {

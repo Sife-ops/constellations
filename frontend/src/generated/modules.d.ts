@@ -1,4 +1,3 @@
-
 declare module '*/_dev0.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
@@ -6,7 +5,6 @@ declare module '*/_dev0.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/_dev1.graphql' {
   import { DocumentNode } from 'graphql';
@@ -15,7 +13,6 @@ declare module '*/_dev1.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/_dev2.graphql' {
   import { DocumentNode } from 'graphql';
@@ -24,7 +21,6 @@ declare module '*/_dev2.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/_dev3.graphql' {
   import { DocumentNode } from 'graphql';
@@ -33,7 +29,6 @@ declare module '*/_dev3.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/bookmark-add.graphql' {
   import { DocumentNode } from 'graphql';
@@ -42,7 +37,6 @@ declare module '*/bookmark-add.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/bookmark-delete.graphql' {
   import { DocumentNode } from 'graphql';
@@ -51,7 +45,6 @@ declare module '*/bookmark-delete.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/bookmark-update.graphql' {
   import { DocumentNode } from 'graphql';
@@ -60,7 +53,6 @@ declare module '*/bookmark-update.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/bookmarks.graphql' {
   import { DocumentNode } from 'graphql';
@@ -69,7 +61,6 @@ declare module '*/bookmarks.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/categories.graphql' {
   import { DocumentNode } from 'graphql';
@@ -78,7 +69,6 @@ declare module '*/categories.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/category-add.graphql' {
   import { DocumentNode } from 'graphql';
@@ -87,7 +77,6 @@ declare module '*/category-add.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/category-delete.graphql' {
   import { DocumentNode } from 'graphql';
@@ -96,7 +85,6 @@ declare module '*/category-delete.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/category-update.graphql' {
   import { DocumentNode } from 'graphql';
@@ -105,7 +93,6 @@ declare module '*/category-update.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/login.graphql' {
   import { DocumentNode } from 'graphql';
@@ -114,7 +101,6 @@ declare module '*/login.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/register.graphql' {
   import { DocumentNode } from 'graphql';
@@ -123,7 +109,6 @@ declare module '*/register.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/user-exists.graphql' {
   import { DocumentNode } from 'graphql';
@@ -132,7 +117,6 @@ declare module '*/user-exists.graphql' {
 
   export default defaultDocument;
 }
-    
 
 declare module '*/user.graphql' {
   import { DocumentNode } from 'graphql';
@@ -141,4 +125,3 @@ declare module '*/user.graphql' {
 
   export default defaultDocument;
 }
-    

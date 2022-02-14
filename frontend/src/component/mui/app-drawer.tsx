@@ -10,9 +10,7 @@ import { useCategoriesQuery } from '../../generated/graphql';
 
 interface Props {
   open: boolean;
-  toggle: (
-    open: boolean
-  ) => (event: React.KeyboardEvent | React.MouseEvent) => void;
+  toggle: (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
 export const AppDrawer: React.FC<Props> = ({ open, toggle }) => {
@@ -38,12 +36,7 @@ export const AppDrawer: React.FC<Props> = ({ open, toggle }) => {
 
   return (
     <Drawer anchor="left" open={open} onClose={toggle(false)}>
-      <Box
-        sx={{ width: 250 }}
-        role="presentation"
-        onClick={toggle(false)}
-        onKeyDown={toggle(false)}
-      >
+      <Box sx={{ width: 250 }} role="presentation" onClick={toggle(false)} onKeyDown={toggle(false)}>
         <List>{categoryList}</List>
       </Box>
     </Drawer>
