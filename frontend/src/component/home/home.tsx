@@ -1,16 +1,17 @@
 import React from 'react';
-import { useCategoriesState } from './use-categories-state';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
-import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { CategoryAddUpdateForm } from './category-add-update-form';
 import { Bookmark } from './bookmark';
+import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { Category } from './category';
+import { CategoryAddUpdateForm } from './category-add-update-form';
+import { useCategoriesState } from './use-categories-state';
 
 export const Home: React.FC = () => {
   /**
    * User query
    */
   const [userRes, userReexec] = useUserQuery();
+  const { data, fetching, error } = userRes;
 
   /**
    * Categories
@@ -25,8 +26,8 @@ export const Home: React.FC = () => {
   } = useCategoriesState(null);
 
   React.useEffect(() => {
-    const categories = userRes.data?.user?.categories;
-    if (!userRes.fetching && !userRes.error && categories) {
+    const categories = data?.user?.categories;
+    if (!fetching && !error && categories) {
       updateCategories(categories);
     }
   }, [userRes.fetching]);
@@ -44,7 +45,7 @@ export const Home: React.FC = () => {
   /**
    * Filter bar
    */
-  const [filter, setFilter] = React.useState<string>('');
+  const [searchBar, setSearchBar] = React.useState<string>('');
 
   /**
    * Add bookmark
@@ -57,13 +58,35 @@ export const Home: React.FC = () => {
   const [bookmarks, setBookmarks] = React.useState<(BookmarkType | null)[] | null>(null);
 
   React.useEffect(() => {
-    const bookmarks = userRes.data?.user?.bookmarks;
-    if (!userRes.fetching && !userRes.error && bookmarks) {
+    const bookmarks = data?.user?.bookmarks;
+    if (!fetching && !error && bookmarks) {
       setBookmarks(bookmarks);
     }
   }, [userRes.fetching]);
 
-  const BookmarkRows = bookmarks?.map((e) => (
+  // at least one category is selected
+  const isCategorySelected = categories?.find((e) => e?.selected);
+
+  const selectedCategories = categories?.filter((e) => e?.selected);
+
+  // filter by category
+  let filteredBookmarks = bookmarks?.filter((e) => {
+    if (!isCategorySelected) return true;
+    if (!e?.categories) return false;
+    for (const bookmarkCategory of e?.categories) {
+      const hasSelectedCategory = selectedCategories?.find((e) => e?.id === bookmarkCategory?.id);
+      if (hasSelectedCategory) return true;
+    }
+    return false;
+  });
+
+  // filter by search bar
+  filteredBookmarks = filteredBookmarks?.filter((e) => {
+    if (searchBar === '') return true;
+    return e?.description?.toLowerCase().includes(searchBar.toLowerCase());
+  });
+
+  const BookmarkRows = filteredBookmarks?.map((e) => (
     <Bookmark
       //
       bookmark={e}
@@ -75,6 +98,7 @@ export const Home: React.FC = () => {
   return (
     <div>
       {/* todo */}
+
       <button onClick={() => setShowAddCategory((s) => !s)}>Add Category</button>
 
       {showAddCategory && (
@@ -94,19 +118,20 @@ export const Home: React.FC = () => {
       )}
 
       {/* todo */}
-      <label>Filter Type</label>
+
+      {/* <label>Filter Type</label>
       <select>
         <option>AND</option>
         <option>OR</option>
       </select>
-      <br />
+      <br /> */}
 
       <input
         //
         name="filter"
-        onChange={(e) => setFilter(e.target.value)}
+        onChange={(e) => setSearchBar(e.target.value)}
         placeholder="filter"
-        value={filter}
+        value={searchBar}
       />
       <br />
 

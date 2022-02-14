@@ -27,7 +27,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
           res = await categoryUpdateMutation({ id: p.category?.id, name });
         }
         if (res?.error) return;
-        console.log(res)
+        console.log(res);
         p.userReexec();
         p.setShowForm(false);
       }}
@@ -42,6 +42,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
             placeholder="name"
             value={values.name}
           />
+          <br />
           <button type="submit">Submit</button>
         </form>
       )}
