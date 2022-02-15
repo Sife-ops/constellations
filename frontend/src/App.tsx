@@ -7,6 +7,7 @@ import { Login } from './component/login';
 import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { apiUrl } from './utility/function';
+import { Box, Button } from '@chakra-ui/react';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -44,7 +45,25 @@ function App() {
   if (loggedIn) {
     return (
       <BrowserRouter>
-        <button onClick={handleLogout}>Sign Out</button>
+        <Box
+          borderWidth="1px"
+          borderRadius="lg"
+          style={{
+            display: 'flex',
+            margin: '.5rem .5rem .5rem .5rem',
+            padding: '.5rem 0 0 .5rem',
+          }}
+        >
+          <Button
+            // todo: move everything to App.css
+            onClick={handleLogout}
+            style={{
+              margin: '0 .5rem .5rem 0',
+            }}
+          >
+            Sign Out
+          </Button>
+        </Box>
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/dev" element={<Dev />} />
