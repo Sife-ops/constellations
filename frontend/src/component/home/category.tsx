@@ -1,8 +1,9 @@
 import React from 'react';
+import { Button } from '@chakra-ui/react';
 import { CategoryAddUpdateForm } from './category-add-update-form';
+import { CategoryCheckbox } from './category-checkbox';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
-import { Button } from '@chakra-ui/react';
 
 interface Props {
   category: SelectableCategory | null;
@@ -35,15 +36,13 @@ export const Category: React.FC<Props> = (p) => {
           {p.category?.name}
         </Button>
       ) : (
-        <>
-          <input
-            //
-            type="checkbox"
-            checked={p.category?.selected}
-            onChange={() => p.toggleCategorySelected(p.category)}
-          />
-          <label>{p.category?.name}</label>
-        </>
+        <CategoryCheckbox
+          //
+          isChecked={p.category?.selected}
+          onChange={() => p.toggleCategorySelected(p.category)}
+        >
+          {p.category?.name}
+        </CategoryCheckbox>
       )}
     </div>
   );
