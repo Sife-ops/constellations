@@ -12,19 +12,17 @@ export const Home: React.FC = () => {
    * User query
    */
   const [userRes, userReexec] = useUserQuery();
+
   const { data, fetching, error } = userRes;
 
   /**
    * Categories
    */
-  const [showAddCategory, setShowAddCategory] = React.useState<boolean>(false);
+  const [categoryEditMode, setCategoryEditMode] = React.useState<boolean>(false);
 
-  const {
-    //
-    categories,
-    toggleCategorySelected,
-    updateCategories,
-  } = useCategoriesState(null);
+  const [categoryForm, setCategoryForm] = React.useState<JSX.Element | null>(null);
+
+  const { categories, toggleCategorySelected, updateCategories } = useCategoriesState(null);
 
   React.useEffect(() => {
     const categories = data?.user?.categories;
@@ -33,13 +31,46 @@ export const Home: React.FC = () => {
     }
   }, [userRes.fetching]);
 
+  const resetCategoryForm = () => {
+    setCategoryForm(null);
+    setCategoryEditMode(false);
+  };
+
+  const handleCategoryAdd = () => {
+    if (categoryForm || categoryEditMode) {
+      resetCategoryForm();
+      return;
+    }
+    setCategoryForm(
+      <CategoryAddUpdateForm
+        //
+        setCategoryForm={setCategoryForm}
+        type="add"
+        userReexec={userReexec}
+      />
+    );
+  };
+
+  const handleCategoryEdit = () => {
+    if (categoryForm || categoryEditMode) {
+      resetCategoryForm();
+      return;
+    }
+    setCategoryEditMode(true);
+  };
+
   const Categories = categories?.map((e) => (
     <Category
+      key={e?.id}
       //
       category={e}
-      key={e?.id}
       toggleCategorySelected={toggleCategorySelected}
-      userReexec={userReexec}
+      //
+      categoryEdit={{
+        categoryEditMode,
+        setCategoryForm,
+        userReexec,
+      }}
     />
   ));
 
@@ -51,7 +82,7 @@ export const Home: React.FC = () => {
   /**
    * Add bookmark
    */
-  const [showAddBookmark, setShowAddBookmark] = React.useState<boolean>(false);
+  const [bookmarkAdd, setBookmarkAdd] = React.useState<boolean>(false);
 
   /**
    * Bookmark table
@@ -99,38 +130,33 @@ export const Home: React.FC = () => {
 
   return (
     <div>
-      {/* todo */}
-
-      <Button onClick={() => setShowAddCategory((s) => !s)}>Add Category</Button>
-
-      {showAddCategory && (
-        <CategoryAddUpdateForm
-          //
-          setShowForm={setShowAddCategory}
-          type="add"
-          userReexec={userReexec}
-        />
-      )}
-
-      {Categories && (
+      <div
+        style={{
+          display: 'flex',
+        }}
+      >
         <div
           style={{
             display: 'flex',
+            flexDirection: 'column',
           }}
         >
-          {/* // */}
-          {Categories}
+          <Button onClick={handleCategoryAdd}>Add</Button>
+          <Button onClick={handleCategoryEdit}>Edit</Button>
         </div>
-      )}
 
-      {/* todo */}
-
-      {/* <label>Filter Type</label>
-      <select>
-        <option>AND</option>
-        <option>OR</option>
-      </select>
-      <br /> */}
+        {categoryForm ? (
+          <>{categoryForm}</>
+        ) : (
+          <div
+            style={{
+              display: 'flex',
+            }}
+          >
+            {Categories}
+          </div>
+        )}
+      </div>
 
       <input
         //
@@ -141,12 +167,13 @@ export const Home: React.FC = () => {
       />
       <br />
 
-      <button onClick={() => setShowAddBookmark((s) => !s)}>Add Bookmark</button>
-      {showAddBookmark && (
+      <button onClick={() => setBookmarkAdd((s) => !s)}>Add Bookmark</button>
+
+      {bookmarkAdd && (
         <BookmarkAddUpdateForm
           //
           categories={categories}
-          setShowForm={setShowAddBookmark}
+          // setShowForm={setBookmarkAdd}
           type="add"
           userReexec={userReexec}
         />

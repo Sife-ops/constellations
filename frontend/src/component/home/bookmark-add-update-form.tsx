@@ -10,8 +10,8 @@ import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../
 interface Props {
   bookmark?: Bookmark | null;
   categories: CategoriesStateType;
-  setShowForm: (value: React.SetStateAction<boolean>) => void;
-  type: 'add' | 'update';
+  // setShowForm: (value: React.SetStateAction<boolean>) => void;
+  type: 'add' | 'edit';
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
@@ -73,13 +73,16 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
           if (p.type === 'add') {
             res = await bookmarkAddMutation({ description, url, categoryIds });
           }
-          if (p.type === 'update') {
+          if (p.type === 'edit') {
             res = await bookmarkUpdateMutation({ id: p.bookmark?.id, description, url, categoryIds });
           }
-          if (res?.error) return;
+          if (res?.error) {
+            console.log(res.error);
+            return;
+          }
 
           p.userReexec();
-          p.setShowForm(false);
+          // p.setShowForm(false);
         }}
       >
         {({ handleChange, handleSubmit, values }) => (

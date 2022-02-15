@@ -2,49 +2,80 @@ import React from 'react';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
-import { useCategoryUpdateMutation, useCategoryAddMutation } from '../../generated/graphql';
+
+import {
+  //
+  useCategoryUpdateMutation,
+  useCategoryAddMutation,
+  useCategoryDeleteMutation,
+} from '../../generated/graphql';
 
 interface Props {
   category?: SelectableCategory | null;
-  setShowForm: React.Dispatch<React.SetStateAction<boolean>>;
-  type: 'add' | 'update';
+  setCategoryForm: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
+  type: 'add' | 'edit';
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
 export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
   const [_, categoryAddMutation] = useCategoryAddMutation();
   const [__, categoryUpdateMutation] = useCategoryUpdateMutation();
+  const [___, categoryDeleteMutation] = useCategoryDeleteMutation();
+
+  const resetForm = () => {
+    p.userReexec();
+    p.setCategoryForm(null);
+  };
+
+  const handleDelete = async () => {
+    const res = await categoryDeleteMutation({ id: p.category?.id });
+    if (res?.error) {
+      console.log(res.error);
+      return;
+    }
+    resetForm();
+  };
 
   return (
     <Formik
-      initialValues={{ name: '' }}
+      initialValues={{ name: p.category?.name || '' }}
       onSubmit={async ({ name }) => {
         let res;
         if (p.type === 'add') {
           res = await categoryAddMutation({ name });
         }
-        if (p.type === 'update') {
+        if (p.type === 'edit') {
           res = await categoryUpdateMutation({ id: p.category?.id, name });
         }
-        if (res?.error) return;
-        console.log(res);
-        p.userReexec();
-        p.setShowForm(false);
+        if (res?.error) {
+          console.log(res.error);
+          return;
+        }
+        resetForm();
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
         //
-        <form onSubmit={handleSubmit}>
-          <input
-            //
-            name="name"
-            onChange={handleChange}
-            placeholder="name"
-            value={values.name}
-          />
-          <br />
-          <button type="submit">Submit</button>
-        </form>
+        <div>
+          <h3>{p.type === 'add' ? 'Add ' : 'Edit '}Bookmark</h3>
+          <form onSubmit={handleSubmit}>
+            <input
+              //
+              name="name"
+              onChange={handleChange}
+              placeholder="name"
+              value={values.name}
+            />
+            <br />
+            <button type="submit">Submit</button>
+            <br />
+            {p.type === 'edit' && (
+              <button onClick={handleDelete} type="button">
+                Delete
+              </button>
+            )}
+          </form>
+        </div>
       )}
     </Formik>
   );
