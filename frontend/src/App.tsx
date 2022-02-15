@@ -45,42 +45,32 @@ function App() {
   if (loggedIn) {
     return (
       <BrowserRouter>
-        <Box
-          borderWidth="1px"
-          borderRadius="lg"
-          style={{
-            display: 'flex',
-            margin: '.5rem .5rem .5rem .5rem',
-            padding: '.5rem 0 0 .5rem',
-          }}
-        >
-          <Button
-            // todo: move everything to App.css
-            onClick={handleLogout}
-            style={{
-              margin: '0 .5rem .5rem 0',
-            }}
-          >
-            Sign Out
-          </Button>
-        </Box>
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/dev" element={<Dev />} />
-          <Route path="*" element={<Navigate replace to="/home" />} />
-        </Routes>
+        <div className="page">
+          <Box borderRadius="lg" borderWidth="1px" className="block">
+            <Button onClick={handleLogout} className="element">
+              Sign Out
+            </Button>
+          </Box>
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/dev" element={<Dev />} />
+            <Route path="*" element={<Navigate replace to="/home" />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     );
   }
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/reset" element={<Reset />} />
-        <Route path="*" element={<Navigate replace to="/login" />} />
-      </Routes>
+      <div className='page'>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset" element={<Reset />} />
+          <Route path="*" element={<Navigate replace to="/login" />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

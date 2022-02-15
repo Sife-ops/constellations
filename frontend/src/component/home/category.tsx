@@ -18,7 +18,7 @@ interface Props {
 
 export const Category: React.FC<Props> = (p) => {
   return (
-    <div className='categories__button'>
+    <div className="element">
       {p.categoryEdit?.categoryEditMode ? (
         <Button
           onClick={() => {

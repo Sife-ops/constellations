@@ -1,4 +1,3 @@
-import './home.css';
 import React from 'react';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { Bookmark } from './bookmark';
@@ -130,29 +129,18 @@ export const Home: React.FC = () => {
   ));
 
   return (
-    <div
-      style={{
-        padding: '0 .5rem 0 .5rem',
-      }}
-    >
-      <Box
-        borderWidth="1px"
-        borderRadius="lg"
-        style={{
-          display: 'flex',
-          padding: '.5rem 0 0 .5rem',
-        }}
-      >
+    <div>
+      <Box borderWidth="1px" borderRadius="lg" className="block categories">
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <Button className="categories__button" onClick={handleCategoryAdd}>
+          <Button className="element" onClick={handleCategoryAdd}>
             Add
           </Button>
-          <Button className="categories__button" onClick={handleCategoryEdit}>
+          <Button className="element" onClick={handleCategoryEdit}>
             Edit
           </Button>
         </div>
