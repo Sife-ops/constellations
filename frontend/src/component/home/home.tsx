@@ -1,8 +1,9 @@
+import './home.css';
 import React from 'react';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { Bookmark } from './bookmark';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { Button } from '@chakra-ui/react';
+import { Box, Button } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { useCategoriesState } from './use-categories-state';
@@ -129,10 +130,17 @@ export const Home: React.FC = () => {
   ));
 
   return (
-    <div>
-      <div
+    <div
+      style={{
+        padding: '0 .5rem 0 .5rem',
+      }}
+    >
+      <Box
+        borderWidth="1px"
+        borderRadius="lg"
         style={{
           display: 'flex',
+          padding: '.5rem 0 0 .5rem',
         }}
       >
         <div
@@ -141,8 +149,12 @@ export const Home: React.FC = () => {
             flexDirection: 'column',
           }}
         >
-          <Button onClick={handleCategoryAdd}>Add</Button>
-          <Button onClick={handleCategoryEdit}>Edit</Button>
+          <Button className="categories__button" onClick={handleCategoryAdd}>
+            Add
+          </Button>
+          <Button className="categories__button" onClick={handleCategoryEdit}>
+            Edit
+          </Button>
         </div>
 
         {categoryForm ? (
@@ -156,7 +168,7 @@ export const Home: React.FC = () => {
             {Categories}
           </div>
         )}
-      </div>
+      </Box>
 
       <input
         //
