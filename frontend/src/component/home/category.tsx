@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button } from '@chakra-ui/react';
 import { CategoryAddUpdateForm } from './category-add-update-form';
-import { CategoryCheckbox } from './category-checkbox';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
 
@@ -10,40 +9,36 @@ interface Props {
   toggleCategorySelected: (category: SelectableCategory | null) => void;
   //
   categoryEdit?: {
-    categoryEditMode: boolean;
+    categoryEditMode: boolean; // todo: rename to 'editMode?'
     setCategoryForm: React.Dispatch<React.SetStateAction<JSX.Element | null>>;
     userReexec: (opts?: Partial<OperationContext> | undefined) => void;
   };
 }
 
 export const Category: React.FC<Props> = (p) => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
+    if (p.categoryEdit?.categoryEditMode) {
+      p.categoryEdit?.setCategoryForm(
+        <CategoryAddUpdateForm
+          category={p.category}
+          setCategoryForm={p.categoryEdit.setCategoryForm}
+          type="edit"
+          userReexec={p.categoryEdit.userReexec}
+        />
+      );
+      return;
+    }
+    p.toggleCategorySelected(p.category);
+  };
+
   return (
-    <div className="element">
-      {p.categoryEdit?.categoryEditMode ? (
-        <Button
-          onClick={() => {
-            p.categoryEdit?.setCategoryForm(
-              <CategoryAddUpdateForm
-                //
-                category={p.category}
-                setCategoryForm={p.categoryEdit.setCategoryForm}
-                type="edit"
-                userReexec={p.categoryEdit.userReexec}
-              />
-            );
-          }}
-        >
-          {p.category?.name}
-        </Button>
-      ) : (
-        <CategoryCheckbox
-          //
-          isChecked={p.category?.selected}
-          onChange={() => p.toggleCategorySelected(p.category)}
-        >
-          {p.category?.name}
-        </CategoryCheckbox>
-      )}
-    </div>
+    <Button
+      className="element"
+      colorScheme={p.categoryEdit?.categoryEditMode ? 'green' : 'blue'}
+      onClick={handleClick}
+      variant={p.category?.selected ? 'solid' : 'outline'}
+    >
+      {p.category?.name}
+    </Button>
   );
 };
