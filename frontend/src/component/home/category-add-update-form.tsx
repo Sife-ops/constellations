@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Input, Text } from '@chakra-ui/react';
+import { Button, Input, Text } from '@chakra-ui/react';
 import { BlockBox } from '../block-box';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
@@ -69,7 +69,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
                   marginRight: '.5rem',
                 }}
               >
-                <Text>{p.type === 'add' ? 'Add ' : 'Edit '}Bookmark</Text>
+                <Text>{p.type === 'add' ? 'Add ' : 'Edit '}Category</Text>
                 <Input
                   className="element"
                   name="name"

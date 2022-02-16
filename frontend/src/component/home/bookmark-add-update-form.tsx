@@ -56,7 +56,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
 
   return (
     <Formik
-      initialValues={{ description: '', url: '' }}
+      initialValues={{ description: p.bookmark?.description || '', url: p.bookmark?.url || '' }}
       onSubmit={async ({ description, url }) => {
         const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
 
@@ -79,15 +79,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       {({ handleChange, handleSubmit, values }) => (
         <BlockBox>
           <form onSubmit={handleSubmit}>
-            {BookmarkCategories && (
-              <div
-                style={{
-                  display: 'flex',
-                }}
-              >
-                {BookmarkCategories}
-              </div>
-            )}
+            {BookmarkCategories && <div>{BookmarkCategories}</div>}
             <Box className="element">
               <Input
                 //
