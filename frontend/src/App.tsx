@@ -43,34 +43,41 @@ function App() {
 
   if (loading) return <div>loading...</div>;
 
-  if (loggedIn) {
-    return (
-      <BrowserRouter>
-        <div className="page">
-          <BlockBox>
-            <Button className="element" onClick={handleLogout} size="xs">
-              Sign Out
-            </Button>
-          </BlockBox>
+  return (
+    <BrowserRouter>
+      <div className="page">
+        <BlockBox>
+          {loggedIn && (
+            <>
+              <Button className="element" onClick={handleLogout} size="xs">
+                Sign Out
+              </Button>
+              <Button className="element" size="xs">
+                Settings
+              </Button>
+            </>
+          )}
+          <Button className="element" size="xs">
+            About
+          </Button>
+          <Button className="element" size="xs">
+            Donate
+          </Button>
+        </BlockBox>
+        {loggedIn ? (
           <Routes>
             <Route path="/home" element={<Home />} />
             <Route path="/dev" element={<Dev />} />
             <Route path="*" element={<Navigate replace to="/home" />} />
           </Routes>
-        </div>
-      </BrowserRouter>
-    );
-  }
-
-  return (
-    <BrowserRouter>
-      <div className="page">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/reset" element={<Reset />} />
-          <Route path="*" element={<Navigate replace to="/login" />} />
-        </Routes>
+        ) : (
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/reset" element={<Reset />} />
+            <Route path="*" element={<Navigate replace to="/login" />} />
+          </Routes>
+        )}
       </div>
     </BrowserRouter>
   );
