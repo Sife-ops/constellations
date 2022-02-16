@@ -19,6 +19,8 @@ export const Home: React.FC = () => {
   /**
    * Categories
    */
+  const [categoryAddMode, setCategoryAddMode] = React.useState<boolean>(false);
+
   const [categoryEditMode, setCategoryEditMode] = React.useState<boolean>(false);
 
   const [categoryForm, setCategoryForm] = React.useState<JSX.Element | null>(null);
@@ -35,6 +37,7 @@ export const Home: React.FC = () => {
   const resetCategoryForm = () => {
     setCategoryForm(null);
     setCategoryEditMode(false);
+    setCategoryAddMode(false);
   };
 
   const handleCategoryAdd = () => {
@@ -42,6 +45,7 @@ export const Home: React.FC = () => {
       resetCategoryForm();
       return;
     }
+    setCategoryAddMode(true);
     setCategoryForm(
       <CategoryAddUpdateForm
         //
@@ -121,17 +125,27 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <BlockBox className='block categories'>
+      <BlockBox className="block categories">
         <div
           style={{
             display: 'flex',
             flexDirection: 'column',
           }}
         >
-          <Button className="element" onClick={handleCategoryAdd}>
+          <Button
+            //
+            className="element"
+            onClick={handleCategoryAdd}
+            variant={categoryAddMode ? 'solid' : 'outline'}
+          >
             Add
           </Button>
-          <Button className="element" onClick={handleCategoryEdit}>
+          <Button
+            //
+            className="element"
+            onClick={handleCategoryEdit}
+            variant={categoryEditMode ? 'solid' : 'outline'}
+          >
             Edit
           </Button>
         </div>
