@@ -119,7 +119,7 @@ export const Home: React.FC = () => {
   });
 
   return (
-    <div>
+    <>
       <Box borderWidth="1px" borderRadius="lg" className="block categories">
         <div
           style={{
@@ -135,17 +135,7 @@ export const Home: React.FC = () => {
           </Button>
         </div>
 
-        {categoryForm ? (
-          <>{categoryForm}</>
-        ) : (
-          <div
-            style={{
-              display: 'flex',
-            }}
-          >
-            {Categories}
-          </div>
-        )}
+        {categoryForm ? <>{categoryForm}</> : <div>{Categories}</div>}
       </Box>
 
       <Box className="element">
@@ -185,6 +175,6 @@ export const Home: React.FC = () => {
         userReexec={userReexec}
         bookmarks={filteredBookmarks}
       />
-    </div>
+    </>
   );
 };
