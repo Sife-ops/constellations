@@ -183,7 +183,7 @@ export const Home: React.FC = () => {
         <BookmarkAddUpdateForm
           //
           categories={categories}
-          // setShowForm={setBookmarkAdd}
+          setShowForm={setBookmarkAdd}
           type="add"
           userReexec={userReexec}
         />

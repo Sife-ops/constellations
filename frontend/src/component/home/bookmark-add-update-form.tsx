@@ -9,7 +9,7 @@ import { OperationContext } from 'urql';
 interface Props {
   bookmark?: Bookmark | null;
   categories: CategoriesStateType;
-  // setShowForm: (value: React.SetStateAction<boolean>) => void;
+  setShowForm: (value: React.SetStateAction<boolean>) => void;
   type: 'add' | 'edit';
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
@@ -72,7 +72,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
         }
 
         p.userReexec();
-        // p.setShowForm(false);
+        p.setShowForm(false);
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
