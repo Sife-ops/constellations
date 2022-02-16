@@ -1,11 +1,11 @@
 import React from 'react';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
-import { Bookmark } from './bookmark';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { Box, Button, Input } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { useCategoriesState } from './use-categories-state';
+import { BookmarkTable } from './bookmark-table';
 
 export const Home: React.FC = () => {
   /**
@@ -118,16 +118,6 @@ export const Home: React.FC = () => {
     return e?.description?.toLowerCase().includes(searchBar.toLowerCase());
   });
 
-  const BookmarkRows = filteredBookmarks?.map((e) => (
-    <Bookmark
-      //
-      bookmark={e}
-      categories={categories}
-      key={e?.id}
-      userReexec={userReexec}
-    />
-  ));
-
   return (
     <div>
       <Box borderWidth="1px" borderRadius="lg" className="block categories">
@@ -189,11 +179,12 @@ export const Home: React.FC = () => {
         />
       )}
 
-      {BookmarkRows && (
-        <table>
-          <tbody>{BookmarkRows}</tbody>
-        </table>
-      )}
+      <BookmarkTable
+        //
+        categories={categories}
+        userReexec={userReexec}
+        bookmarks={filteredBookmarks}
+      />
     </div>
   );
 };

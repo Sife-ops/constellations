@@ -1,3 +1,12 @@
+.bookmarkTable {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.bookmarkTable td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .page {
   padding: 0.5rem 0 0 0.5rem;
 }
@@ -14,3 +23,4 @@
 .element {
   margin: 0 0.5rem 0.5rem 0;
 }
+
