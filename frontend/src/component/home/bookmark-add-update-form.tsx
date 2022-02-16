@@ -1,11 +1,10 @@
 import React from 'react';
+import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../../generated/graphql';
+import { Box, Button, Input } from '@chakra-ui/react';
+import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
-
-import { CategoriesStateType, useCategoriesState } from './use-categories-state';
-
-import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../../generated/graphql';
 
 interface Props {
   bookmark?: Bookmark | null;
@@ -43,6 +42,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       //
       category={e}
       key={e?.id}
+      size='xs'
       toggleCategorySelected={toggleBookmarkCategorySelected}
     />
   ));
@@ -54,61 +54,77 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
 
   return (
-    <div>
-      {BookmarkCategories && (
-        <div
-          style={{
-            display: 'flex',
-          }}
+    <Formik
+      initialValues={{ description: '', url: '' }}
+      onSubmit={async ({ description, url }) => {
+        const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
+
+        let res;
+        if (p.type === 'add') {
+          res = await bookmarkAddMutation({ description, url, categoryIds });
+        }
+        if (p.type === 'edit') {
+          res = await bookmarkUpdateMutation({ id: p.bookmark?.id, description, url, categoryIds });
+        }
+        if (res?.error) {
+          console.log(res.error);
+          return;
+        }
+
+        p.userReexec();
+        // p.setShowForm(false);
+      }}
+    >
+      {({ handleChange, handleSubmit, values }) => (
+        <Box
+          //
+          borderRadius="lg"
+          borderWidth="1px"
+          className="block"
         >
-          {BookmarkCategories}
-        </div>
-      )}
-      <Formik
-        initialValues={{ description: '', url: '' }}
-        onSubmit={async ({ description, url }) => {
-          const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
-
-          let res;
-          if (p.type === 'add') {
-            res = await bookmarkAddMutation({ description, url, categoryIds });
-          }
-          if (p.type === 'edit') {
-            res = await bookmarkUpdateMutation({ id: p.bookmark?.id, description, url, categoryIds });
-          }
-          if (res?.error) {
-            console.log(res.error);
-            return;
-          }
-
-          p.userReexec();
-          // p.setShowForm(false);
-        }}
-      >
-        {({ handleChange, handleSubmit, values }) => (
           <form onSubmit={handleSubmit}>
-            <input
-              //
-              name="description"
-              onChange={handleChange}
-              placeholder="description"
-              value={values.description}
-            />
-            <br />
+            {BookmarkCategories && (
+              <div
+                style={{
+                  display: 'flex',
+                }}
+              >
+                {BookmarkCategories}
+              </div>
+            )}
+            <Box className="element">
+              <Input
+                //
+                name="description"
+                onChange={handleChange}
+                placeholder="description"
+                value={values.description}
+              />
+            </Box>
 
-            <input
-              //
-              name="url"
-              onChange={handleChange}
-              placeholder="url"
-              value={values.url}
-            />
-            <br />
+            <Box className="element">
+              <Input
+                //
+                name="url"
+                onChange={handleChange}
+                placeholder="url"
+                value={values.url}
+              />
+            </Box>
 
-            <button type="submit">Submit</button>
+            <Box className="element">
+              <Button
+                //
+                colorScheme="green"
+                isFullWidth
+                type="submit"
+              >
+                Submit
+              </Button>
+            </Box>
           </form>
-        )}
-      </Formik>
-    </div>
+        </Box>
+      )}
+    </Formik>
   );
 };

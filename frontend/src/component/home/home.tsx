@@ -2,7 +2,7 @@ import React from 'react';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { Bookmark } from './bookmark';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Input } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { useCategoriesState } from './use-categories-state';
@@ -158,16 +158,26 @@ export const Home: React.FC = () => {
         )}
       </Box>
 
-      <input
-        //
-        name="filter"
-        onChange={(e) => setSearchBar(e.target.value)}
-        placeholder="filter"
-        value={searchBar}
-      />
-      <br />
+      <Box className="element">
+        <Input
+          //
+          name="filter"
+          onChange={(e) => setSearchBar(e.target.value)}
+          placeholder="filter"
+          value={searchBar}
+        />
+      </Box>
 
-      <button onClick={() => setBookmarkAdd((s) => !s)}>Add Bookmark</button>
+      <Box className="element">
+        <Button
+          //
+          colorScheme="green"
+          isFullWidth
+          onClick={() => setBookmarkAdd((s) => !s)}
+        >
+          Add Bookmark
+        </Button>
+      </Box>
 
       {bookmarkAdd && (
         <BookmarkAddUpdateForm

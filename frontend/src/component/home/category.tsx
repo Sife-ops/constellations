@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, ButtonProps } from '@chakra-ui/react';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
@@ -15,7 +15,7 @@ interface Props {
   };
 }
 
-export const Category: React.FC<Props> = (p) => {
+export const Category: React.FC<Props & ButtonProps> = (p) => {
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = () => {
     if (p.categoryEdit?.categoryEditMode) {
       p.categoryEdit?.setCategoryForm(
@@ -36,6 +36,7 @@ export const Category: React.FC<Props> = (p) => {
       className="element"
       colorScheme={p.categoryEdit?.categoryEditMode ? 'green' : 'blue'}
       onClick={handleClick}
+      size={p.size}
       variant={p.category?.selected ? 'solid' : 'outline'}
     >
       {p.category?.name}
