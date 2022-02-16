@@ -1,11 +1,12 @@
 import React from 'react';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
+import { BookmarkTable } from './bookmark-table';
 import { Box, Button, Input } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
+import { BlockBox } from '../block-box';
 import { useCategoriesState } from './use-categories-state';
-import { BookmarkTable } from './bookmark-table';
 
 export const Home: React.FC = () => {
   /**
@@ -120,7 +121,7 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <Box borderWidth="1px" borderRadius="lg" className="block categories">
+      <BlockBox className='block categories'>
         <div
           style={{
             display: 'flex',
@@ -136,7 +137,7 @@ export const Home: React.FC = () => {
         </div>
 
         {categoryForm ? <>{categoryForm}</> : <div>{Categories}</div>}
-      </Box>
+      </BlockBox>
 
       <Box className="element">
         <Input

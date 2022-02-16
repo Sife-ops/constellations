@@ -3,6 +3,7 @@ import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../
 import { Box, Button, Input } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
+import { BlockBox } from '../block-box';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 
@@ -42,7 +43,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       //
       category={e}
       key={e?.id}
-      size='xs'
+      size="xs"
       toggleCategorySelected={toggleBookmarkCategorySelected}
     />
   ));
@@ -76,12 +77,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
-        <Box
-          //
-          borderRadius="lg"
-          borderWidth="1px"
-          className="block"
-        >
+        <BlockBox>
           <form onSubmit={handleSubmit}>
             {BookmarkCategories && (
               <div
@@ -123,7 +119,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
               </Button>
             </Box>
           </form>
-        </Box>
+        </BlockBox>
       )}
     </Formik>
   );

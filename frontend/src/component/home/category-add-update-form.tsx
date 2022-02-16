@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
+import { BlockBox } from '../block-box';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
@@ -56,13 +57,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
-        //
-        <Box
-          //
-          borderRadius="lg"
-          borderWidth="1px"
-          className="block"
-        >
+        <BlockBox>
           <form onSubmit={handleSubmit}>
             <div
               style={{
@@ -76,7 +71,6 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
               >
                 <Text>{p.type === 'add' ? 'Add ' : 'Edit '}Bookmark</Text>
                 <Input
-                  //
                   className="element"
                   name="name"
                   onChange={handleChange}
@@ -96,7 +90,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
                 <Button
                   //
                   className="element"
-                  colorScheme='blue'
+                  colorScheme="blue"
                   size="xs"
                   type="submit"
                 >
@@ -106,7 +100,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
                   <Button
                     //
                     className="element"
-                    colorScheme='red'
+                    colorScheme="red"
                     onClick={handleDelete}
                     size="xs"
                     type="button"
@@ -117,7 +111,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
               </div>
             </div>
           </form>
-        </Box>
+        </BlockBox>
       )}
     </Formik>
   );
