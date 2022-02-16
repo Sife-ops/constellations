@@ -1,4 +1,5 @@
 import React from 'react';
+import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';
@@ -56,26 +57,67 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
     >
       {({ handleChange, handleSubmit, values }) => (
         //
-        <div>
-          <h3>{p.type === 'add' ? 'Add ' : 'Edit '}Bookmark</h3>
+        <Box
+          //
+          borderRadius="lg"
+          borderWidth="1px"
+          className="block"
+        >
           <form onSubmit={handleSubmit}>
-            <input
-              //
-              name="name"
-              onChange={handleChange}
-              placeholder="name"
-              value={values.name}
-            />
-            <br />
-            <button type="submit">Submit</button>
-            <br />
-            {p.type === 'edit' && (
-              <button onClick={handleDelete} type="button">
-                Delete
-              </button>
-            )}
+            <div
+              style={{
+                display: 'flex',
+              }}
+            >
+              <div
+                style={{
+                  marginRight: '.5rem',
+                }}
+              >
+                <Text>{p.type === 'add' ? 'Add ' : 'Edit '}Bookmark</Text>
+                <Input
+                  //
+                  className="element"
+                  name="name"
+                  onChange={handleChange}
+                  placeholder="name"
+                  style={{
+                    paddingLeft: '.5rem',
+                  }}
+                  value={values.name}
+                />
+              </div>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Button
+                  //
+                  className="element"
+                  colorScheme='blue'
+                  size="xs"
+                  type="submit"
+                >
+                  Submit
+                </Button>
+                {p.type === 'edit' && (
+                  <Button
+                    //
+                    className="element"
+                    colorScheme='red'
+                    onClick={handleDelete}
+                    size="xs"
+                    type="button"
+                  >
+                    Delete
+                  </Button>
+                )}
+              </div>
+            </div>
           </form>
-        </div>
+        </Box>
       )}
     </Formik>
   );
