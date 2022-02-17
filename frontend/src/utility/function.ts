@@ -1,3 +1,4 @@
+import React from 'react';
 import { env } from './constant';
 
 export const apiUrl = (): string => {
@@ -10,6 +11,12 @@ export const emailIsValid = (s: string): boolean => {
   const ex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return ex.test(s.toLowerCase());
+};
+
+export const useForceUpdate = (): [number, () => void] => {
+  const [state, setState] = React.useState<number>(1);
+  const forceUpdate = () => setState((s) => ++s);
+  return [state, forceUpdate];
 };
 
 export const usernameIsValid = (s: string): boolean => {

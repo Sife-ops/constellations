@@ -11,12 +11,7 @@ import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
-
-const useForceUpdate = (): [number, () => void] => {
-  const [state, setState] = React.useState<number>(1);
-  const forceUpdate = () => setState((s) => ++s);
-  return [state, forceUpdate];
-};
+import { useForceUpdate } from './utility/function';
 
 function App() {
   const [update, forceUpdate] = useForceUpdate();
@@ -59,13 +54,7 @@ function App() {
 
   return (
     <div className="page">
-      <BoxOutlined
-        className="block"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
+      <BoxOutlined className="block navbar">
         <Box>
           <Button className="element" onClick={() => navigate('/')} size="xs">
             Home
@@ -92,7 +81,6 @@ function App() {
           </Button>
         )}
       </BoxOutlined>
-      {/* {loggedIn && !loading ? ( */}
       {loggedIn ? (
         <Routes>
           <Route path="/dev" element={<Dev />} />
