@@ -1,9 +1,10 @@
 import React from 'react';
 import { Bookmark } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { Button, Table, Tbody, Tr, Td, BoxProps, Box } from '@chakra-ui/react';
 import { CategoriesStateType } from './use-categories-state';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import { OperationContext } from 'urql';
+import { Table, Tbody, Tr, Td, BoxProps, Box } from '@chakra-ui/react';
 
 interface Props {
   categories: CategoriesStateType;
@@ -44,38 +45,25 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
   return (
     <>
       <Tr>
-        <Td>{p.bookmark?.description}</Td>
+        <Td>
+          <HamburgerIcon
+            color="gray"
+            onClick={() => setShowForm((s) => !s)}
+            style={{
+              marginRight: '.5rem',
+            }}
+          />
+          {p.bookmark?.description}
+        </Td>
         <Td>
           <a href={p.bookmark?.url!} target="_blank">
             {p.bookmark?.url}
           </a>
         </Td>
-        <Td
-          // todo: td width to exact width of div
-          style={{
-            width: '150px',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-            }}
-          >
-            <Button
-              onClick={() => setShowForm((s) => !s)}
-              size="xs"
-              style={{
-                marginRight: '.5rem',
-              }}
-            >
-              Edit
-            </Button>
-          </div>
-        </Td>
       </Tr>
       {showForm && (
         <Tr>
-          <Td colSpan={3}>
+          <Td colSpan={2}>
             <BookmarkAddUpdateForm
               //
               bookmark={p.bookmark}
