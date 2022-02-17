@@ -57,7 +57,6 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
-        <BlockBox>
           <form onSubmit={handleSubmit}>
             <div
               style={{
@@ -111,7 +110,6 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
               </div>
             </div>
           </form>
-        </BlockBox>
       )}
     </Formik>
   );

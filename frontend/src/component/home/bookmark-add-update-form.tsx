@@ -1,9 +1,8 @@
 import React from 'react';
 import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../../generated/graphql';
-import { Box, Button, Input } from '@chakra-ui/react';
+import { Box, Button, Input, BoxProps } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
-import { BlockBox } from '../block-box';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 
@@ -77,7 +76,6 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
-        <BlockBox>
           <form onSubmit={handleSubmit}>
             {BookmarkCategories && <div>{BookmarkCategories}</div>}
             <Box className="element">
@@ -111,7 +109,6 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
               </Button>
             </Box>
           </form>
-        </BlockBox>
       )}
     </Formik>
   );

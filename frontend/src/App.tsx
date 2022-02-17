@@ -1,18 +1,21 @@
 import './App.css';
 import React from 'react';
-import { Box, Button } from '@chakra-ui/react';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Dev } from './component/dev/dev';
 import { BlockBox } from './component/block-box';
+import { Button } from '@chakra-ui/react';
+import { Dev } from './component/dev/dev';
 import { Home } from './component/home/home';
 import { Login } from './component/login';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Register } from './component/register';
 import { Reset } from './component/reset';
+import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
 
 function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
+
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     fetch(`${apiUrl()}/refresh`, {
@@ -44,42 +47,44 @@ function App() {
   if (loading) return <div>loading...</div>;
 
   return (
-    <BrowserRouter>
-      <div className="page">
-        <BlockBox>
-          {loggedIn && (
-            <>
-              <Button className="element" onClick={handleLogout} size="xs">
-                Sign Out
-              </Button>
-              <Button className="element" size="xs">
-                Settings
-              </Button>
-            </>
-          )}
-          <Button className="element" size="xs">
-            About
-          </Button>
-          <Button className="element" size="xs">
-            Donate
-          </Button>
-        </BlockBox>
-        {loggedIn ? (
-          <Routes>
-            <Route path="/home" element={<Home />} />
-            <Route path="/dev" element={<Dev />} />
-            <Route path="*" element={<Navigate replace to="/home" />} />
-          </Routes>
-        ) : (
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/reset" element={<Reset />} />
-            <Route path="*" element={<Navigate replace to="/login" />} />
-          </Routes>
+    <div className="page">
+      <BlockBox className='block'>
+        {loggedIn && (
+          <>
+            <Button className="element" onClick={handleLogout} size="xs">
+              Sign Out
+            </Button>
+            <Button className="element" onClick={() => navigate('home')} size="xs">
+              Home
+            </Button>
+            <Button className="element" onClick={() => navigate('settings')} size="xs">
+              Settings
+            </Button>
+          </>
         )}
-      </div>
-    </BrowserRouter>
+        <Button className="element" size="xs">
+          About
+        </Button>
+        <Button className="element" size="xs">
+          Donate
+        </Button>
+      </BlockBox>
+      {loggedIn ? (
+        <Routes>
+          <Route path="/dev" element={<Dev />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Navigate replace to="/home" />} />
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/reset" element={<Reset />} />
+          <Route path="*" element={<Navigate replace to="/login" />} />
+        </Routes>
+      )}
+    </div>
   );
 }
 

@@ -145,7 +145,14 @@ export const Home: React.FC = () => {
           </Button>
         </div>
 
-        {categoryForm ? <>{categoryForm}</> : <div>{Categories}</div>}
+        {categoryForm ? (
+          <BlockBox className="block">
+            {/* //  */}
+            {categoryForm}
+          </BlockBox>
+        ) : (
+          <div>{Categories}</div>
+        )}
       </BlockBox>
 
       <Box className="element">
@@ -170,20 +177,23 @@ export const Home: React.FC = () => {
       </Box>
 
       {bookmarkAdd && (
-        <BookmarkAddUpdateForm
-          //
-          categories={categories}
-          setShowForm={setBookmarkAdd}
-          type="add"
-          userReexec={userReexec}
-        />
+        <BlockBox className="block">
+          <BookmarkAddUpdateForm
+            //
+            categories={categories}
+            setShowForm={setBookmarkAdd}
+            type="add"
+            userReexec={userReexec}
+          />
+        </BlockBox>
       )}
 
       <BookmarkTable
         //
-        categories={categories}
-        userReexec={userReexec}
         bookmarks={filteredBookmarks}
+        categories={categories}
+        className="element"
+        userReexec={userReexec}
       />
     </>
   );

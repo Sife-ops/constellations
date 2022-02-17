@@ -1,7 +1,7 @@
 import React from 'react';
 import { Bookmark, useBookmarkDeleteMutation } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { Button, Table, Tbody, Tr, Td } from '@chakra-ui/react';
+import { Button, Table, Tbody, Tr, Td, BoxProps, Box } from '@chakra-ui/react';
 import { CategoriesStateType } from './use-categories-state';
 import { OperationContext } from 'urql';
 
@@ -14,7 +14,7 @@ interface TableProps {
   bookmarks: (Bookmark | null)[] | undefined;
 }
 
-export const BookmarkTable: React.FC<Props & TableProps> = (p) => {
+export const BookmarkTable: React.FC<Props & TableProps & BoxProps> = (p) => {
   const BookmarkRows = p.bookmarks?.map((e) => (
     <BookmarkRow
       //
@@ -26,9 +26,11 @@ export const BookmarkTable: React.FC<Props & TableProps> = (p) => {
   ));
 
   return (
-    <Table className="bookmarkTable">
-      <Tbody>{BookmarkRows}</Tbody>
-    </Table>
+    <Box {...p}>
+      <Table className="bookmarkTable">
+        <Tbody>{BookmarkRows}</Tbody>
+      </Table>
+    </Box>
   );
 };
 
@@ -68,7 +70,6 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
             }}
           >
             <Button
-              //   colorScheme="blue"
               onClick={() => setShowForm((s) => !s)}
               size="xs"
               style={{

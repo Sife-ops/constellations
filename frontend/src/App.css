@@ -6,7 +6,9 @@
 .bookmarkTable td {
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .page {
   padding: 0.5rem 0 0 0.5rem;
 }
@@ -24,3 +26,6 @@
   margin: 0 0.5rem 0.5rem 0;
 }
 
+.panic {
+  border: 1px solid red;
+}

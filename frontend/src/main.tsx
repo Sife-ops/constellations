@@ -2,6 +2,7 @@ import './index.css';
 import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { apiUrl } from './utility/function';
 import { authConfig } from './utility/auth-config';
@@ -24,7 +25,9 @@ ReactDOM.render(
   <React.StrictMode>
     <UrqlProvider value={client}>
       <ChakraProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </ChakraProvider>
     </UrqlProvider>
   </React.StrictMode>,
