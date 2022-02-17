@@ -1,11 +1,12 @@
 import React from 'react';
+import { BlockBox } from '../block-box';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkTable } from './bookmark-table';
 import { Box, Button, Input } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
-import { BlockBox } from '../block-box';
+import { HandleCategory } from '../../utility/type';
 import { useCategoriesState } from './use-categories-state';
 
 export const Home: React.FC = () => {
@@ -34,34 +35,28 @@ export const Home: React.FC = () => {
     }
   }, [userRes.fetching]);
 
-  const resetCategoryForm = () => {
-    setCategoryForm(null);
-    setCategoryEditMode(false);
-    setCategoryAddMode(false);
-  };
-
-  const handleCategoryAdd = () => {
-    if (categoryForm || categoryEditMode) {
-      resetCategoryForm();
-      return;
-    }
-    setCategoryAddMode(true);
-    setCategoryForm(
-      <CategoryAddUpdateForm
-        //
-        setCategoryForm={setCategoryForm}
-        type="add"
-        userReexec={userReexec}
-      />
-    );
-  };
-
-  const handleCategoryEdit = () => {
-    if (categoryForm || categoryEditMode) {
-      resetCategoryForm();
-      return;
-    }
-    setCategoryEditMode(true);
+  const handleCategory: HandleCategory = (args) => {
+    return () => {
+      if (categoryForm || categoryEditMode) {
+        setCategoryForm(null);
+        setCategoryEditMode(false);
+        setCategoryAddMode(false);
+        return;
+      }
+      if (args.type === 'add') {
+        setCategoryAddMode(true);
+        setCategoryForm(
+          <CategoryAddUpdateForm
+            //
+            setCategoryForm={setCategoryForm}
+            type="add"
+            userReexec={userReexec}
+          />
+        );
+        return;
+      }
+      setCategoryEditMode(true);
+    };
   };
 
   const Categories = categories?.map((e) => (
@@ -135,7 +130,7 @@ export const Home: React.FC = () => {
           <Button
             //
             className="element"
-            onClick={handleCategoryAdd}
+            onClick={handleCategory({ type: 'add' })}
             variant={categoryAddMode ? 'solid' : 'outline'}
           >
             Add
@@ -143,7 +138,7 @@ export const Home: React.FC = () => {
           <Button
             //
             className="element"
-            onClick={handleCategoryEdit}
+            onClick={handleCategory({ type: 'edit' })}
             variant={categoryEditMode ? 'solid' : 'outline'}
           >
             Edit
