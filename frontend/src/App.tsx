@@ -12,9 +12,16 @@ import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
 
+const useForceUpdate = (): [number, () => void] => {
+  const [state, setState] = React.useState<number>(1);
+  const forceUpdate = () => setState((s) => ++s);
+  return [state, forceUpdate];
+};
+
 function App() {
+  const [update, forceUpdate] = useForceUpdate();
+
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
 
   const navigate = useNavigate();
 
@@ -31,9 +38,8 @@ function App() {
         localStorage.setItem('yu', data.accessToken);
         setLoggedIn(true);
       }
-      setLoading(false);
     });
-  }, []);
+  }, [update]);
 
   /**
    * remove tokens
@@ -46,12 +52,10 @@ function App() {
     }).then((res) => {
       if (res.ok) {
         localStorage.removeItem('yu');
-        window.location.reload();
+        setLoggedIn(false);
       }
     });
   };
-
-  if (loading) return <div>loading...</div>;
 
   return (
     <div className="page">
@@ -88,6 +92,7 @@ function App() {
           </Button>
         )}
       </BoxOutlined>
+      {/* {loggedIn && !loading ? ( */}
       {loggedIn ? (
         <Routes>
           <Route path="/dev" element={<Dev />} />
@@ -98,7 +103,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login forceUpdate={forceUpdate} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />

@@ -3,7 +3,11 @@ import { Formik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLoginMutation } from '../generated/graphql';
 
-export const Login: React.FC = () => {
+interface Props {
+  forceUpdate: () => void;
+}
+
+export const Login: React.FC<Props> = (p) => {
   const navigate = useNavigate();
 
   const [_, loginMutation] = useLoginMutation();
@@ -21,7 +25,7 @@ export const Login: React.FC = () => {
         if (res.error) {
           return navigate('/reset');
         }
-        window.location.reload();
+        p.forceUpdate();
       }}
     >
       {({ handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
