@@ -146,10 +146,8 @@ export const Home: React.FC = () => {
         </div>
 
         {categoryForm ? (
-          <BlockBox className="block">
-            {/* //  */}
-            {categoryForm}
-          </BlockBox>
+          //
+          <BlockBox className="block">{categoryForm}</BlockBox>
         ) : (
           <div>{Categories}</div>
         )}

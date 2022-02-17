@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Input, Text } from '@chakra-ui/react';
-import { BlockBox } from '../block-box';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
 import { SelectableCategory } from '../../utility/type';

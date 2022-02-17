@@ -48,7 +48,7 @@ function App() {
 
   return (
     <div className="page">
-      <BlockBox className='block'>
+      <BlockBox className="block">
         {loggedIn && (
           <>
             <Button className="element" onClick={handleLogout} size="xs">
