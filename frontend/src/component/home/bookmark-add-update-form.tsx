@@ -127,13 +127,16 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
               Submit
             </Button>
 
-            <Button
-              colorScheme="red"
-              isFullWidth
-              onClick={handleDelete}
-            >
-              Delete
-            </Button>
+            {p.bookmark && (
+              <Button
+                //
+                colorScheme="red"
+                isFullWidth
+                onClick={handleDelete}
+              >
+                Delete
+              </Button>
+            )}
           </Box>
         </form>
       )}
