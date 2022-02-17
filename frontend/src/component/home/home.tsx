@@ -1,5 +1,5 @@
 import React from 'react';
-import { BlockBox } from '../block-box';
+import { BoxOutlined } from '../box-outlined';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkTable } from './bookmark-table';
@@ -120,7 +120,7 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <BlockBox className="block categories">
+      <BoxOutlined className="block categories">
         <div
           style={{
             display: 'flex',
@@ -147,11 +147,11 @@ export const Home: React.FC = () => {
 
         {categoryForm ? (
           //
-          <BlockBox className="block">{categoryForm}</BlockBox>
+          <BoxOutlined className="block">{categoryForm}</BoxOutlined>
         ) : (
           <div>{Categories}</div>
         )}
-      </BlockBox>
+      </BoxOutlined>
 
       <Box className="element">
         <Input
@@ -175,7 +175,7 @@ export const Home: React.FC = () => {
       </Box>
 
       {bookmarkAdd && (
-        <BlockBox className="block">
+        <BoxOutlined className="block">
           <BookmarkAddUpdateForm
             //
             categories={categories}
@@ -183,7 +183,7 @@ export const Home: React.FC = () => {
             type="add"
             userReexec={userReexec}
           />
-        </BlockBox>
+        </BoxOutlined>
       )}
 
       <BookmarkTable

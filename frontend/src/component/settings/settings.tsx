@@ -1,12 +1,12 @@
-import { Input, Button, Text } from '@chakra-ui/react';
-import { Formik } from 'formik';
 import React from 'react';
-import { BlockBox } from '../block-box';
+import { BoxOutlined } from '../box-outlined';
+import { Formik } from 'formik';
+import { Input, Button, Text } from '@chakra-ui/react';
 
 export const Settings: React.FC = () => {
   return (
     <>
-      <BlockBox className="block">
+      <BoxOutlined className="block">
         <Formik
           initialValues={{ password: '' }}
           onSubmit={async ({ password }) => {
@@ -39,7 +39,7 @@ export const Settings: React.FC = () => {
             </form>
           )}
         </Formik>
-      </BlockBox>
+      </BoxOutlined>
     </>
   );
 };

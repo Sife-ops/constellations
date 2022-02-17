@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { BlockBox } from './component/block-box';
+import { BoxOutlined } from './component/box-outlined';
 import { Button } from '@chakra-ui/react';
 import { Dev } from './component/dev/dev';
 import { Home } from './component/home/home';
@@ -17,6 +17,9 @@ function App() {
 
   const navigate = useNavigate();
 
+  /**
+   * get tokens
+   */
   React.useEffect(() => {
     fetch(`${apiUrl()}/refresh`, {
       method: 'POST',
@@ -31,6 +34,9 @@ function App() {
     });
   }, []);
 
+  /**
+   * remove tokens
+   */
   const handleLogout = () => {
     console.log('logout');
     fetch(`${apiUrl()}/logout`, {
@@ -48,7 +54,7 @@ function App() {
 
   return (
     <div className="page">
-      <BlockBox className="block">
+      <BoxOutlined className="block">
         {loggedIn && (
           <>
             <Button className="element" onClick={handleLogout} size="xs">
@@ -68,7 +74,7 @@ function App() {
         <Button className="element" size="xs">
           Donate
         </Button>
-      </BlockBox>
+      </BoxOutlined>
       {loggedIn ? (
         <Routes>
           <Route path="/dev" element={<Dev />} />

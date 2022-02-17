@@ -26,7 +26,7 @@ export const BookmarkTable: React.FC<Props & TableProps & BoxProps> = (p) => {
   ));
 
   return (
-    <Box {...p}>
+    <Box className={p.className}>
       <Table className="bookmarkTable">
         <Tbody>{BookmarkRows}</Tbody>
       </Table>
