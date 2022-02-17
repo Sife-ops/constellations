@@ -1,10 +1,16 @@
 import React from 'react';
-import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../../generated/graphql';
 import { Box, Button, Input } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
 import { Formik } from 'formik';
 import { OperationContext } from 'urql';
+
+import {
+  Bookmark,
+  useBookmarkAddMutation,
+  useBookmarkDeleteMutation,
+  useBookmarkUpdateMutation,
+} from '../../generated/graphql';
 
 interface Props {
   bookmark?: Bookmark | null;
@@ -51,6 +57,13 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
    */
   const [_, bookmarkAddMutation] = useBookmarkAddMutation();
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
+  const [___, deleteMutation] = useBookmarkDeleteMutation();
+
+  const handleDelete: React.MouseEventHandler = async (e) => {
+    const res = await deleteMutation({ id: p.bookmark?.id });
+    if (res.error) return;
+    p.userReexec();
+  };
 
   return (
     <Formik
@@ -97,14 +110,29 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
             />
           </Box>
 
-          <Box className="element">
+          <Box
+            className="element"
+            style={{
+              display: 'flex',
+            }}
+          >
             <Button
-              //
               colorScheme="green"
               isFullWidth
+              style={{
+                marginRight: '.5rem',
+              }}
               type="submit"
             >
               Submit
+            </Button>
+
+            <Button
+              colorScheme="red"
+              isFullWidth
+              onClick={handleDelete}
+            >
+              Delete
             </Button>
           </Box>
         </form>

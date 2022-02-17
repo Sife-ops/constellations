@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bookmark, useBookmarkDeleteMutation } from '../../generated/graphql';
+import { Bookmark } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { Button, Table, Tbody, Tr, Td, BoxProps, Box } from '@chakra-ui/react';
 import { CategoriesStateType } from './use-categories-state';
@@ -41,14 +41,6 @@ interface RowProps {
 export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
   const [showForm, setShowForm] = React.useState<boolean>(false);
 
-  const [_, deleteMutation] = useBookmarkDeleteMutation();
-
-  const handleDelete: React.MouseEventHandler = async (e) => {
-    const res = await deleteMutation({ id: p.bookmark?.id });
-    if (res.error) return;
-    p.userReexec();
-  };
-
   return (
     <>
       <Tr>
@@ -78,14 +70,6 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
             >
               Edit
             </Button>
-            {/* <Button
-              //
-              colorScheme="red"
-              onClick={handleDelete}
-              size="xs"
-            >
-              Delete
-            </Button> */}
           </div>
         </Td>
       </Tr>
