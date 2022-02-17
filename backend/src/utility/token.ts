@@ -9,7 +9,8 @@ interface RefreshPayload {
 
 export const newAccessToken = (payload: { id: number }): string => {
   return jwt.sign(payload, env.secret.accessToken, {
-    expiresIn: env.prod ? '15m' : '15s',
+    // expiresIn: env.prod ? '15m' : '15m',
+    expiresIn: '15m',
   });
 };
 

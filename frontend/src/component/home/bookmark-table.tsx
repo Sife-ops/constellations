@@ -78,14 +78,14 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
             >
               Edit
             </Button>
-            <Button
+            {/* <Button
               //
               colorScheme="red"
               onClick={handleDelete}
               size="xs"
             >
               Delete
-            </Button>
+            </Button> */}
           </div>
         </Td>
       </Tr>
@@ -97,7 +97,6 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
               bookmark={p.bookmark}
               categories={p.categories}
               setShowForm={setShowForm}
-              type="edit"
               userReexec={p.userReexec}
             />
           </Td>

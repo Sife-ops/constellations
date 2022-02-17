@@ -72,11 +72,11 @@ function App() {
           </Button>
         </Box>
         {loggedIn ? (
-          <Button className="element" onClick={handleLogout} size="xs">
+          <Button className="element" colorScheme='red' onClick={handleLogout} size="xs">
             Sign Out
           </Button>
         ) : (
-          <Button className="element" onClick={() => navigate('login')} size="xs">
+          <Button className="element" colorScheme='blue' onClick={() => navigate('login')} size="xs">
             Sign In
           </Button>
         )}

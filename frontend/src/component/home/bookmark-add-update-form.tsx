@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bookmark, useBookmarkAddMutation, useBookmarkUpdateMutation } from '../../generated/graphql';
-import { Box, Button, Input, BoxProps } from '@chakra-ui/react';
+import { Box, Button, Input } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
 import { Formik } from 'formik';
@@ -10,7 +10,6 @@ interface Props {
   bookmark?: Bookmark | null;
   categories: CategoriesStateType;
   setShowForm: (value: React.SetStateAction<boolean>) => void;
-  type: 'add' | 'edit';
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
@@ -60,12 +59,12 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
         const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
 
         let res;
-        if (p.type === 'add') {
+        if (p.bookmark) {
+          res = await bookmarkUpdateMutation({ id: p.bookmark.id, description, url, categoryIds });
+        } else {
           res = await bookmarkAddMutation({ description, url, categoryIds });
         }
-        if (p.type === 'edit') {
-          res = await bookmarkUpdateMutation({ id: p.bookmark?.id, description, url, categoryIds });
-        }
+
         if (res?.error) {
           console.log(res.error);
           return;
@@ -76,39 +75,39 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       }}
     >
       {({ handleChange, handleSubmit, values }) => (
-          <form onSubmit={handleSubmit}>
-            {BookmarkCategories && <div>{BookmarkCategories}</div>}
-            <Box className="element">
-              <Input
-                //
-                name="description"
-                onChange={handleChange}
-                placeholder="description"
-                value={values.description}
-              />
-            </Box>
+        <form onSubmit={handleSubmit}>
+          {BookmarkCategories && <div>{BookmarkCategories}</div>}
+          <Box className="element">
+            <Input
+              //
+              name="description"
+              onChange={handleChange}
+              placeholder="description"
+              value={values.description}
+            />
+          </Box>
 
-            <Box className="element">
-              <Input
-                //
-                name="url"
-                onChange={handleChange}
-                placeholder="url"
-                value={values.url}
-              />
-            </Box>
+          <Box className="element">
+            <Input
+              //
+              name="url"
+              onChange={handleChange}
+              placeholder="url"
+              value={values.url}
+            />
+          </Box>
 
-            <Box className="element">
-              <Button
-                //
-                colorScheme="green"
-                isFullWidth
-                type="submit"
-              >
-                Submit
-              </Button>
-            </Box>
-          </form>
+          <Box className="element">
+            <Button
+              //
+              colorScheme="green"
+              isFullWidth
+              type="submit"
+            >
+              Submit
+            </Button>
+          </Box>
+        </form>
       )}
     </Formik>
   );
