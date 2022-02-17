@@ -1,9 +1,10 @@
 import './App.css';
 import React from 'react';
+import { Box, Button } from '@chakra-ui/react';
 import { BoxOutlined } from './component/box-outlined';
-import { Button } from '@chakra-ui/react';
 import { Dev } from './component/dev/dev';
 import { Home } from './component/home/home';
+import { Landing } from './component/landing';
 import { Login } from './component/login';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Register } from './component/register';
@@ -54,26 +55,38 @@ function App() {
 
   return (
     <div className="page">
-      <BoxOutlined className="block">
-        {loggedIn && (
-          <>
-            <Button className="element" onClick={handleLogout} size="xs">
-              Sign Out
-            </Button>
-            <Button className="element" onClick={() => navigate('home')} size="xs">
-              Home
-            </Button>
+      <BoxOutlined
+        className="block"
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Box>
+          <Button className="element" onClick={() => navigate('/')} size="xs">
+            Home
+          </Button>
+          {loggedIn && (
             <Button className="element" onClick={() => navigate('settings')} size="xs">
               Settings
             </Button>
-          </>
+          )}
+          <Button className="element" size="xs">
+            About
+          </Button>
+          <Button className="element" size="xs">
+            Donate
+          </Button>
+        </Box>
+        {loggedIn ? (
+          <Button className="element" onClick={handleLogout} size="xs">
+            Sign Out
+          </Button>
+        ) : (
+          <Button className="element" onClick={() => navigate('login')} size="xs">
+            Sign In
+          </Button>
         )}
-        <Button className="element" size="xs">
-          About
-        </Button>
-        <Button className="element" size="xs">
-          Donate
-        </Button>
       </BoxOutlined>
       {loggedIn ? (
         <Routes>
@@ -84,6 +97,7 @@ function App() {
         </Routes>
       ) : (
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
