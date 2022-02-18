@@ -180,7 +180,6 @@ export const Home: React.FC = () => {
             //
             categories={categories}
             setShowForm={setBookmarkAdd}
-            type="add"
             userReexec={userReexec}
           />
         </BoxOutlined>

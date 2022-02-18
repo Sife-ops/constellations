@@ -11,12 +11,10 @@ import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
-import { useForceUpdate } from './utility/function';
 
 function App() {
-  const [update, forceUpdate] = useForceUpdate();
-
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [loading, setLoading] = React.useState(true);
 
   const navigate = useNavigate();
 
@@ -33,8 +31,9 @@ function App() {
         localStorage.setItem('yu', data.accessToken);
         setLoggedIn(true);
       }
+      setLoading(false);
     });
-  }, [update]);
+  }, []);
 
   /**
    * remove tokens
@@ -47,10 +46,12 @@ function App() {
     }).then((res) => {
       if (res.ok) {
         localStorage.removeItem('yu');
-        setLoggedIn(false);
+        window.location.reload();
       }
     });
   };
+
+  if (loading) return <div>loading...</div>;
 
   return (
     <div className="page">
@@ -91,7 +92,7 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login className='block' forceUpdate={forceUpdate} />} />
+          <Route path="/login" element={<Login className='block' />} />
           <Route path="/register" element={<Register className='block' />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />

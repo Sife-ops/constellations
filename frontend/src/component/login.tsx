@@ -5,11 +5,7 @@ import { useLoginMutation } from '../generated/graphql';
 import { BoxOutlined } from './box-outlined';
 import { Box, BoxProps, Button, Input } from '@chakra-ui/react';
 
-interface Props {
-  forceUpdate: () => void;
-}
-
-export const Login: React.FC<Props & BoxProps> = (p) => {
+export const Login: React.FC<BoxProps> = (p) => {
   const navigate = useNavigate();
 
   const [_, loginMutation] = useLoginMutation();
@@ -28,7 +24,7 @@ export const Login: React.FC<Props & BoxProps> = (p) => {
           if (res.error) {
             return navigate('/reset');
           }
-          p.forceUpdate();
+          window.location.reload();
         }}
       >
         {({ handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
