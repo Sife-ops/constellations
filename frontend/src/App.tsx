@@ -11,12 +11,14 @@ import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
+import { useForceUpdate } from './utility/function';
 
-function App() {
+export const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const [loading, setLoading] = React.useState(true);
 
   const navigate = useNavigate();
+
+  const [update, forceUpdate] = useForceUpdate();
 
   /**
    * get tokens
@@ -30,28 +32,28 @@ function App() {
         const data = await res.json();
         localStorage.setItem('yu', data.accessToken);
         setLoggedIn(true);
+        return;
       }
-      setLoading(false);
+      setLoggedIn(false);
     });
-  }, []);
+  }, [update]);
 
   /**
    * remove tokens
    */
   const handleLogout = () => {
-    console.log('logout');
     fetch(`${apiUrl()}/logout`, {
       method: 'POST',
       credentials: 'include',
     }).then((res) => {
       if (res.ok) {
         localStorage.removeItem('yu');
+        // todo: WHY RERENDER DOES NOT WORK
+        // forceUpdate();
         window.location.reload();
       }
     });
   };
-
-  if (loading) return <div>loading...</div>;
 
   return (
     <div className="page">
@@ -73,11 +75,11 @@ function App() {
           </Button>
         </Box>
         {loggedIn ? (
-          <Button className="element" colorScheme='red' onClick={handleLogout} size="xs">
+          <Button className="element" colorScheme="red" onClick={handleLogout} size="xs">
             Sign Out
           </Button>
         ) : (
-          <Button className="element" colorScheme='blue' onClick={() => navigate('login')} size="xs">
+          <Button className="element" colorScheme="blue" onClick={() => navigate('login')} size="xs">
             Sign In
           </Button>
         )}
@@ -92,14 +94,12 @@ function App() {
       ) : (
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login className='block' />} />
-          <Route path="/register" element={<Register className='block' />} />
+          <Route path="/login" element={<Login className="block" forceUpdate={forceUpdate} />} />
+          <Route path="/register" element={<Register className="block" />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
       )}
     </div>
   );
-}
-
-export default App;
+};

@@ -46,14 +46,15 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
     <>
       <Tr>
         <Td>
-          <HamburgerIcon
-            color="gray"
-            onClick={() => setShowForm((s) => !s)}
-            style={{
-              marginRight: '.5rem',
-            }}
-          />
-          {p.bookmark?.description}
+          <Box onClick={() => setShowForm((s) => !s)}>
+            <HamburgerIcon
+              color="lightgray"
+              style={{
+                marginRight: '.5rem',
+              }}
+            />
+            {p.bookmark?.description}
+          </Box>
         </Td>
         <Td>
           <a href={p.bookmark?.url!} target="_blank">
