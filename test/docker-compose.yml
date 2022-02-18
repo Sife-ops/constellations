@@ -5,7 +5,7 @@ services:
     volumes: 
       - ./public_html:/public_html
       - ./conf.d:/etc/nginx/conf.d
-      - ./dhparam:/etc/nginx/conf.d
+      - ./dhparam:/etc/nginx/dhparam
       - ./certbot/conf:/etc/nginx/ssl
       - ./certbot/data:/usr/share/nginx/html/letsencrypt
     ports:
