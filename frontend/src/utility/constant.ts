@@ -1,10 +1,10 @@
 interface Env {
-  prod: boolean;
+  prod_url: string;
   ngrok_url: string;
 }
 
 export const env: Env = {
-  prod: import.meta.env.VITE_PROD ? true : false,
+  prod_url: (import.meta.env.VITE_PROD_URL as string) || '',
   ngrok_url: (import.meta.env.VITE_NGROK_URL as string) || '',
 };
 
