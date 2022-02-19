@@ -4,7 +4,7 @@ services:
     volumes:
       - ./backend/database:/app/database
     environment:
-      - VITE_NGROK_URL=${VITE_NGROK_URL}
+      - VITE_PROD_URL=${VITE_PROD_URL}
   frontend:
     depends_on:
       - backend
@@ -13,12 +13,8 @@ services:
     depends_on:
       - frontend
     image: nginx:stable-alpine
-    volumes: 
-      - ./proxy/nginx:/etc/nginx/conf.d
-      - ./proxy/dhparam:/etc/nginx/dhparam
-      - ./proxy/certbot/conf:/etc/nginx/ssl
-      - ./proxy/certbot/data:/usr/share/nginx/html/letsencrypt
     ports:
-      - 80:80
-      - 443:443
+      - 3001:80
+    volumes: 
+      - ./nginx:/etc/nginx/conf.d
 
