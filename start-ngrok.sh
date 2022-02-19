@@ -6,4 +6,4 @@
 pushd ./frontend
 npm run build
 popd
-docker-compose up --build
+docker-compose -f docker-compose-ngrok.yml up --build
