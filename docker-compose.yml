@@ -5,24 +5,8 @@ services:
       - ./backend/database:/app/database
     environment:
       - VITE_PROD_URL=${VITE_PROD_URL}
-    networks:
-      - nginx-certbot_default
   frontend:
     depends_on:
       - backend
     build: ./frontend
-    networks:
-      - nginx-certbot_default
-networks:
-  nginx-certbot_default:
-    external: true
-
-  # proxy:
-  #   depends_on:
-  #     - frontend
-  #   image: nginx:stable-alpine
-  #   ports:
-  #     - 3001:80
-  #   volumes: 
-  #     - ./nginx:/etc/nginx/conf.d
 
