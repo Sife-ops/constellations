@@ -9,12 +9,16 @@ services:
     depends_on:
       - backend
     build: ./frontend
-  proxy:
-    depends_on:
-      - frontend
-    image: nginx:stable-alpine
-    ports:
-      - 3001:80
-    volumes: 
-      - ./nginx:/etc/nginx/conf.d
+networks:
+  nginx-certbot_default:
+    external: true
+
+  # proxy:
+  #   depends_on:
+  #     - frontend
+  #   image: nginx:stable-alpine
+  #   ports:
+  #     - 3001:80
+  #   volumes: 
+  #     - ./nginx:/etc/nginx/conf.d
 
