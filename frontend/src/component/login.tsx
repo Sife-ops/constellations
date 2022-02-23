@@ -1,9 +1,10 @@
 import React from 'react';
+import { Box, BoxProps, Button, Input } from '@chakra-ui/react';
+import { BoxOutlined } from './box-outlined';
 import { Formik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
+import { emailIsValid } from '../utility/function';
 import { useLoginMutation } from '../generated/graphql';
-import { BoxOutlined } from './box-outlined';
-import { Box, BoxProps, Button, Input } from '@chakra-ui/react';
 
 interface Props {
   forceUpdate: () => void;
@@ -30,12 +31,20 @@ export const Login: React.FC<Props & BoxProps> = (p) => {
           }
           p.forceUpdate();
         }}
+        validate={(values) => {
+          const errors: { email?: 'empty' | 'invalid' } = {};
+          if (!values.email) errors.email = 'empty';
+          if (!emailIsValid(values.email)) errors.email = 'invalid';
+          return errors;
+        }}
       >
-        {({ handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
+        {({ errors, handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
           <form onSubmit={handleSubmit}>
             <Box className="element">
               <Input
+                focusBorderColor={errors.email === 'invalid' ? 'red.500' : ''}
                 id="at-loginForm__email"
+                isInvalid={errors.email === 'invalid'}
                 name="email"
                 onChange={handleChange}
                 placeholder="email"
