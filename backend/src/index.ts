@@ -84,6 +84,6 @@ import { typeDefs } from './graphql/typedef';
 
   app.listen(port(), () => {
     console.log(`port: ${port()}`);
-    console.log(`origins: ${port()}`);
+    console.log(`origins: ${origin()}`);
   });
 })();
