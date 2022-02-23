@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import { Box, BoxProps, Button, Input } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
 import { Formik } from 'formik';
