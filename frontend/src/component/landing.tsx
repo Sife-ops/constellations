@@ -18,11 +18,10 @@ export const Landing: React.FC = () => {
     <>
       <Box className="block">
         <Text fontSize="3xl">Bookmark Manager</Text>
+        <Text>Never lose your bookmarks.</Text>
       </Box>
       <Box className="block">
         <UnorderedList>
-          <ListItem>Relational Data Model</ListItem>
-
           <ListItem>
             <Text as="u">
               <a href="https://github.com/Sife-ops/jwt-auth" target="_blank">
@@ -31,12 +30,7 @@ export const Landing: React.FC = () => {
             </Text>
           </ListItem>
 
-          <ListItem>
-            Coming up:
-            <UnorderedList>
-              <ListItem>Financial Data?</ListItem>
-            </UnorderedList>
-          </ListItem>
+          <ListItem>They're just bookmarks</ListItem>
         </UnorderedList>
       </Box>
     </>
