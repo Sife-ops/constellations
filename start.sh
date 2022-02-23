@@ -1,7 +1,11 @@
 #!/bin/sh
 
-# to run with ngrok, define url before running this
-# export VITE_PROD_URL="your prod url"
+if ! readlink -f ./.env ; then
+    echo 'Error: no .env file'
+    exit 1
+fi
+
+source ./.env
 
 pushd ./frontend
 npm run build

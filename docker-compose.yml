@@ -5,6 +5,8 @@ services:
       - ./backend/database:/app/database
     environment:
       - VITE_PROD_URL=${VITE_PROD_URL}
+      - SECRET_ACCESS_TOKEN=${SECRET_ACCESS_TOKEN}
+      - SECRET_REFRESH_TOKEN=${SECRET_REFRESH_TOKEN}
   frontend:
     depends_on:
       - backend
