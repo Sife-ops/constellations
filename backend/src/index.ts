@@ -46,10 +46,9 @@ import { typeDefs } from './graphql/typedef';
     const nonprod = [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://bookmarks.soyless.xyz',
       'https://studio.apollographql.com',
     ];
-    if (env.prod) return ['prod url'];
+    if (env.prod_url) return [env.prod_url];
     if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
     return nonprod;
   };
@@ -79,11 +78,12 @@ import { typeDefs } from './graphql/typedef';
   server.applyMiddleware({ app, cors: false });
 
   const port = (): number => {
-    if (env.prod || env.ngrok_url) return 80;
-    return 80;
+    if (env.prod_url || env.ngrok_url) return 80;
+    return 4000;
   };
 
   app.listen(port(), () => {
-    console.log(`running on ${port()}`);
+    console.log(`port: ${port()}`);
+    console.log(`origins: ${port()}`);
   });
 })();

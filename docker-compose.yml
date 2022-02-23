@@ -9,11 +9,3 @@ services:
     depends_on:
       - backend
     build: ./frontend
-  fullstack:
-    depends_on:
-      - frontend
-    image: nginx:stable-alpine
-    ports:
-      - 3001:80
-    volumes:
-      - ./nginx:/etc/nginx/conf.d
