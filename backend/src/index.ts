@@ -80,7 +80,7 @@ import { typeDefs } from './graphql/typedef';
 
   const port = (): number => {
     if (env.prod || env.ngrok_url) return 80;
-    return 4000;
+    return 80;
   };
 
   app.listen(port(), () => {
