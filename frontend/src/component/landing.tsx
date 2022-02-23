@@ -1,8 +1,19 @@
 import React from 'react';
 import { Box, Text } from '@chakra-ui/react';
 import { ListItem, UnorderedList } from '@chakra-ui/react';
+import { use_Dev0Query } from '../generated/graphql';
 
 export const Landing: React.FC = () => {
+  const [devRes, _] = use_Dev0Query();
+
+  if (!devRes.fetching) {
+    if (devRes.error) {
+      console.log(devRes.error);
+    } else {
+      console.log(devRes.data);
+    }
+  }
+
   return (
     <>
       <Box className="block">
@@ -20,11 +31,10 @@ export const Landing: React.FC = () => {
             </Text>
           </ListItem>
 
-          <ListItem>Coming up:
+          <ListItem>
+            Coming up:
             <UnorderedList>
-              <ListItem>
-                Financial Data?
-              </ListItem>
+              <ListItem>Financial Data?</ListItem>
             </UnorderedList>
           </ListItem>
         </UnorderedList>

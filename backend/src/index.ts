@@ -26,7 +26,7 @@ import { typeDefs } from './graphql/typedef';
   try {
     await createConnection({
       type: 'sqlite',
-      database: './database/db.sqlite3',
+      database: ':memory:',
       dropSchema: env.seed,
       entities: [User, Bookmark, Category],
       synchronize: true,
@@ -44,9 +44,10 @@ import { typeDefs } from './graphql/typedef';
 
   const origin = (): string[] => {
     const nonprod = [
-      'https://studio.apollographql.com',
       'http://localhost:3000',
       'http://localhost:3001',
+      'https://bookmarks.soyless.xyz',
+      'https://studio.apollographql.com',
     ];
     if (env.prod) return ['prod url'];
     if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
