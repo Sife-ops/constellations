@@ -26,7 +26,7 @@ import { typeDefs } from './graphql/typedef';
   try {
     await createConnection({
       type: 'sqlite',
-      database: ':memory:',
+      database: './database/db.sqlite3',
       dropSchema: env.seed,
       entities: [User, Bookmark, Category],
       synchronize: true,
