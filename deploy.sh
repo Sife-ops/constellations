@@ -10,4 +10,4 @@ fi
 pushd ./frontend
 npm run build
 popd
-docker-compose -f docker-compose.yml up --build
+docker-compose -f docker-compose.yml up --build ${1}
