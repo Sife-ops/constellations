@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if ! readlink -f ./.env ; then
+if ! stat ./.env ; then
     echo 'Error: no .env file'
     exit 1
 fi
