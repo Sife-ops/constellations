@@ -230,6 +230,16 @@ export const resolvers = {
         throw new Error('invalid arguments');
       }
 
+      {
+        const found = await User.findOne({ where: { email } });
+        if (found) throw new Error('email');
+      }
+
+      {
+        const found = await User.findOne({ where: { username } });
+        if (found) throw new Error('username');
+      }
+
       const hashed = await argon2.hash(password);
 
       const user = await User.create({

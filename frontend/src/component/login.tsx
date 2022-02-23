@@ -33,8 +33,8 @@ export const Login: React.FC<Props & BoxProps> = (p) => {
         }}
         validate={(values) => {
           const errors: { email?: 'empty' | 'invalid' } = {};
-          if (!values.email) errors.email = 'empty';
           if (!emailIsValid(values.email)) errors.email = 'invalid';
+          if (!values.email) errors.email = 'empty';
           return errors;
         }}
       >

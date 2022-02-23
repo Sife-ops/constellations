@@ -13,7 +13,7 @@ export const emailIsValid = (s: string): boolean => {
 };
 
 export const passwordIsValid = (s: string): boolean => {
-  if (s === '') return false;
+  // if (s === '') return false;
   if (s.length < 8) return false;
   if (!/[0-9]/.test(s)) return false;
   if (!/[!@#\$%\^\&*\)\(+=._-]/.test(s)) return false;
@@ -27,7 +27,7 @@ export const useForceUpdate = (): [number, () => void] => {
 };
 
 export const usernameIsValid = (s: string): boolean => {
-  if (s === '') return false;
+  // if (s === '') return false;
   if (s.length < 5 || s.length > 15) return false;
   if (/\W/.test(s)) return false;
   return true;
