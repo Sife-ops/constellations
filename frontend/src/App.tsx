@@ -94,7 +94,7 @@ export const App = () => {
       ) : (
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login className="block" forceUpdate={forceUpdate} />} />
+          <Route path="/login" element={<Login forceUpdate={forceUpdate} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />

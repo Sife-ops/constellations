@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, BoxProps, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
+import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
-import { Formik } from 'formik';
+import { Formik, FormikConfig } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import { emailIsValid, passwordIsValid, usernameIsValid } from '../utility/function';
@@ -13,6 +13,46 @@ export const Register: React.FC = () => {
   const [_, registerMutation] = useRegisterMutation();
 
   const [registerError, setRegisterError] = React.useState<null | 'email' | 'username'>(null);
+
+  interface Config {
+    email: string;
+    username: string;
+    password: string;
+    passwordConfirm: string;
+  }
+
+  const formikConfig: FormikConfig<Config> = {
+    initialValues: { email: '', username: '', password: '', passwordConfirm: '' },
+    onSubmit: async ({ email, username, password }, { setSubmitting }) => {
+      setRegisterError(null);
+      setSubmitting(true);
+      const res = await registerMutation({ email, password, username });
+      if (res.error) {
+        const { message } = res.error;
+        if (message === '[GraphQL] email') setRegisterError('email');
+        if (message === '[GraphQL] username') setRegisterError('username');
+        return;
+      }
+      navigate('login');
+    },
+    validate: (v) => {
+      const errors: {
+        email?: 'empty' | 'invalid';
+        username?: 'empty' | 'invalid';
+        password?: 'empty' | 'invalid';
+        passwordConfirm?: 'empty' | 'invalid';
+      } = {};
+      if (!emailIsValid(v.email)) errors.email = 'invalid';
+      if (!v.email) errors.email = 'empty';
+      if (!usernameIsValid(v.username)) errors.username = 'invalid';
+      if (!v.username) errors.username = 'empty';
+      if (!passwordIsValid(v.password)) errors.password = 'invalid';
+      if (!v.password) errors.password = 'empty';
+      if (v.password !== v.passwordConfirm) errors.passwordConfirm = 'invalid';
+      if (!v.passwordConfirm) errors.passwordConfirm = 'empty';
+      return errors;
+    },
+  };
 
   return (
     <Box
@@ -26,38 +66,7 @@ export const Register: React.FC = () => {
           flexGrow: '1',
         }}
       >
-        <Formik
-          initialValues={{ email: '', username: '', password: '', password2: '' }}
-          onSubmit={async ({ email, username, password }, { setSubmitting }) => {
-            setRegisterError(null);
-            setSubmitting(true);
-            const res = await registerMutation({ email, password, username });
-            if (res.error) {
-              const { message } = res.error;
-              if (message === '[GraphQL] email') setRegisterError('email');
-              if (message === '[GraphQL] username') setRegisterError('username');
-              return;
-            }
-            navigate('login');
-          }}
-          validate={(v) => {
-            const errors: {
-              email?: 'empty' | 'invalid';
-              username?: 'empty' | 'invalid';
-              password?: 'empty' | 'invalid';
-              password2?: 'empty' | 'invalid';
-            } = {};
-            if (!emailIsValid(v.email)) errors.email = 'invalid';
-            if (!v.email) errors.email = 'empty';
-            if (!usernameIsValid(v.username)) errors.username = 'invalid';
-            if (!v.username) errors.username = 'empty';
-            if (!passwordIsValid(v.password)) errors.password = 'invalid';
-            if (!v.password) errors.password = 'empty';
-            if (v.password !== v.password2) errors.password2 = 'invalid';
-            if (!v.password2) errors.password2 = 'empty';
-            return errors;
-          }}
-        >
+        <Formik {...formikConfig}>
           {({ errors, handleChange, handleSubmit, isSubmitting, values }) => (
             <form onSubmit={handleSubmit}>
               {registerError && (
@@ -116,13 +125,13 @@ export const Register: React.FC = () => {
               <Box className="element">
                 <Input
                   focusBorderColor={
-                    values.password2 === '' ? '' : errors.password2 === 'invalid' ? 'red.500' : 'green.500'
+                    values.passwordConfirm === '' ? '' : errors.passwordConfirm === 'invalid' ? 'red.500' : 'green.500'
                   }
-                  name="password2"
+                  name="passwordConfirm"
                   onChange={handleChange}
                   placeholder="confirm password"
                   type="password"
-                  value={values.password2}
+                  value={values.passwordConfirm}
                 />
               </Box>
               <Box className="element">
