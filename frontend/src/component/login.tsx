@@ -52,7 +52,7 @@ export const Login: React.FC<Props> = (p) => {
       <BoxOutlined
         className="block"
         style={{
-          flexGrow: '1',
+          flex: '1',
         }}
       >
         <Formik {...formikConfig}>
@@ -101,7 +101,7 @@ export const Login: React.FC<Props> = (p) => {
         className="element"
         style={{
           display: 'flex',
-          flexGrow: '1',
+          flex: '1',
           justifyContent: 'center',
         }}
       >
