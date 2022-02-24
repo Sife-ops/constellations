@@ -9,6 +9,18 @@
   white-space: nowrap;
 }
 
+@media (max-width: 480px) {
+  .loginRegister {
+    display: inline;
+  }
+}
+
+@media (min-width: 481px) {
+  .loginRegister {
+    display: flex;
+  }
+}
+
 .page {
   padding: 0.5rem 0 0 0.5rem;
 }

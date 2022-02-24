@@ -44,11 +44,7 @@ export const Login: React.FC<Props> = (p) => {
   };
 
   return (
-    <Box
-      style={{
-        display: 'flex',
-      }}
-    >
+    <Box className="loginRegister">
       <BoxOutlined
         className="block"
         style={{
@@ -98,7 +94,7 @@ export const Login: React.FC<Props> = (p) => {
         </Formik>
       </BoxOutlined>
       <BoxOutlined
-        className="element"
+        className="block"
         style={{
           display: 'flex',
           flex: '1',
@@ -114,6 +110,7 @@ export const Login: React.FC<Props> = (p) => {
           }}
         >
           <Box
+            className="element"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -125,7 +122,8 @@ export const Login: React.FC<Props> = (p) => {
               Sign Up
             </Button>
           </Box>
-          {/* <Box
+          <Box
+            className="element"
             style={{
               display: 'flex',
               flexDirection: 'column',
@@ -136,7 +134,7 @@ export const Login: React.FC<Props> = (p) => {
             <Button colorScheme="blue" id="at-loginForm__submit" type="submit">
               Forgot Password
             </Button>
-          </Box> */}
+          </Box>
         </Box>
       </BoxOutlined>
     </Box>

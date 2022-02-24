@@ -56,10 +56,37 @@ export const Register: React.FC = () => {
 
   return (
     <Box
+      className="loginRegister"
       style={{
-        display: 'flex',
+        flexDirection: 'row-reverse',
       }}
     >
+      <BoxOutlined
+        className="block"
+        style={{
+          flex: '1',
+        }}
+      >
+        <UnorderedList>
+          <ListItem>
+            <Text>Username between 5-15 characters.</Text>
+          </ListItem>
+          <ListItem>
+            <Text>Password with:</Text>
+            <UnorderedList>
+              <ListItem>
+                <Text>at least 8 characters</Text>
+              </ListItem>
+              <ListItem>
+                <Text>at least 1 number</Text>
+              </ListItem>
+              <ListItem>
+                <Text>at least 1 special character</Text>
+              </ListItem>
+            </UnorderedList>
+          </ListItem>
+        </UnorderedList>
+      </BoxOutlined>
       <BoxOutlined
         className="block"
         style={{
@@ -148,32 +175,6 @@ export const Register: React.FC = () => {
             </form>
           )}
         </Formik>
-      </BoxOutlined>
-      <BoxOutlined
-        className="block"
-        style={{
-          flex: '1',
-        }}
-      >
-        <UnorderedList>
-          <ListItem>
-            <Text>Username between 5-15 characters.</Text>
-          </ListItem>
-          <ListItem>
-            <Text>Password with:</Text>
-            <UnorderedList>
-              <ListItem>
-                <Text>at least 8 characters</Text>
-              </ListItem>
-              <ListItem>
-                <Text>at least 1 number</Text>
-              </ListItem>
-              <ListItem>
-                <Text>at least 1 special character</Text>
-              </ListItem>
-            </UnorderedList>
-          </ListItem>
-        </UnorderedList>
       </BoxOutlined>
     </Box>
   );
