@@ -1,3 +1,11 @@
+html, body {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
 .bookmarkTable {
   width: 100%;
   table-layout: fixed;
@@ -30,9 +38,9 @@
   padding: 0.5rem 0 0 0.5rem;
 }
 
-.categories {
+/* .categories {
   display: flex;
-}
+} */
 
 .element {
   margin: 0 0.5rem 0.5rem 0;

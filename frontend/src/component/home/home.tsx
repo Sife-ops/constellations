@@ -3,7 +3,7 @@ import { BoxOutlined } from '../box-outlined';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkTable } from './bookmark-table';
-import { Box, Button, Input } from '@chakra-ui/react';
+import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { HandleCategory } from '../../utility/type';
@@ -59,20 +59,52 @@ export const Home: React.FC = () => {
     };
   };
 
-  const Categories = categories?.map((e) => (
-    <Category
-      key={e?.id}
-      //
-      category={e}
-      toggleCategorySelected={toggleCategorySelected}
-      //
-      categoryEdit={{
-        categoryEditMode,
-        setCategoryForm,
-        userReexec,
-      }}
-    />
-  ));
+  const categoriesBlock = (): JSX.Element => {
+    if (categoryForm) {
+      return <BoxOutlined className="block">{categoryForm}</BoxOutlined>;
+    }
+
+    if (!categories || categories.length < 1) {
+      return (
+        <Box
+          style={{
+            display: 'flex',
+            flexGrow: '1',
+            justifyContent: 'center',
+          }}
+        >
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Text color='gray.500'>No Categories</Text>
+          </Box>
+        </Box>
+      );
+    }
+
+    return (
+      <Box>
+        {categories?.map((e) => (
+          <Category
+            key={e?.id}
+            //
+            category={e}
+            toggleCategorySelected={toggleCategorySelected}
+            //
+            categoryEdit={{
+              categoryEditMode,
+              setCategoryForm,
+              userReexec,
+            }}
+          />
+        ))}
+      </Box>
+    );
+  };
 
   /**
    * Filter bar
@@ -120,7 +152,12 @@ export const Home: React.FC = () => {
 
   return (
     <>
-      <BoxOutlined className="block categories">
+      <BoxOutlined
+        className="block"
+        style={{
+          display: 'flex',
+        }}
+      >
         <div
           style={{
             display: 'flex',
@@ -145,12 +182,7 @@ export const Home: React.FC = () => {
           </Button>
         </div>
 
-        {categoryForm ? (
-          //
-          <BoxOutlined className="block">{categoryForm}</BoxOutlined>
-        ) : (
-          <div>{Categories}</div>
-        )}
+        {categoriesBlock()}
       </BoxOutlined>
 
       <Box className="element">
@@ -185,13 +217,33 @@ export const Home: React.FC = () => {
         </BoxOutlined>
       )}
 
-      <BookmarkTable
-        //
-        bookmarks={filteredBookmarks}
-        categories={categories}
-        className="element"
-        userReexec={userReexec}
-      />
+      {!filteredBookmarks || filteredBookmarks.length < 1 ? (
+        <Box
+          style={{
+            display: 'flex',
+            flex: '1 1 auto',
+            justifyContent: 'center',
+          }}
+        >
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Text color='gray.500'>No Bookmarks</Text>
+          </Box>
+        </Box>
+      ) : (
+        <BookmarkTable
+          //
+          bookmarks={filteredBookmarks}
+          categories={categories}
+          className="element"
+          userReexec={userReexec}
+        />
+      )}
     </>
   );
 };

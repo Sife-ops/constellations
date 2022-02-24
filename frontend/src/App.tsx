@@ -56,7 +56,14 @@ export const App = () => {
   };
 
   return (
-    <div className="page">
+    <div
+      className="page"
+      style={{
+        display: 'flex',
+        flexFlow: 'column',
+        height: '100%',
+      }}
+    >
       <BoxOutlined className="block navbar">
         <Box>
           <Button className="element" onClick={() => navigate('/')} size="xs">
