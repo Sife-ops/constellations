@@ -3,9 +3,6 @@ import { Box, Text } from '@chakra-ui/react';
 import { ListItem, UnorderedList } from '@chakra-ui/react';
 import { use_Dev0Query } from '../generated/graphql';
 
-import Captcha from 'react-google-recaptcha';
-import { env } from '../utility/constant';
-
 export const Landing: React.FC = () => {
   const [devRes, _] = use_Dev0Query();
 
@@ -22,7 +19,6 @@ export const Landing: React.FC = () => {
       <Box className="block">
         <Text fontSize="3xl">Bookmark Manager</Text>
         <Text>Never lose your bookmarks.</Text>
-        {env.recaptcha_key.length > 0 && <Captcha sitekey={env.recaptcha_key} onChange={(v) => console.log(v)} />}
       </Box>
       <Box className="block">
         <UnorderedList>

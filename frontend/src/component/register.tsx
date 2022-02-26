@@ -1,3 +1,4 @@
+import Captcha from 'react-google-recaptcha';
 import React from 'react';
 import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
@@ -5,6 +6,7 @@ import { Formik, FormikConfig } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import { emailIsValid, passwordIsValid, usernameIsValid } from '../utility/function';
+import { env } from '../utility/constant';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
@@ -19,10 +21,11 @@ export const Register: React.FC = () => {
     username: string;
     password: string;
     passwordConfirm: string;
+    captcha: string | null;
   }
 
   const formikConfig: FormikConfig<Config> = {
-    initialValues: { email: '', username: '', password: '', passwordConfirm: '' },
+    initialValues: { email: '', username: '', password: '', passwordConfirm: '', captcha: null },
     onSubmit: async ({ email, username, password }, { setSubmitting }) => {
       setRegisterError(null);
       setSubmitting(true);
@@ -41,6 +44,7 @@ export const Register: React.FC = () => {
         username?: 'empty' | 'invalid';
         password?: 'empty' | 'invalid';
         passwordConfirm?: 'empty' | 'invalid';
+        captcha?: 'invalid';
       } = {};
       if (!emailIsValid(v.email)) errors.email = 'invalid';
       if (!v.email) errors.email = 'empty';
@@ -50,6 +54,7 @@ export const Register: React.FC = () => {
       if (!v.password) errors.password = 'empty';
       if (v.password !== v.passwordConfirm) errors.passwordConfirm = 'invalid';
       if (!v.passwordConfirm) errors.passwordConfirm = 'empty';
+      if (!v.captcha) errors.captcha = 'invalid';
       return errors;
     },
   };
@@ -94,7 +99,7 @@ export const Register: React.FC = () => {
         }}
       >
         <Formik {...formikConfig}>
-          {({ errors, handleChange, handleSubmit, isSubmitting, values }) => (
+          {({ errors, handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
             <form onSubmit={handleSubmit}>
               {registerError && (
                 <BoxOutlined bg="tomato" className="block">
@@ -161,6 +166,11 @@ export const Register: React.FC = () => {
                   value={values.passwordConfirm}
                 />
               </Box>
+              {env.recaptcha_key.length > 0 && (
+                <Box className="element">
+                  <Captcha sitekey={env.recaptcha_key} onChange={(v) => setFieldValue('captcha', v)} />
+                </Box>
+              )}
               <Box className="element">
                 <Button colorScheme="blue" disabled={isSubmitting} type="submit">
                   Sign Up
