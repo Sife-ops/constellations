@@ -17,7 +17,7 @@ refresh.post('/refresh', (req: Request, res: Response) => {
     // throws if expired
     const { id, remember } = verify(
       refreshToken,
-      env.secret.refreshToken
+      env.secret.token.refresh
     ) as JwtPayload;
 
     t.sendRefreshToken(res, { id, remember });

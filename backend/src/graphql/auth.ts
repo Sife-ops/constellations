@@ -45,7 +45,7 @@ export const auth = async (
 
     try {
       // throws if expired
-      const payload = verify(accessToken, env.secret.accessToken) as JwtPayload;
+      const payload = verify(accessToken, env.secret.token.access) as JwtPayload;
       context.payload = payload;
     } catch (e) {
       console.log(e);

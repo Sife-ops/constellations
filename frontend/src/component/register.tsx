@@ -14,7 +14,7 @@ export const Register: React.FC = () => {
 
   const [_, registerMutation] = useRegisterMutation();
 
-  const [registerError, setRegisterError] = React.useState<null | 'email' | 'username'>(null);
+  const [registerError, setRegisterError] = React.useState<null | 'captcha' | 'email' | 'username'>(null);
 
   interface Config {
     email: string;
@@ -25,15 +25,22 @@ export const Register: React.FC = () => {
   }
 
   const formikConfig: FormikConfig<Config> = {
-    initialValues: { email: '', username: '', password: '', passwordConfirm: '', captcha: null },
+    initialValues: {
+      captcha: null,
+      email: '',
+      password: '',
+      passwordConfirm: '',
+      username: '',
+    },
     onSubmit: async ({ captcha, email, username, password }, { setSubmitting }) => {
       setRegisterError(null);
       setSubmitting(true);
       const res = await registerMutation({ captcha, email, password, username });
       if (res.error) {
         const { message } = res.error;
-        if (message === '[GraphQL] email') setRegisterError('email');
-        if (message === '[GraphQL] username') setRegisterError('username');
+        if (message === '[GraphQL] failed captcha') setRegisterError('captcha');
+        if (message === '[GraphQL] email exists') setRegisterError('email');
+        if (message === '[GraphQL] username exists') setRegisterError('username');
         return;
       }
       navigate('login');
@@ -116,9 +123,13 @@ export const Register: React.FC = () => {
                     >
                       <WarningTwoIcon />
                     </Box>
-                    <p>
-                      An account with that {registerError === 'email' ? 'email address' : 'username'} already exists.
-                    </p>
+                    {registerError === 'captcha' ? (
+                      <Text>Failed captcha.</Text>
+                    ) : (
+                      <Text>
+                        An account with that {registerError === 'email' ? 'email address' : 'username'} already exists.
+                      </Text>
+                    )}
                   </Box>
                 </BoxOutlined>
               )}

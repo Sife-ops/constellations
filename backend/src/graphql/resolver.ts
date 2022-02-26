@@ -229,11 +229,7 @@ export const resolvers = {
       _: any,
       { captcha, email, password, username }: RegisterInput
     ): Promise<{ email: string; username: string }> => {
-      if (!email || !username || !password) {
-        throw new Error('invalid arguments');
-      }
-
-      if (env.secret.captcha !== '') {
+      if (!env.secret.captcha) {
         if (!captcha) throw new Error('no captcha');
         const res = await fetch(
           `https://www.google.com/recaptcha/api/siteverify?secret=${env.secret.captcha}&response=${captcha}`,
@@ -241,18 +237,19 @@ export const resolvers = {
             method: 'POST',
           }
         );
-        const json = await res.json();
+        const json: { success: boolean } = await res.json();
         console.log('captcha result:', json);
+        if (!json.success) throw new Error('failed captcha');
       }
 
       {
         const found = await User.findOne({ where: { email } });
-        if (found) throw new Error('email');
+        if (found) throw new Error('email exists');
       }
 
       {
         const found = await User.findOne({ where: { username } });
-        if (found) throw new Error('username');
+        if (found) throw new Error('username exists');
       }
 
       const hashed = await argon2.hash(password);

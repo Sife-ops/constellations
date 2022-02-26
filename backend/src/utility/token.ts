@@ -8,14 +8,14 @@ interface RefreshPayload {
 }
 
 export const newAccessToken = (payload: { id: number }): string => {
-  return jwt.sign(payload, env.secret.accessToken, {
+  return jwt.sign(payload, env.secret.token.access, {
     // expiresIn: env.prod ? '15m' : '15m',
     expiresIn: '15m',
   });
 };
 
 export const newRefreshToken = (payload: RefreshPayload): string => {
-  return jwt.sign(payload, env.secret.refreshToken, {
+  return jwt.sign(payload, env.secret.token.refresh, {
     expiresIn: payload.remember ? '7d' : '1h',
   });
 };
