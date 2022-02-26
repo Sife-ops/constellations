@@ -7,7 +7,7 @@ cp ./docker-compose-vpc.yml ../docker-compose.yml
 pushd ../
 pushd ./frontend
 
-if ! command -v npm ; then
+if ! command -v npm 1>/dev/null 2>&1 ; then
     echo 'Error: npm not found'
     exit 1
 fi
