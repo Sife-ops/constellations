@@ -229,16 +229,12 @@ export const resolvers = {
       _: any,
       { captcha, email, password, username }: RegisterInput
     ): Promise<{ email: string; username: string }> => {
-      if (!env.secret.captcha) {
+      if (env.secret.captcha) {
         if (!captcha) throw new Error('no captcha');
-        const res = await fetch(
-          `https://www.google.com/recaptcha/api/siteverify?secret=${env.secret.captcha}&response=${captcha}`,
-          {
-            method: 'POST',
-          }
-        );
+        const url = `https://www.google.com/recaptcha/api/siteverify?secret=${env.secret.captcha}&response=${captcha}`;
+        const res = await fetch(url, { method: 'POST' });
         const json: { success: boolean } = await res.json();
-        console.log('captcha result:', json);
+        console.log('resolver.ts - captcha result', json);
         if (!json.success) throw new Error('failed captcha');
       }
 
