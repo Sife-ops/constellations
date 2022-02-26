@@ -26,10 +26,10 @@ export const Register: React.FC = () => {
 
   const formikConfig: FormikConfig<Config> = {
     initialValues: { email: '', username: '', password: '', passwordConfirm: '', captcha: null },
-    onSubmit: async ({ email, username, password }, { setSubmitting }) => {
+    onSubmit: async ({ captcha, email, username, password }, { setSubmitting }) => {
       setRegisterError(null);
       setSubmitting(true);
-      const res = await registerMutation({ email, password, username });
+      const res = await registerMutation({ captcha, email, password, username });
       if (res.error) {
         const { message } = res.error;
         if (message === '[GraphQL] email') setRegisterError('email');

@@ -47,7 +47,7 @@ export const typeDefs = gql`
     categoryDelete(id: Int): Category
     categoryUpdate(id: Int, name: String): Category
     login(email: String, password: String, remember: Boolean): User
-    register(email: String, username: String, password: String): User
+    register(email: String!, username: String!, password: String!, captcha: String): User
     userExists(email: String, username: String): Boolean
   }
 `;

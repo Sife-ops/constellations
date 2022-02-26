@@ -4,9 +4,10 @@ services:
     volumes:
       - ./backend/database:/app/database
     environment:
-      - VITE_PROD_URL=${VITE_PROD_URL}
+      - CAPTCHA_SECRET=${CAPTCHA_SECRET}
       - SECRET_ACCESS_TOKEN=${SECRET_ACCESS_TOKEN}
       - SECRET_REFRESH_TOKEN=${SECRET_REFRESH_TOKEN}
+      - VITE_PROD_URL=${VITE_PROD_URL}
   frontend:
     depends_on:
       - backend

@@ -1,9 +1,11 @@
 import * as t from '../utility/token';
 import argon2 from 'argon2';
+import fetch from 'cross-fetch';
 import { AuthContext } from './auth';
 import { Bookmark } from '../entity/bookmark';
 import { Category } from '../entity/category';
 import { User } from '../entity/user';
+import { env } from '../utility/constant';
 
 interface AddUpdateBookmarkInput {
   id?: number;
@@ -22,6 +24,7 @@ interface RegisterInput {
   email: string;
   username: string;
   password: string;
+  captcha?: string;
 }
 
 interface UserExistsInput {
@@ -224,10 +227,22 @@ export const resolvers = {
 
     register: async (
       _: any,
-      { email, username, password }: RegisterInput
+      { captcha, email, password, username }: RegisterInput
     ): Promise<{ email: string; username: string }> => {
       if (!email || !username || !password) {
         throw new Error('invalid arguments');
+      }
+
+      if (env.secret.captcha !== '') {
+        if (!captcha) throw new Error('no captcha');
+        const res = await fetch(
+          `https://www.google.com/recaptcha/api/siteverify?secret=${env.secret.captcha}&response=${captcha}`,
+          {
+            method: 'POST',
+          }
+        );
+        const json = await res.json();
+        console.log('captcha result:', json);
       }
 
       {
