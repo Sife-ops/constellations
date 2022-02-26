@@ -28,25 +28,20 @@ export const typeDefs = gql`
     _dev0: String
     _dev1: [User]
     _dev2: User
-    _dev3(id: Int): User
+    _dev3(id: Int!): User
     bookmarks: [Bookmark]
     categories: [Category]
     user: User
   }
 
   type Mutation {
-    bookmarkAdd(description: String, url: String, categoryIds: [Int]): Bookmark
-    bookmarkDelete(id: Int): Bookmark
-    bookmarkUpdate(
-      id: Int
-      description: String
-      url: String
-      categoryIds: [Int]
-    ): Bookmark
-    categoryAdd(name: String): Category
-    categoryDelete(id: Int): Category
-    categoryUpdate(id: Int, name: String): Category
-    login(email: String, password: String, remember: Boolean): User
+    bookmarkAdd(description: String!, url: String!, categoryIds: [Int]): Bookmark
+    bookmarkDelete(id: Int!): Bookmark
+    bookmarkUpdate(id: Int!, description: String, url: String, categoryIds: [Int]): Bookmark
+    categoryAdd(name: String!): Category
+    categoryDelete(id: Int!): Category
+    categoryUpdate(id: Int!, name: String!): Category
+    login(email: String!, password: String!, remember: Boolean!): User
     register(email: String!, username: String!, password: String!, captcha: String): User
     userExists(email: String, username: String): Boolean
   }

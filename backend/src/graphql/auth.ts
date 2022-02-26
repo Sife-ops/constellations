@@ -26,7 +26,7 @@ const isOperationWithAuth = (s: string): boolean => {
 export interface AuthContext {
   req: Request;
   res: Response;
-  payload?: JwtPayload;
+  payload: JwtPayload;
 }
 
 export const auth = async (

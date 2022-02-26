@@ -60,7 +60,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   const [___, deleteMutation] = useBookmarkDeleteMutation();
 
   const handleDelete: React.MouseEventHandler = async (e) => {
-    const res = await deleteMutation({ id: p.bookmark?.id });
+    const res = await deleteMutation({ id: p.bookmark?.id! });
     if (res.error) return;
     p.userReexec();
   };
@@ -73,7 +73,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
 
         let res;
         if (p.bookmark) {
-          res = await bookmarkUpdateMutation({ id: p.bookmark.id, description, url, categoryIds });
+          res = await bookmarkUpdateMutation({ id: p.bookmark.id!, description, url, categoryIds });
         } else {
           res = await bookmarkAddMutation({ description, url, categoryIds });
         }

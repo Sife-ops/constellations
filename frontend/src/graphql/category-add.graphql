@@ -1,4 +1,4 @@
-mutation CategoryAdd($name: String) {
+mutation CategoryAdd($name: String!) {
   categoryAdd(name: $name) {
     id
     name

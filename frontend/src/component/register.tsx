@@ -61,7 +61,7 @@ export const Register: React.FC = () => {
       if (!v.password) errors.password = 'empty';
       if (v.password !== v.passwordConfirm) errors.passwordConfirm = 'invalid';
       if (!v.passwordConfirm) errors.passwordConfirm = 'empty';
-      if (!v.captcha) errors.captcha = 'invalid';
+      if (env.recaptcha_key && !v.captcha) errors.captcha = 'invalid';
       return errors;
     },
   };
@@ -177,7 +177,7 @@ export const Register: React.FC = () => {
                   value={values.passwordConfirm}
                 />
               </Box>
-              {env.recaptcha_key.length > 0 && (
+              {env.recaptcha_key && (
                 <Box className="element">
                   <Captcha sitekey={env.recaptcha_key} onChange={(v) => setFieldValue('captcha', v)} />
                 </Box>

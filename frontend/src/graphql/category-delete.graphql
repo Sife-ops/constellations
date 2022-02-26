@@ -1,4 +1,4 @@
-mutation CategoryDelete($id: Int) {
+mutation CategoryDelete($id: Int!) {
   categoryDelete(id: $id) {
     id
     name

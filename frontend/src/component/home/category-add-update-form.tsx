@@ -29,7 +29,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
   };
 
   const handleDelete = async () => {
-    const res = await categoryDeleteMutation({ id: p.category?.id });
+    const res = await categoryDeleteMutation({ id: p.category?.id! });
     if (res?.error) {
       console.log(res.error);
       return;
@@ -46,7 +46,7 @@ export const CategoryAddUpdateForm: React.FC<Props> = (p) => {
           res = await categoryAddMutation({ name });
         }
         if (p.type === 'edit') {
-          res = await categoryUpdateMutation({ id: p.category?.id, name });
+          res = await categoryUpdateMutation({ id: p.category?.id!, name });
         }
         if (res?.error) {
           console.log(res.error);

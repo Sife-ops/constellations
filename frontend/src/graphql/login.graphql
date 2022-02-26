@@ -1,4 +1,4 @@
-mutation Login($email: String, $password: String, $remember: Boolean) {
+mutation Login($email: String!, $password: String!, $remember: Boolean!) {
   login(email: $email, password: $password, remember: $remember) {
     id
     email

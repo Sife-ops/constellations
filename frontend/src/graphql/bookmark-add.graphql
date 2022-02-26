@@ -1,4 +1,4 @@
-mutation BookmarkAdd($description: String, $url: String, $categoryIds: [Int]) {
+mutation BookmarkAdd($description: String!, $url: String!, $categoryIds: [Int]) {
   bookmarkAdd(description: $description, url: $url, categoryIds: $categoryIds) {
     id
     url

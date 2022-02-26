@@ -49,44 +49,44 @@ export type Mutation = {
 
 export type MutationBookmarkAddArgs = {
   categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
-  description?: InputMaybe<Scalars['String']>;
-  url?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
+  url: Scalars['String'];
 };
 
 
 export type MutationBookmarkDeleteArgs = {
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
 };
 
 
 export type MutationBookmarkUpdateArgs = {
   categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>>>;
   description?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
   url?: InputMaybe<Scalars['String']>;
 };
 
 
 export type MutationCategoryAddArgs = {
-  name?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
 };
 
 
 export type MutationCategoryDeleteArgs = {
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
 };
 
 
 export type MutationCategoryUpdateArgs = {
-  id?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 
 export type MutationLoginArgs = {
-  email?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
-  remember?: InputMaybe<Scalars['Boolean']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+  remember: Scalars['Boolean'];
 };
 
 
@@ -116,7 +116,7 @@ export type Query = {
 
 
 export type Query_Dev3Args = {
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
 };
 
 export type User = {
@@ -144,15 +144,15 @@ export type _Dev2QueryVariables = Exact<{ [key: string]: never; }>;
 export type _Dev2Query = { __typename?: 'Query', _dev2?: { __typename?: 'User', id?: number | null } | null };
 
 export type _Dev3QueryVariables = Exact<{
-  dev3Id?: InputMaybe<Scalars['Int']>;
+  dev3Id: Scalars['Int'];
 }>;
 
 
 export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
 
 export type BookmarkAddMutationVariables = Exact<{
-  description?: InputMaybe<Scalars['String']>;
-  url?: InputMaybe<Scalars['String']>;
+  description: Scalars['String'];
+  url: Scalars['String'];
   categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
 }>;
 
@@ -160,14 +160,14 @@ export type BookmarkAddMutationVariables = Exact<{
 export type BookmarkAddMutation = { __typename?: 'Mutation', bookmarkAdd?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null };
 
 export type BookmarkDeleteMutationVariables = Exact<{
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
 }>;
 
 
 export type BookmarkDeleteMutation = { __typename?: 'Mutation', bookmarkDelete?: { __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null };
 
 export type BookmarkUpdateMutationVariables = Exact<{
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
   description?: InputMaybe<Scalars['String']>;
   url?: InputMaybe<Scalars['String']>;
   categoryIds?: InputMaybe<Array<InputMaybe<Scalars['Int']>> | InputMaybe<Scalars['Int']>>;
@@ -187,31 +187,31 @@ export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 export type CategoriesQuery = { __typename?: 'Query', categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null };
 
 export type CategoryAddMutationVariables = Exact<{
-  name?: InputMaybe<Scalars['String']>;
+  name: Scalars['String'];
 }>;
 
 
 export type CategoryAddMutation = { __typename?: 'Mutation', categoryAdd?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type CategoryDeleteMutationVariables = Exact<{
-  id?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
 }>;
 
 
 export type CategoryDeleteMutation = { __typename?: 'Mutation', categoryDelete?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type CategoryUpdateMutationVariables = Exact<{
-  id?: InputMaybe<Scalars['Int']>;
-  name?: InputMaybe<Scalars['String']>;
+  id: Scalars['Int'];
+  name: Scalars['String'];
 }>;
 
 
 export type CategoryUpdateMutation = { __typename?: 'Mutation', categoryUpdate?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
-  email?: InputMaybe<Scalars['String']>;
-  password?: InputMaybe<Scalars['String']>;
-  remember?: InputMaybe<Scalars['Boolean']>;
+  email: Scalars['String'];
+  password: Scalars['String'];
+  remember: Scalars['Boolean'];
 }>;
 
 
@@ -372,15 +372,21 @@ export default {
               {
                 "name": "description",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "url",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -396,8 +402,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -430,8 +439,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
@@ -454,8 +466,11 @@ export default {
               {
                 "name": "name",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -471,8 +486,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -488,15 +506,21 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "name",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -512,22 +536,31 @@ export default {
               {
                 "name": "email",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "password",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               },
               {
                 "name": "remember",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -649,8 +682,11 @@ export default {
               {
                 "name": "id",
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Any"
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
                 }
               }
             ]
@@ -813,7 +849,7 @@ export function use_Dev2Query(options?: Omit<Urql.UseQueryArgs<_Dev2QueryVariabl
   return Urql.useQuery<_Dev2Query>({ query: _Dev2Document, ...options });
 };
 export const _Dev3Document = gql`
-    query _dev3($dev3Id: Int) {
+    query _dev3($dev3Id: Int!) {
   _dev3(id: $dev3Id) {
     id
     email
@@ -822,16 +858,16 @@ export const _Dev3Document = gql`
 }
     `;
 
-export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3QueryVariables>, 'query'> & { variables?: _Dev3QueryVariables }) => (
+export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3QueryVariables>, 'query'> & { variables: _Dev3QueryVariables }) => (
   <Urql.Query {...props} query={_Dev3Document} />
 );
 
 
-export function use_Dev3Query(options?: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
+export function use_Dev3Query(options: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
   return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
 };
 export const BookmarkAddDocument = gql`
-    mutation BookmarkAdd($description: String, $url: String, $categoryIds: [Int]) {
+    mutation BookmarkAdd($description: String!, $url: String!, $categoryIds: [Int]) {
   bookmarkAdd(description: $description, url: $url, categoryIds: $categoryIds) {
     id
     url
@@ -853,7 +889,7 @@ export function useBookmarkAddMutation() {
   return Urql.useMutation<BookmarkAddMutation, BookmarkAddMutationVariables>(BookmarkAddDocument);
 };
 export const BookmarkDeleteDocument = gql`
-    mutation BookmarkDelete($id: Int) {
+    mutation BookmarkDelete($id: Int!) {
   bookmarkDelete(id: $id) {
     id
     url
@@ -871,7 +907,7 @@ export function useBookmarkDeleteMutation() {
   return Urql.useMutation<BookmarkDeleteMutation, BookmarkDeleteMutationVariables>(BookmarkDeleteDocument);
 };
 export const BookmarkUpdateDocument = gql`
-    mutation BookmarkUpdate($id: Int, $description: String, $url: String, $categoryIds: [Int]) {
+    mutation BookmarkUpdate($id: Int!, $description: String, $url: String, $categoryIds: [Int]) {
   bookmarkUpdate(
     id: $id
     description: $description
@@ -946,7 +982,7 @@ export function useCategoriesQuery(options?: Omit<Urql.UseQueryArgs<CategoriesQu
   return Urql.useQuery<CategoriesQuery>({ query: CategoriesDocument, ...options });
 };
 export const CategoryAddDocument = gql`
-    mutation CategoryAdd($name: String) {
+    mutation CategoryAdd($name: String!) {
   categoryAdd(name: $name) {
     id
     name
@@ -963,7 +999,7 @@ export function useCategoryAddMutation() {
   return Urql.useMutation<CategoryAddMutation, CategoryAddMutationVariables>(CategoryAddDocument);
 };
 export const CategoryDeleteDocument = gql`
-    mutation CategoryDelete($id: Int) {
+    mutation CategoryDelete($id: Int!) {
   categoryDelete(id: $id) {
     id
     name
@@ -980,7 +1016,7 @@ export function useCategoryDeleteMutation() {
   return Urql.useMutation<CategoryDeleteMutation, CategoryDeleteMutationVariables>(CategoryDeleteDocument);
 };
 export const CategoryUpdateDocument = gql`
-    mutation CategoryUpdate($id: Int, $name: String) {
+    mutation CategoryUpdate($id: Int!, $name: String!) {
   categoryUpdate(id: $id, name: $name) {
     id
     name
@@ -997,7 +1033,7 @@ export function useCategoryUpdateMutation() {
   return Urql.useMutation<CategoryUpdateMutation, CategoryUpdateMutationVariables>(CategoryUpdateDocument);
 };
 export const LoginDocument = gql`
-    mutation Login($email: String, $password: String, $remember: Boolean) {
+    mutation Login($email: String!, $password: String!, $remember: Boolean!) {
   login(email: $email, password: $password, remember: $remember) {
     id
     email

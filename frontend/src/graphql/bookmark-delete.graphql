@@ -1,4 +1,4 @@
-mutation BookmarkDelete($id: Int) {
+mutation BookmarkDelete($id: Int!) {
   bookmarkDelete(id: $id) {
     id
     url

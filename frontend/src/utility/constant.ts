@@ -1,13 +1,13 @@
 interface Env {
-  prod_url: string;
-  ngrok_url: string;
-  recaptcha_key: string;
+  prod_url: string | undefined;
+  ngrok_url: string | undefined;
+  recaptcha_key: string | undefined;
 }
 
 export const env: Env = {
-  prod_url: (import.meta.env.VITE_PROD_URL as string) || '',
-  ngrok_url: (import.meta.env.VITE_NGROK_URL as string) || '',
-  recaptcha_key: (import.meta.env.VITE_RECAPTCHA_KEY as string) || '',
+  prod_url: (import.meta.env.VITE_PROD_URL as string | undefined) || undefined,
+  ngrok_url: (import.meta.env.VITE_NGROK_URL as string | undefined) || undefined,
+  recaptcha_key: (import.meta.env.VITE_RECAPTCHA_KEY as string | undefined) || undefined,
 };
 
 interface Ex {
