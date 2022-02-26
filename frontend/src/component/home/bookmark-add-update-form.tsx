@@ -117,7 +117,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
             }}
           >
             <Button
-              colorScheme="green"
+              colorScheme="blue"
               isFullWidth
               style={{
                 marginRight: '.5rem',
