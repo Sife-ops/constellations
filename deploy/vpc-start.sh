@@ -6,4 +6,4 @@ cp ./docker-compose-vpc.yml ../docker-compose.yml
 
 pushd ../
 
-docker-compose -f docker-coasdfmpose-vpc.yml up $@
+docker-compose up $@
