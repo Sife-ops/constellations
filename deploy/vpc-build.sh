@@ -12,7 +12,7 @@ if ! command -v npm ; then
     exit 1
 fi
 
-if ! stat ./node_modules ; then
+if ! stat ./node_modules 1>/dev/null 2>&1 ; then
     npm install
 fi
 
