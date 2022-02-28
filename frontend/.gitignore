@@ -1,4 +1,7 @@
 node_modules
+Dockerfile
+.env
+docker-compose.yml
 shadow-realm/
 .DS_Store
 dist
