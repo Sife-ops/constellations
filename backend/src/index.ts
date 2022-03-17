@@ -7,12 +7,9 @@ import { ApolloServer } from 'apollo-server-express';
 import { Bookmark } from './entity/bookmark';
 import { Category } from './entity/category';
 import { User } from './entity/user';
-import { applyMiddleware } from 'graphql-middleware';
-import { auth } from './graphql/auth';
 import { createConnection } from 'typeorm';
 import { env } from './utility/constant';
 import { login, logout } from './rest/login';
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import { refresh } from './rest/refresh';
 import { register } from './rest/register';
 import { resolvers } from './graphql/resolver';
@@ -22,7 +19,10 @@ import { typeDefs } from './graphql/typedef';
 (async () => {
   console.log(env);
 
-  // database
+  /*
+   * Database
+   */
+
   try {
     await createConnection({
       type: 'sqlite',
@@ -39,7 +39,10 @@ import { typeDefs } from './graphql/typedef';
 
   if (env.seed) await seed();
 
-  // rest
+  /*
+   * Express
+   */
+
   const app = express();
 
   const origin = (): string[] => {
@@ -63,16 +66,20 @@ import { typeDefs } from './graphql/typedef';
   app.use(refresh);
   app.use(register);
 
-  // grpahql
-  const schema = makeExecutableSchema({ typeDefs, resolvers });
-  const schemaWithMiddleware = applyMiddleware(schema, auth);
+  /*
+   * Graphql
+   */
 
   const server = new ApolloServer({
-    schema: schemaWithMiddleware,
+    typeDefs,
+    resolvers,
     context: ({ req, res }) => ({ req, res }),
   });
 
-  // start
+  /*
+   * Start
+   */
+
   await server.start();
 
   server.applyMiddleware({ app, cors: false });

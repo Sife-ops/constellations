@@ -1,9 +1,10 @@
 import * as t from '../utility/token';
 import argon2 from 'argon2';
 import fetch from 'cross-fetch';
-import { AuthContext } from './auth';
+import { auth_ } from './auth';
 import { Bookmark as BookmarkEntity } from '../entity/bookmark';
 import { Category as CategoryEntity } from '../entity/category';
+import { Request, Response } from 'express';
 import { User } from '../entity/user';
 import { env } from '../utility/constant';
 
@@ -42,26 +43,52 @@ const _dev1 = async (): Promise<User[]> => {
   return await User.find({ relations: ['bookmarks', 'categories'] });
 };
 
-const _dev2 = async (_: any, __: any, context: AuthContext): Promise<User> => {
-  return await User.findOneOrFail<User>(context.payload.id);
+const _dev2 = async (
+  _: any,
+  __: any,
+  { req }: { req: Request }
+): Promise<User> => {
+  const authPayload = auth_(req);
+  return await User.findOneOrFail<User>(authPayload.id);
 };
 
 const _dev3 = async (_: any, { id }: { id: number }): Promise<User> => {
   return await User.findOneOrFail(id);
 };
 
-const bookmarks = async (_: any, __: any, context: AuthContext): Promise<BookmarkEntity[]> => {
-  const user = await User.findOneOrFail<User>(context.payload.id, { relations: ['bookmarks'] });
+const bookmarks = async (
+  _: any,
+  __: any,
+  { req }: { req: Request }
+): Promise<BookmarkEntity[]> => {
+  const authPayload = auth_(req);
+  const user = await User.findOneOrFail<User>(authPayload.id, {
+    relations: ['bookmarks'],
+  });
   return user.bookmarks;
 };
 
-const categories = async (_: any, __: any, context: AuthContext): Promise<CategoryEntity[]> => {
-  const user = await User.findOneOrFail<User>(context.payload.id, { relations: ['categories'] });
+const categories = async (
+  _: any,
+  __: any,
+  { req }: { req: Request }
+): Promise<CategoryEntity[]> => {
+  const authPayload = auth_(req);
+  const user = await User.findOneOrFail<User>(authPayload.id, {
+    relations: ['categories'],
+  });
   return user.categories;
 };
 
-const user = async (_: any, __: any, context: AuthContext): Promise<User> => {
-  return await User.findOneOrFail<User>(context.payload.id, { relations: ['bookmarks', 'categories'] });
+const user = async (
+  _: any,
+  __: any,
+  { req }: { req: Request }
+): Promise<User> => {
+  const authPayload = auth_(req);
+  return await User.findOneOrFail<User>(authPayload.id, {
+    relations: ['bookmarks', 'categories'],
+  });
 };
 
 /*
@@ -81,9 +108,12 @@ interface BookmarkAddInput {
 const bookmarkAdd = async (
   _: any,
   { description, url, categoryIds }: BookmarkAddInput,
-  { payload }: AuthContext
+  { req }: { req: Request }
 ): Promise<BookmarkEntity> => {
-  const user = await User.findOneOrFail<User>(payload.id, { relations: ['bookmarks'] });
+  const authPayload = auth_(req);
+  const user = await User.findOneOrFail<User>(authPayload.id, {
+    relations: ['bookmarks'],
+  });
   const categories = await CategoryEntity.findByIds(categoryIds);
   const bookmark = await BookmarkEntity.create({
     description,
@@ -102,7 +132,10 @@ interface BookmarkDeleteInput {
   id: number;
 }
 
-const bookmarkDelete = async (_: any, { id }: BookmarkDeleteInput): Promise<BookmarkEntity> => {
+const bookmarkDelete = async (
+  _: any,
+  { id }: BookmarkDeleteInput
+): Promise<BookmarkEntity> => {
   const bookmark = await BookmarkEntity.findOneOrFail(id);
   return await bookmark.remove();
 };
@@ -122,7 +155,8 @@ const bookmarkUpdate = async (
   _: any,
   { id, description, url, categoryIds }: bookmarkUpdateInput
 ): Promise<BookmarkEntity> => {
-  if (!description && !url && !categoryIds) throw new Error('invalid arguments');
+  if (!description && !url && !categoryIds)
+    throw new Error('invalid arguments');
 
   const bookmark = await BookmarkEntity.findOneOrFail(id);
 
@@ -144,8 +178,15 @@ interface CategoryAddInput {
   name: string;
 }
 
-const categoryAdd = async (_: any, { name }: CategoryAddInput, { payload }: AuthContext): Promise<CategoryEntity> => {
-  const user = await User.findOneOrFail<User>(payload.id, { relations: ['categories'] });
+const categoryAdd = async (
+  _: any,
+  { name }: CategoryAddInput,
+  { req }: { req: Request }
+): Promise<CategoryEntity> => {
+  const authPayload = auth_(req);
+  const user = await User.findOneOrFail<User>(authPayload.id, {
+    relations: ['categories'],
+  });
   const category = await CategoryEntity.create({
     name,
     user,
@@ -161,7 +202,10 @@ interface CategoryDeleteInput {
   id: number;
 }
 
-const categoryDelete = async (_: any, { id }: CategoryDeleteInput): Promise<CategoryEntity> => {
+const categoryDelete = async (
+  _: any,
+  { id }: CategoryDeleteInput
+): Promise<CategoryEntity> => {
   const category = await CategoryEntity.findOneOrFail(id);
   const result = await category.remove();
   return result;
@@ -176,7 +220,10 @@ interface CategoryUpdateInput {
   name: string;
 }
 
-const categoryUpdate = async (_: any, { id, name }: CategoryUpdateInput): Promise<CategoryEntity> => {
+const categoryUpdate = async (
+  _: any,
+  { id, name }: CategoryUpdateInput
+): Promise<CategoryEntity> => {
   const category = await CategoryEntity.findOneOrFail(id);
 
   category.name = name;
@@ -195,7 +242,11 @@ interface LoginInput {
   remember: boolean;
 }
 
-const login = async (_: any, { email, password, remember }: LoginInput, { res }: AuthContext): Promise<User> => {
+const login = async (
+  _: any,
+  { email, password, remember }: LoginInput,
+  { res }: { res: Response }
+): Promise<User> => {
   const user = await User.findOneOrFail({ where: { email } });
 
   const verified = await argon2.verify(user.password, password);
@@ -222,9 +273,13 @@ interface RegisterResponse {
   username: string;
 }
 
-const register = async (_: any, { captcha, email, password, username }: RegisterInput): Promise<RegisterResponse> => {
+const register = async (
+  _: any,
+  { captcha, email, password, username }: RegisterInput
+): Promise<RegisterResponse> => {
   if (env.secret.captcha) {
     if (!captcha) throw new Error('invalid captcha');
+    // todo: move to constant.ts
     const url = `https://www.google.com/recaptcha/api/siteverify?secret=${env.secret.captcha}&response=${captcha}`;
     const res = await fetch(url, { method: 'POST' });
     const json: { success: boolean } = await res.json();
@@ -262,7 +317,10 @@ interface UserExistsInput {
   username?: string;
 }
 
-const userExists = async (_: any, { email, username }: UserExistsInput): Promise<boolean> => {
+const userExists = async (
+  _: any,
+  { email, username }: UserExistsInput
+): Promise<boolean> => {
   if (!email && !username) throw new Error('invalid arguments');
   const user = await User.findOne({ where: email ? { email } : { username } });
   if (!user) return false;

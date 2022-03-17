@@ -1,29 +1,13 @@
-# jwt-auth
+# Equuleus
 
 ## Todo
 
 - logging
-- dark mode
-- token version
-- form library
-- testing components
-
-## NGROK
-
-start ngrok
-```bash
-ngrok http 3001
-```
-
-set VITE_NGROK_URL to ngrok https url
-```bash
-export VITE_NGROK_URL="https://..."
-```
-
-run docker script in project root
-```bash
-./docker.sh
-```
+- refactor auth middleware
+- refactor token management
+- project name change to 'Equuleus'
+- remove ngrok
+- remove rest endpoints
 
 ## Login Process
 
