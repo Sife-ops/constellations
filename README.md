@@ -4,11 +4,11 @@
 
 - logging
 - sign-in/out naming
-- refactor token management
+- refactor token management ...
 - project name change to 'Equuleus'
-- remove rest endpoints
 - startup checks
 
+- remove rest endpoints OK
 - refactor auth middleware OK
 - remove ngrok OK
 
