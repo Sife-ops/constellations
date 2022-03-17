@@ -45,16 +45,7 @@ import { typeDefs } from './graphql/typedef';
 
   const app = express();
 
-  const origin = (): string[] => {
-    if (env.url.prod) return [env.url.prod];
-    return [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://studio.apollographql.com',
-    ];
-  };
-
-  app.use(cors({ origin: origin(), credentials: true }));
+  app.use(cors({ origin: env.origin, credentials: true }));
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());

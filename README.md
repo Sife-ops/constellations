@@ -3,11 +3,13 @@
 ## Todo
 
 - logging
-- refactor auth middleware
 - refactor token management
 - project name change to 'Equuleus'
-- remove ngrok
 - remove rest endpoints
+- startup checks
+
+- refactor auth middleware OK
+- remove ngrok OK
 
 ## Login Process
 
