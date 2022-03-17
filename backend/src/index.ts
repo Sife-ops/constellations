@@ -46,14 +46,12 @@ import { typeDefs } from './graphql/typedef';
   const app = express();
 
   const origin = (): string[] => {
-    const nonprod = [
+    if (env.url.prod) return [env.url.prod];
+    return [
       'http://localhost:3000',
       'http://localhost:3001',
       'https://studio.apollographql.com',
     ];
-    if (env.prod_url) return [env.prod_url];
-    if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
-    return nonprod;
   };
 
   app.use(cors({ origin: origin(), credentials: true }));
@@ -84,13 +82,7 @@ import { typeDefs } from './graphql/typedef';
 
   server.applyMiddleware({ app, cors: false });
 
-  const port = (): number => {
-    if (env.prod_url || env.ngrok_url) return 80;
-    return 4000;
-  };
-
-  app.listen(port(), () => {
-    console.log(`port: ${port()}`);
-    console.log(`origins: ${origin()}`);
+  app.listen(env.port, () => {
+    console.log('Ready.');
   });
 })();
