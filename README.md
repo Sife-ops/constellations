@@ -3,6 +3,7 @@
 ## Todo
 
 - logging
+- sign-in/out naming
 - refactor token management
 - project name change to 'Equuleus'
 - remove rest endpoints

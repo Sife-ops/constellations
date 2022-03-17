@@ -9,9 +9,8 @@ import { Category } from './entity/category';
 import { User } from './entity/user';
 import { createConnection } from 'typeorm';
 import { env } from './utility/constant';
-import { login, logout } from './rest/login';
+import { logout } from './rest/logout';
 import { refresh } from './rest/refresh';
-import { register } from './rest/register';
 import { resolvers } from './graphql/resolver';
 import { seed } from './utility/mock';
 import { typeDefs } from './graphql/typedef';
@@ -50,10 +49,8 @@ import { typeDefs } from './graphql/typedef';
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  app.use(login);
   app.use(logout);
   app.use(refresh);
-  app.use(register);
 
   /*
    * Graphql
