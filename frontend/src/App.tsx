@@ -12,25 +12,22 @@ import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
 import { isValid } from './utility/token';
-import { useForceUpdate } from './utility/function';
 
 export const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const navigate = useNavigate();
 
-  // const [update, forceUpdate] = useForceUpdate(); // todo: delete
-
   React.useEffect(() => {
-    const token = localStorage.getItem('yu');
-    if (token && isValid(token)) setLoggedIn(true);
+    const accessToken = localStorage.getItem('yu');
+    if (accessToken && isValid(accessToken)) setLoggedIn(true);
   });
 
   React.useEffect(() => {
     const checkToken = setInterval(() => {
-      const token = localStorage.getItem('yu');
+      const accessToken = localStorage.getItem('yu');
       if (loggedIn) {
-        if (token && isValid(token)) return console.log('token valid'); // todo: delete
+        if (accessToken && isValid(accessToken)) return console.log('token valid'); // todo: delete
         console.log('token invalid') // todo: delete
         localStorage.removeItem('yu');
         setLoggedIn(false);

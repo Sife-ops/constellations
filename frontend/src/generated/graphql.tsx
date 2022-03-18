@@ -35,7 +35,7 @@ export type Category = {
 
 export type LoginResponse = {
   __typename?: 'LoginResponse';
-  token: Scalars['String'];
+  accessToken: Scalars['String'];
 };
 
 export type Mutation = {
@@ -220,7 +220,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', token: string } | null };
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', accessToken: string } | null };
 
 export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
@@ -357,7 +357,7 @@ export default {
         "name": "LoginResponse",
         "fields": [
           {
-            "name": "token",
+            "name": "accessToken",
             "type": {
               "kind": "NON_NULL",
               "ofType": {
@@ -1058,7 +1058,7 @@ export function useCategoryUpdateMutation() {
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!, $remember: Boolean!) {
   login(email: $email, password: $password, remember: $remember) {
-    token
+    accessToken
   }
 }
     `;

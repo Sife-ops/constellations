@@ -34,9 +34,9 @@ export const Login: React.FC = () => {
         console.log(res.error); // todo: delete
         return navigate('/reset');
       }
-      const token = res.data?.login?.token;
-      if (token) {
-        localStorage.setItem('yu', token);
+      const accessToken = res.data?.login?.accessToken;
+      if (accessToken) {
+        localStorage.setItem('yu', accessToken);
         window.location.reload();
       }
       // p.forceUpdate(); // todo: delete

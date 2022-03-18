@@ -7,7 +7,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { apiUrl } from './utility/function';
 import { createClient, Provider as UrqlProvider } from 'urql';
 
-const token = localStorage.getItem('yu');
+const accessToken = localStorage.getItem('yu');
 
 // todo: auth exchange refreshes token every request ...
 const client = createClient({
@@ -15,7 +15,7 @@ const client = createClient({
   fetchOptions: {
     credentials: 'include',
     headers: {
-      Authorization: `Bearer ${token || ''}`,
+      Authorization: `Bearer ${accessToken || ''}`,
     },
   },
 });

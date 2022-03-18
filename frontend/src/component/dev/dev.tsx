@@ -19,8 +19,8 @@ export const Dev: React.FC = () => {
   };
 
   const handleLogToken = () => {
-    const token = localStorage.getItem('yu') || '';
-    console.log(token, 'valid:', isValid(token));
+    const accessToken = localStorage.getItem('yu') || '';
+    console.log(accessToken, 'valid:', isValid(accessToken));
   };
 
   return (

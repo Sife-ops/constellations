@@ -8,10 +8,10 @@ type AuthPayload = JwtPayload & { id: number };
 export const auth_ = (req: Request): AuthPayload => {
   const auth = req.headers.authorization as string;
   if (!auth) throw new Error('no authorization header');
-  const token = auth.split(' ')[1];
-  if (!token) throw new Error('no token');
+  const accessToken = auth.split(' ')[1];
+  if (!accessToken) throw new Error('no token');
   try {
-    const authPayload = verify(token, env.secret.token.access) as AuthPayload;
+    const authPayload = verify(accessToken, env.secret.token.access) as AuthPayload;
     return authPayload;
   } catch (e) {
     throw new Error('bad/expired token');
