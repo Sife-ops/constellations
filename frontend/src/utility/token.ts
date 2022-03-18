@@ -13,6 +13,8 @@ export const isValid = (t: string): boolean => {
   if (!t) return false;
   const decoded = decode<JwtPayload>(t);
   const now = new Date().getTime();
-  if (now > decoded.exp! * 1000) return false;
+  const offset = 1000;
+  console.log(now)
+  if (now + offset > decoded.exp! * 1000) return false;
   return true;
 };

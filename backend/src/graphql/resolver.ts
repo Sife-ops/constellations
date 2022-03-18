@@ -252,7 +252,7 @@ const login = async (
   if (!verified) throw new Error('wrong password');
 
   return {
-    token: t.newAccessToken({ id: user.id }, remember),
+    token: t.newAccessToken({ id: user.id, remember }),
   };
 };
 

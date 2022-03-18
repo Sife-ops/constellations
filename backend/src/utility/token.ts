@@ -7,16 +7,16 @@ interface RefreshPayload {
   remember: boolean;
 }
 
-export const newAccessToken = (
-  payload: { id: number },
-  remember: boolean = false
-): string => {
+export const newAccessToken = (payload: {
+  id: number;
+  remember: boolean;
+}): string => {
   const time = (): string => {
     if (env.prod) {
-      if (remember) return '7d';
+      if (payload.remember) return '7d';
       return '1d';
     }
-    if (remember) return '30s';
+    if (payload.remember) return '30s';
     return '15s';
   };
   return jwt.sign(payload, env.secret.token.access, {

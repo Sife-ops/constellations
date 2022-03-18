@@ -9,7 +9,7 @@ import { createClient, Provider as UrqlProvider } from 'urql';
 
 const token = localStorage.getItem('yu');
 
-// todo: auth exchange refreshes token every request
+// todo: auth exchange refreshes token every request ...
 const client = createClient({
   url: `${apiUrl()}/graphql`,
   fetchOptions: {
