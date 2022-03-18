@@ -1,11 +1,11 @@
 import * as t from '../utility/token';
 import argon2 from 'argon2';
 import fetch from 'cross-fetch';
-import { auth_ } from './auth';
 import { Bookmark as BookmarkEntity } from '../entity/bookmark';
 import { Category as CategoryEntity } from '../entity/category';
 import { Request, Response } from 'express';
 import { User } from '../entity/user';
+import { auth_ } from './auth';
 import { env } from '../utility/constant';
 
 /*
@@ -244,17 +244,16 @@ interface LoginInput {
 
 const login = async (
   _: any,
-  { email, password, remember }: LoginInput,
-  { res }: { res: Response }
-): Promise<User> => {
+  { email, password, remember }: LoginInput
+): Promise<{ token: string }> => {
   const user = await User.findOneOrFail({ where: { email } });
 
   const verified = await argon2.verify(user.password, password);
   if (!verified) throw new Error('wrong password');
 
-  t.sendRefreshToken(res, { id: user.id, remember });
-
-  return user;
+  return {
+    token: t.newAccessToken({ id: user.id }, remember),
+  };
 };
 
 /*

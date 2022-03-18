@@ -1,6 +1,7 @@
 import React from 'react';
 import { env } from './constant';
 
+// todo: move to constant.ts
 export const apiUrl = (): string => {
   if (env.prod_url) return env.prod_url + '/api';
   if (env.ngrok_url) return env.ngrok_url + '/api';

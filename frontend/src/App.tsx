@@ -11,6 +11,7 @@ import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { apiUrl } from './utility/function';
+import { isValid } from './utility/token';
 import { useForceUpdate } from './utility/function';
 
 export const App = () => {
@@ -18,25 +19,26 @@ export const App = () => {
 
   const navigate = useNavigate();
 
-  const [update, forceUpdate] = useForceUpdate();
+  // const [update, forceUpdate] = useForceUpdate(); // todo: delete
 
-  /**
-   * get tokens
-   */
   React.useEffect(() => {
-    fetch(`${apiUrl()}/refresh`, {
-      method: 'POST',
-      credentials: 'include',
-    }).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('yu', data.accessToken);
-        setLoggedIn(true);
+    const token = localStorage.getItem('yu');
+    if (token && isValid(token)) setLoggedIn(true);
+  });
+
+  React.useEffect(() => {
+    const checkToken = setInterval(() => {
+      const token = localStorage.getItem('yu');
+      if (loggedIn) {
+        if (token && isValid(token)) return console.log('token valid'); // todo: delete
+        console.log('token invalid') // todo: delete
+        localStorage.removeItem('yu');
+        setLoggedIn(false);
         return;
       }
-      setLoggedIn(false);
-    });
-  }, [update]);
+    }, 5000);
+    return () => clearInterval(checkToken);
+  });
 
   /**
    * remove tokens
@@ -101,7 +103,7 @@ export const App = () => {
       ) : (
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login forceUpdate={forceUpdate} />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />

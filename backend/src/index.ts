@@ -50,7 +50,6 @@ import { typeDefs } from './graphql/typedef';
   app.use(bodyParser.json());
 
   app.use(logout);
-  app.use(refresh);
 
   /*
    * Graphql

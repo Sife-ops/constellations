@@ -5,20 +5,19 @@ import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
 import { apiUrl } from './utility/function';
-import { authConfig } from './utility/auth-config';
-import { authExchange } from '@urql/exchange-auth';
 import { createClient, Provider as UrqlProvider } from 'urql';
-import { fetchExchange } from 'urql';
 
+const token = localStorage.getItem('yu');
+
+// todo: auth exchange refreshes token every request
 const client = createClient({
   url: `${apiUrl()}/graphql`,
   fetchOptions: {
     credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${token || ''}`,
+    },
   },
-  exchanges: [
-    authExchange(authConfig),
-    fetchExchange, // needed
-  ],
 });
 
 ReactDOM.render(

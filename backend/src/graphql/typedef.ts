@@ -16,6 +16,10 @@ export const typeDefs = gql`
     user: User
   }
 
+  type LoginResponse {
+    token: String!
+  }
+
   type User {
     id: Int
     email: String
@@ -50,7 +54,7 @@ export const typeDefs = gql`
     categoryAdd(name: String!): Category
     categoryDelete(id: Int!): Category
     categoryUpdate(id: Int!, name: String!): Category
-    login(email: String!, password: String!, remember: Boolean!): User
+    login(email: String!, password: String!, remember: Boolean!): LoginResponse
     register(
       email: String!
       username: String!
