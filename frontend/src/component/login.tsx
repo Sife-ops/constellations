@@ -2,7 +2,6 @@ import React from 'react';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
 import { Formik, FormikConfig } from 'formik';
-import { emailIsValid } from '../utility/function';
 import { useLoginMutation } from '../generated/graphql';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,17 +11,17 @@ export const Login: React.FC = () => {
   const [_, loginMutation] = useLoginMutation();
 
   interface Config {
-    email: string;
+    username: string;
     password: string;
     remember: boolean;
   }
 
   const formikConfig: FormikConfig<Config> = {
-    initialValues: { email: '', password: '', remember: false },
-    onSubmit: async ({ email, password, remember }, { setSubmitting }) => {
+    initialValues: { password: '', remember: false, username: '' },
+    onSubmit: async ({ password, remember, username }, { setSubmitting }) => {
       setSubmitting(true);
       const res = await loginMutation({
-        email,
+        username,
         password,
         remember,
       });
@@ -36,12 +35,6 @@ export const Login: React.FC = () => {
         window.location.reload();
       }
     },
-    validate: (values) => {
-      const errors: { email?: 'empty' | 'invalid' } = {};
-      if (!emailIsValid(values.email)) errors.email = 'invalid';
-      if (!values.email) errors.email = 'empty';
-      return errors;
-    },
   };
 
   return (
@@ -53,9 +46,9 @@ export const Login: React.FC = () => {
         }}
       >
         <Formik {...formikConfig}>
-          {({ errors, handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
+          {({ handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
             <form onSubmit={handleSubmit}>
-              <Box className="element">
+              {/* <Box className="element">
                 <Input
                   focusBorderColor={errors.email === 'invalid' ? 'red.500' : ''}
                   id="at-loginForm__email"
@@ -64,6 +57,15 @@ export const Login: React.FC = () => {
                   onChange={handleChange}
                   placeholder="email"
                   value={values.email}
+                />
+              </Box> */}
+              <Box className="element">
+                <Input
+                  id="at-loginForm__email"
+                  name="username"
+                  onChange={handleChange}
+                  placeholder="username"
+                  value={values.username}
                 />
               </Box>
               <Box className="element">

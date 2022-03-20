@@ -237,16 +237,16 @@ const categoryUpdate = async (
  */
 
 interface LoginInput {
-  email: string;
+  username: string;
   password: string;
   remember: boolean;
 }
 
 const login = async (
   _: any,
-  { email, password, remember }: LoginInput
+  { username, password, remember }: LoginInput
 ): Promise<{ accessToken: string }> => {
-  const user = await User.findOneOrFail({ where: { email } });
+  const user = await User.findOneOrFail({ where: { username } });
 
   const verified = await argon2.verify(user.password, password);
   if (!verified) throw new Error('wrong password');
@@ -261,20 +261,18 @@ const login = async (
  */
 
 interface RegisterInput {
-  email: string;
   username: string;
   password: string;
   captcha?: string;
 }
 
 interface RegisterResponse {
-  email: string;
   username: string;
 }
 
 const register = async (
   _: any,
-  { captcha, email, password, username }: RegisterInput
+  { captcha, password, username }: RegisterInput
 ): Promise<RegisterResponse> => {
   if (env.secret.captcha) {
     if (!captcha) throw new Error('invalid captcha');
@@ -286,25 +284,23 @@ const register = async (
     if (!json.success) throw new Error('failed captcha');
   }
 
-  {
-    const found = await User.findOne({ where: { email } });
-    if (found) throw new Error('email exists');
-  }
-
-  {
-    const found = await User.findOne({ where: { username } });
-    if (found) throw new Error('username exists');
-  }
+  const found = await User.findOne({ where: { username } });
+  if (found) throw new Error('username exists');
 
   const hashed = await argon2.hash(password);
 
-  const user = await User.create({
-    email,
-    username,
-    password: hashed,
-  }).save();
+  // todo: delete try/catch
+  try {
+    const user = await User.create({
+      username,
+      password: hashed,
+    }).save();
 
-  return { email: user.email, username: user.username };
+    return { username: user.username };
+  } catch (e) {
+    console.log(e);
+    throw new Error('sqlite error');
+  }
 };
 
 /*

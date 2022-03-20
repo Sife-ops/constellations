@@ -54,13 +54,8 @@ export const typeDefs = gql`
     categoryAdd(name: String!): Category
     categoryDelete(id: Int!): Category
     categoryUpdate(id: Int!, name: String!): Category
-    login(email: String!, password: String!, remember: Boolean!): LoginResponse
-    register(
-      email: String!
-      username: String!
-      password: String!
-      captcha: String
-    ): User
+    login(username: String!, password: String!, remember: Boolean!): LoginResponse
+    register(username: String!, password: String!, captcha: String): User
     userExists(email: String, username: String): Boolean
   }
 `;

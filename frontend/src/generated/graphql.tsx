@@ -89,15 +89,14 @@ export type MutationCategoryUpdateArgs = {
 
 
 export type MutationLoginArgs = {
-  email: Scalars['String'];
   password: Scalars['String'];
   remember: Scalars['Boolean'];
+  username: Scalars['String'];
 };
 
 
 export type MutationRegisterArgs = {
   captcha?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
@@ -214,7 +213,7 @@ export type CategoryUpdateMutationVariables = Exact<{
 export type CategoryUpdateMutation = { __typename?: 'Mutation', categoryUpdate?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String'];
+  username: Scalars['String'];
   password: Scalars['String'];
   remember: Scalars['Boolean'];
 }>;
@@ -223,14 +222,13 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', accessToken: string } | null };
 
 export type RegisterMutationVariables = Exact<{
-  email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
   captcha?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', id?: number | null, username?: string | null } | null };
 
 export type UserExistsMutationVariables = Exact<{
   email?: InputMaybe<Scalars['String']>;
@@ -557,16 +555,6 @@ export default {
             },
             "args": [
               {
-                "name": "email",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
                 "name": "password",
                 "type": {
                   "kind": "NON_NULL",
@@ -578,6 +566,16 @@ export default {
               },
               {
                 "name": "remember",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "username",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -601,16 +599,6 @@ export default {
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
-                }
-              },
-              {
-                "name": "email",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
                 }
               },
               {
@@ -1056,8 +1044,8 @@ export function useCategoryUpdateMutation() {
   return Urql.useMutation<CategoryUpdateMutation, CategoryUpdateMutationVariables>(CategoryUpdateDocument);
 };
 export const LoginDocument = gql`
-    mutation Login($email: String!, $password: String!, $remember: Boolean!) {
-  login(email: $email, password: $password, remember: $remember) {
+    mutation Login($username: String!, $password: String!, $remember: Boolean!) {
+  login(username: $username, password: $password, remember: $remember) {
     accessToken
   }
 }
@@ -1072,15 +1060,9 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $username: String!, $password: String!, $captcha: String) {
-  register(
-    email: $email
-    username: $username
-    password: $password
-    captcha: $captcha
-  ) {
+    mutation Register($username: String!, $password: String!, $captcha: String) {
+  register(username: $username, password: $password, captcha: $captcha) {
     id
-    email
     username
   }
 }
