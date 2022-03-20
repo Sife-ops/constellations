@@ -52,7 +52,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
           ...fetchOptions,
           headers: {
             ...fetchOptions.headers,
-            authorization: `Bearer ${authState.accessToken}`,
+            authorization: authState.accessToken,
           },
         },
       },
