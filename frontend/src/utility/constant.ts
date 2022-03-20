@@ -9,7 +9,7 @@ interface Env {
 
 export const url_api = (): string => {
   const url = import.meta.env.VITE_PROD_URL as string | undefined;
-  if (url) return url;
+  if (url) return url + '/api';
   return 'http://localhost:4000';
 };
 
