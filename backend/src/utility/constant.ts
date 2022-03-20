@@ -5,8 +5,8 @@ interface Env {
   secret: {
     captcha: string | undefined;
     token: {
-      access: string;
-      refresh: string;
+      access: string; // todo: add '| undefined'
+      refresh: string; // todo: remove references to 'refresh'
     };
   };
   seed: boolean;

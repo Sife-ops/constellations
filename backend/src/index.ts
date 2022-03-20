@@ -15,7 +15,21 @@ import { seed } from './utility/mock';
 import { typeDefs } from './graphql/typedef';
 
 (async () => {
+  /*
+   * Environment check
+   */
+
   console.log(env);
+
+  const msg = 'Missing environment variable:';
+  if (env.prod) {
+    if (env.secret.token.access === 'access') {
+      throw new Error(`${msg} SECRET_ACCESS_TOKEN`);
+    }
+    if (!env.secret.captcha) {
+      throw new Error(`${msg} CAPTCHA_SECRET`);
+    }
+  }
 
   /*
    * Database
