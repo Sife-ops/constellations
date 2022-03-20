@@ -1,12 +1,12 @@
 import { AuthConfig } from '@urql/exchange-auth';
 import { Operation } from 'urql';
-import { apiUrl } from '../utility/function';
+import { env } from './constant';
 import { isValid } from './token';
 
 export const authConfig: AuthConfig<{ accessToken: string }> = {
   willAuthError: ({ authState }) => {
     if (!authState) return true;
-    if (!isValid(authState.accessToken)) return true;
+    if (!isValid(authState.accessToken, 10000)) return true;
     return false;
   },
 
@@ -17,9 +17,12 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
       return null;
     }
 
-    const res = await fetch(`${apiUrl()}/refresh`, {
+    const res = await fetch(`${env.url.api}/refresh`, {
       method: 'POST',
       credentials: 'include',
+      headers: {
+        authorization: authState.accessToken,
+      },
     });
 
     if (!res.ok) return null;
@@ -49,7 +52,7 @@ export const authConfig: AuthConfig<{ accessToken: string }> = {
           ...fetchOptions,
           headers: {
             ...fetchOptions.headers,
-            authorization: `Bearer ${authState.accessToken}`,
+            authorization: authState.accessToken,
           },
         },
       },

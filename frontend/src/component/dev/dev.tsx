@@ -1,13 +1,13 @@
 import React from 'react';
 import { AuthTest } from './auth-test';
 import { CodegenTest } from './codegen-test';
-import { apiUrl } from '../../utility/function';
+import { env } from '../../utility/constant';
 import { isValid } from '../../utility/token';
 
 export const Dev: React.FC = () => {
   const handleLogout = () => {
     console.log('logout');
-    fetch(`${apiUrl()}/logout`, {
+    fetch(`${env.url.api}/logout`, {
       method: 'POST',
       credentials: 'include',
     }).then((res) => {
@@ -19,8 +19,8 @@ export const Dev: React.FC = () => {
   };
 
   const handleLogToken = () => {
-    const token = localStorage.getItem('yu') || '';
-    console.log(token, 'valid:', isValid(token));
+    const accessToken = localStorage.getItem('yu') || '';
+    console.log(accessToken, 'valid:', isValid(accessToken));
   };
 
   return (

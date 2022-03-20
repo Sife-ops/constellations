@@ -10,49 +10,35 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
-import { apiUrl } from './utility/function';
-import { useForceUpdate } from './utility/function';
+import { isValid } from './utility/token';
 
 export const App = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const navigate = useNavigate();
 
-  const [update, forceUpdate] = useForceUpdate();
-
-  /**
-   * get tokens
-   */
+  // todo: combine useEffects?
   React.useEffect(() => {
-    fetch(`${apiUrl()}/refresh`, {
-      method: 'POST',
-      credentials: 'include',
-    }).then(async (res) => {
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('yu', data.accessToken);
-        setLoggedIn(true);
+    const accessToken = localStorage.getItem('yu');
+    if (accessToken && isValid(accessToken)) setLoggedIn(true);
+  });
+
+  React.useEffect(() => {
+    const checkToken = setInterval(() => {
+      const accessToken = localStorage.getItem('yu');
+      if (loggedIn) {
+        if (accessToken && isValid(accessToken)) return;
+        localStorage.removeItem('yu');
+        setLoggedIn(false);
         return;
       }
-      setLoggedIn(false);
-    });
-  }, [update]);
+    }, 5000);
+    return () => clearInterval(checkToken);
+  });
 
-  /**
-   * remove tokens
-   */
   const handleLogout = () => {
-    fetch(`${apiUrl()}/logout`, {
-      method: 'POST',
-      credentials: 'include',
-    }).then((res) => {
-      if (res.ok) {
-        localStorage.removeItem('yu');
-        // todo: WHY RERENDER DOES NOT WORK
-        // forceUpdate();
-        window.location.reload();
-      }
-    });
+    localStorage.removeItem('yu');
+    window.location.reload();
   };
 
   return (
@@ -101,7 +87,7 @@ export const App = () => {
       ) : (
         <Routes>
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login forceUpdate={forceUpdate} />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />

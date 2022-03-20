@@ -33,6 +33,11 @@ export type Category = {
   user?: Maybe<User>;
 };
 
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   bookmarkAdd?: Maybe<Bookmark>;
@@ -41,7 +46,7 @@ export type Mutation = {
   categoryAdd?: Maybe<Category>;
   categoryDelete?: Maybe<Category>;
   categoryUpdate?: Maybe<Category>;
-  login?: Maybe<User>;
+  login?: Maybe<LoginResponse>;
   register?: Maybe<User>;
   userExists?: Maybe<Scalars['Boolean']>;
 };
@@ -215,7 +220,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', accessToken: string } | null };
 
 export type RegisterMutationVariables = Exact<{
   email: Scalars['String'];
@@ -341,6 +346,24 @@ export default {
               "kind": "OBJECT",
               "name": "User",
               "ofType": null
+            },
+            "args": []
+          }
+        ],
+        "interfaces": []
+      },
+      {
+        "kind": "OBJECT",
+        "name": "LoginResponse",
+        "fields": [
+          {
+            "name": "accessToken",
+            "type": {
+              "kind": "NON_NULL",
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Any"
+              }
             },
             "args": []
           }
@@ -529,7 +552,7 @@ export default {
             "name": "login",
             "type": {
               "kind": "OBJECT",
-              "name": "User",
+              "name": "LoginResponse",
               "ofType": null
             },
             "args": [
@@ -1035,9 +1058,7 @@ export function useCategoryUpdateMutation() {
 export const LoginDocument = gql`
     mutation Login($email: String!, $password: String!, $remember: Boolean!) {
   login(email: $email, password: $password, remember: $remember) {
-    id
-    email
-    username
+    accessToken
   }
 }
     `;

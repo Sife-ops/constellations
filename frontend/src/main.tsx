@@ -4,21 +4,17 @@ import ReactDOM from 'react-dom';
 import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import { apiUrl } from './utility/function';
 import { authConfig } from './utility/auth-config';
 import { authExchange } from '@urql/exchange-auth';
-import { createClient, Provider as UrqlProvider } from 'urql';
-import { fetchExchange } from 'urql';
+import { createClient, fetchExchange, Provider as UrqlProvider } from 'urql';
+import { env } from './utility/constant';
 
 const client = createClient({
-  url: `${apiUrl()}/graphql`,
+  url: `${env.url.api}/graphql`,
   fetchOptions: {
     credentials: 'include',
   },
-  exchanges: [
-    authExchange(authConfig),
-    fetchExchange, // needed
-  ],
+  exchanges: [authExchange(authConfig), fetchExchange],
 });
 
 ReactDOM.render(

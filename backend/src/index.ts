@@ -7,22 +7,34 @@ import { ApolloServer } from 'apollo-server-express';
 import { Bookmark } from './entity/bookmark';
 import { Category } from './entity/category';
 import { User } from './entity/user';
-import { applyMiddleware } from 'graphql-middleware';
-import { auth } from './graphql/auth';
 import { createConnection } from 'typeorm';
 import { env } from './utility/constant';
-import { login, logout } from './rest/login';
-import { makeExecutableSchema } from '@graphql-tools/schema';
 import { refresh } from './rest/refresh';
-import { register } from './rest/register';
 import { resolvers } from './graphql/resolver';
 import { seed } from './utility/mock';
 import { typeDefs } from './graphql/typedef';
 
 (async () => {
+  /*
+   * Environment check
+   */
+
   console.log(env);
 
-  // database
+  const msg = 'Missing environment variable:';
+  if (env.prod) {
+    if (env.secret.token.access === 'access') {
+      throw new Error(`${msg} SECRET_ACCESS_TOKEN`);
+    }
+    if (!env.secret.captcha) {
+      throw new Error(`${msg} CAPTCHA_SECRET`);
+    }
+  }
+
+  /*
+   * Database
+   */
+
   try {
     await createConnection({
       type: 'sqlite',
@@ -39,51 +51,38 @@ import { typeDefs } from './graphql/typedef';
 
   if (env.seed) await seed();
 
-  // rest
+  /*
+   * Express
+   */
+
   const app = express();
 
-  const origin = (): string[] => {
-    const nonprod = [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://studio.apollographql.com',
-    ];
-    if (env.prod_url) return [env.prod_url];
-    if (env.ngrok_url) return nonprod.concat(env.ngrok_url);
-    return nonprod;
-  };
-
-  app.use(cors({ origin: origin(), credentials: true }));
+  app.use(cors({ origin: env.origin, credentials: true }));
   app.use(cookieParser());
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
 
-  app.use(login);
-  app.use(logout);
   app.use(refresh);
-  app.use(register);
 
-  // grpahql
-  const schema = makeExecutableSchema({ typeDefs, resolvers });
-  const schemaWithMiddleware = applyMiddleware(schema, auth);
+  /*
+   * Graphql
+   */
 
   const server = new ApolloServer({
-    schema: schemaWithMiddleware,
+    typeDefs,
+    resolvers,
     context: ({ req, res }) => ({ req, res }),
   });
 
-  // start
+  /*
+   * Start
+   */
+
   await server.start();
 
   server.applyMiddleware({ app, cors: false });
 
-  const port = (): number => {
-    if (env.prod_url || env.ngrok_url) return 80;
-    return 4000;
-  };
-
-  app.listen(port(), () => {
-    console.log(`port: ${port()}`);
-    console.log(`origins: ${origin()}`);
+  app.listen(env.port, () => {
+    console.log('Ready.');
   });
 })();

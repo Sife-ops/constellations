@@ -6,11 +6,7 @@ import { emailIsValid } from '../utility/function';
 import { useLoginMutation } from '../generated/graphql';
 import { useNavigate } from 'react-router-dom';
 
-interface Props {
-  forceUpdate: () => void;
-}
-
-export const Login: React.FC<Props> = (p) => {
+export const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const [_, loginMutation] = useLoginMutation();
@@ -31,9 +27,14 @@ export const Login: React.FC<Props> = (p) => {
         remember,
       });
       if (res.error) {
+        console.log(res.error); // todo: delete
         return navigate('/reset');
       }
-      p.forceUpdate();
+      const accessToken = res.data?.login?.accessToken;
+      if (accessToken) {
+        localStorage.setItem('yu', accessToken);
+        window.location.reload();
+      }
     },
     validate: (values) => {
       const errors: { email?: 'empty' | 'invalid' } = {};
