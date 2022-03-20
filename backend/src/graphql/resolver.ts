@@ -237,16 +237,16 @@ const categoryUpdate = async (
  */
 
 interface LoginInput {
-  email: string;
+  username: string;
   password: string;
   remember: boolean;
 }
 
 const login = async (
   _: any,
-  { email, password, remember }: LoginInput
+  { username, password, remember }: LoginInput
 ): Promise<{ accessToken: string }> => {
-  const user = await User.findOneOrFail({ where: { email } });
+  const user = await User.findOneOrFail({ where: { username } });
 
   const verified = await argon2.verify(user.password, password);
   if (!verified) throw new Error('wrong password');

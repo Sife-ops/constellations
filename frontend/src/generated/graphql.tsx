@@ -89,9 +89,9 @@ export type MutationCategoryUpdateArgs = {
 
 
 export type MutationLoginArgs = {
-  email: Scalars['String'];
   password: Scalars['String'];
   remember: Scalars['Boolean'];
+  username: Scalars['String'];
 };
 
 
@@ -213,7 +213,7 @@ export type CategoryUpdateMutationVariables = Exact<{
 export type CategoryUpdateMutation = { __typename?: 'Mutation', categoryUpdate?: { __typename?: 'Category', id?: number | null, name?: string | null } | null };
 
 export type LoginMutationVariables = Exact<{
-  email: Scalars['String'];
+  username: Scalars['String'];
   password: Scalars['String'];
   remember: Scalars['Boolean'];
 }>;
@@ -555,16 +555,6 @@ export default {
             },
             "args": [
               {
-                "name": "email",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              },
-              {
                 "name": "password",
                 "type": {
                   "kind": "NON_NULL",
@@ -576,6 +566,16 @@ export default {
               },
               {
                 "name": "remember",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              },
+              {
+                "name": "username",
                 "type": {
                   "kind": "NON_NULL",
                   "ofType": {
@@ -1044,8 +1044,8 @@ export function useCategoryUpdateMutation() {
   return Urql.useMutation<CategoryUpdateMutation, CategoryUpdateMutationVariables>(CategoryUpdateDocument);
 };
 export const LoginDocument = gql`
-    mutation Login($email: String!, $password: String!, $remember: Boolean!) {
-  login(email: $email, password: $password, remember: $remember) {
+    mutation Login($username: String!, $password: String!, $remember: Boolean!) {
+  login(username: $username, password: $password, remember: $remember) {
     accessToken
   }
 }

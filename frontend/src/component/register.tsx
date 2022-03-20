@@ -5,7 +5,7 @@ import { BoxOutlined } from './box-outlined';
 import { Formik, FormikConfig } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { WarningTwoIcon } from '@chakra-ui/icons';
-import { emailIsValid, passwordIsValid, usernameIsValid } from '../utility/function';
+import { passwordIsValid, usernameIsValid } from '../utility/function';
 import { env } from '../utility/constant';
 import { useRegisterMutation } from '../generated/graphql';
 
@@ -35,7 +35,7 @@ export const Register: React.FC = () => {
       setSubmitting(true);
       const res = await registerMutation({ captcha, password, username });
       if (res.error) {
-        console.log(res.error)
+        console.log(res.error);
         const { message } = res.error;
         if (message === '[GraphQL] failed captcha') setRegisterError('captcha');
         if (message === '[GraphQL] username exists') setRegisterError('username');
