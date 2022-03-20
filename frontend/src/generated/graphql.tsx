@@ -97,7 +97,6 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   captcha?: InputMaybe<Scalars['String']>;
-  email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
 };
@@ -223,14 +222,13 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', accessToken: string } | null };
 
 export type RegisterMutationVariables = Exact<{
-  email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
   captcha?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+export type RegisterMutation = { __typename?: 'Mutation', register?: { __typename?: 'User', id?: number | null, username?: string | null } | null };
 
 export type UserExistsMutationVariables = Exact<{
   email?: InputMaybe<Scalars['String']>;
@@ -601,16 +599,6 @@ export default {
                 "type": {
                   "kind": "SCALAR",
                   "name": "Any"
-                }
-              },
-              {
-                "name": "email",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
                 }
               },
               {
@@ -1072,15 +1060,9 @@ export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
 };
 export const RegisterDocument = gql`
-    mutation Register($email: String!, $username: String!, $password: String!, $captcha: String) {
-  register(
-    email: $email
-    username: $username
-    password: $password
-    captcha: $captcha
-  ) {
+    mutation Register($username: String!, $password: String!, $captcha: String) {
+  register(username: $username, password: $password, captcha: $captcha) {
     id
-    email
     username
   }
 }

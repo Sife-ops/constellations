@@ -14,10 +14,9 @@ export const Register: React.FC = () => {
 
   const [_, registerMutation] = useRegisterMutation();
 
-  const [registerError, setRegisterError] = React.useState<null | 'captcha' | 'email' | 'username'>(null);
+  const [registerError, setRegisterError] = React.useState<null | 'captcha' | 'username'>(null);
 
   interface Config {
-    email: string;
     username: string;
     password: string;
     passwordConfirm: string;
@@ -27,19 +26,17 @@ export const Register: React.FC = () => {
   const formikConfig: FormikConfig<Config> = {
     initialValues: {
       captcha: null,
-      email: '',
       password: '',
       passwordConfirm: '',
       username: '',
     },
-    onSubmit: async ({ captcha, email, username, password }, { setSubmitting }) => {
+    onSubmit: async ({ captcha, username, password }, { setSubmitting }) => {
       setRegisterError(null);
       setSubmitting(true);
-      const res = await registerMutation({ captcha, email, password, username });
+      const res = await registerMutation({ captcha, password, username });
       if (res.error) {
         const { message } = res.error;
         if (message === '[GraphQL] failed captcha') setRegisterError('captcha');
-        if (message === '[GraphQL] email exists') setRegisterError('email');
         if (message === '[GraphQL] username exists') setRegisterError('username');
         return;
       }
@@ -47,14 +44,11 @@ export const Register: React.FC = () => {
     },
     validate: (v) => {
       const errors: {
-        email?: 'empty' | 'invalid';
         username?: 'empty' | 'invalid';
         password?: 'empty' | 'invalid';
         passwordConfirm?: 'empty' | 'invalid';
         captcha?: 'invalid';
       } = {};
-      if (!emailIsValid(v.email)) errors.email = 'invalid';
-      if (!v.email) errors.email = 'empty';
       if (!usernameIsValid(v.username)) errors.username = 'invalid';
       if (!v.username) errors.username = 'empty';
       if (!passwordIsValid(v.password)) errors.password = 'invalid';
@@ -127,13 +121,14 @@ export const Register: React.FC = () => {
                       <Text>Failed captcha.</Text>
                     ) : (
                       <Text>
-                        An account with that {registerError === 'email' ? 'email address' : 'username'} already exists.
+                        {/* An account with that {registerError === 'email' ? 'email address' : 'username'} already exists. */}
+                        An account with that username already exists.
                       </Text>
                     )}
                   </Box>
                 </BoxOutlined>
               )}
-              <Box className="element">
+              {/* <Box className="element">
                 <Input
                   focusBorderColor={values.email === '' ? '' : errors.email === 'invalid' ? 'red.500' : 'green.500'}
                   name="email"
@@ -141,7 +136,7 @@ export const Register: React.FC = () => {
                   placeholder="email"
                   value={values.email}
                 />
-              </Box>
+              </Box> */}
               <Box className="element">
                 <Input
                   focusBorderColor={

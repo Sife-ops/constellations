@@ -261,20 +261,18 @@ const login = async (
  */
 
 interface RegisterInput {
-  email: string;
   username: string;
   password: string;
   captcha?: string;
 }
 
 interface RegisterResponse {
-  email: string;
   username: string;
 }
 
 const register = async (
   _: any,
-  { captcha, email, password, username }: RegisterInput
+  { captcha, password, username }: RegisterInput
 ): Promise<RegisterResponse> => {
   if (env.secret.captcha) {
     if (!captcha) throw new Error('invalid captcha');
@@ -286,25 +284,17 @@ const register = async (
     if (!json.success) throw new Error('failed captcha');
   }
 
-  {
-    const found = await User.findOne({ where: { email } });
-    if (found) throw new Error('email exists');
-  }
-
-  {
-    const found = await User.findOne({ where: { username } });
-    if (found) throw new Error('username exists');
-  }
+  const found = await User.findOne({ where: { username } });
+  if (found) throw new Error('username exists');
 
   const hashed = await argon2.hash(password);
 
   const user = await User.create({
-    email,
     username,
     password: hashed,
   }).save();
 
-  return { email: user.email, username: user.username };
+  return { username: user.username };
 };
 
 /*

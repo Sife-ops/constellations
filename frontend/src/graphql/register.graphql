@@ -1,7 +1,6 @@
-mutation Register($email: String!, $username: String!, $password: String!, $captcha: String) {
-  register(email: $email, username: $username, password: $password, captcha: $captcha) {
+mutation Register($username: String!, $password: String!, $captcha: String) {
+  register(username: $username, password: $password, captcha: $captcha) {
     id
-    email
     username
   }
 }
