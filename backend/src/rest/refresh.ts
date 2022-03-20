@@ -7,9 +7,8 @@ const refresh = Router();
 
 refresh.post('/refresh', (req: Request, res: Response) => {
   // todo: logging utility
-  console.log('refresh.ts - request cookies:', req.body.accessToken);
-  // todo: use either 'token' or 'accessToken' consistently
-  const accessToken = req.body.accessToken as string | undefined;
+  console.log('refresh.ts - request headers:', req.headers.authorization);
+  const accessToken = req.headers.authorization as string | undefined;
   if (!accessToken) return res.sendStatus(401);
   try {
     // throws if expired
@@ -19,7 +18,7 @@ refresh.post('/refresh', (req: Request, res: Response) => {
     ) as JwtPayload & { id: number; remember: boolean };
     res.json({ accessToken: t.newAccessToken({ id, remember }) });
   } catch (e) {
-    console.log(e);
+    // console.log(e); // todo: why?
     return res.sendStatus(401);
   }
 });

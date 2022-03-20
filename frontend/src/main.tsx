@@ -4,20 +4,17 @@ import ReactDOM from 'react-dom';
 import { App } from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
-import { apiUrl } from './utility/function';
-import { createClient, Provider as UrqlProvider } from 'urql';
+import { authConfig } from './utility/auth-config';
+import { authExchange } from '@urql/exchange-auth';
+import { createClient, fetchExchange, Provider as UrqlProvider } from 'urql';
+import { env } from './utility/constant';
 
-const accessToken = localStorage.getItem('yu');
-
-// todo: auth exchange refreshes token every request ...
 const client = createClient({
-  url: `${apiUrl()}/graphql`,
+  url: `${env.url.api}/graphql`,
   fetchOptions: {
     credentials: 'include',
-    headers: {
-      Authorization: `Bearer ${accessToken || ''}`,
-    },
   },
+  exchanges: [authExchange(authConfig), fetchExchange],
 });
 
 ReactDOM.render(

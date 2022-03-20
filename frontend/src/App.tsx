@@ -10,7 +10,6 @@ import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Register } from './component/register';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
-import { apiUrl } from './utility/function';
 import { isValid } from './utility/token';
 
 export const App = () => {
@@ -18,6 +17,7 @@ export const App = () => {
 
   const navigate = useNavigate();
 
+  // todo: combine useEffects?
   React.useEffect(() => {
     const accessToken = localStorage.getItem('yu');
     if (accessToken && isValid(accessToken)) setLoggedIn(true);
@@ -27,8 +27,7 @@ export const App = () => {
     const checkToken = setInterval(() => {
       const accessToken = localStorage.getItem('yu');
       if (loggedIn) {
-        if (accessToken && isValid(accessToken)) return console.log('token valid'); // todo: delete
-        console.log('token invalid') // todo: delete
+        if (accessToken && isValid(accessToken)) return;
         localStorage.removeItem('yu');
         setLoggedIn(false);
         return;
@@ -37,21 +36,9 @@ export const App = () => {
     return () => clearInterval(checkToken);
   });
 
-  /**
-   * remove tokens
-   */
   const handleLogout = () => {
-    fetch(`${apiUrl()}/logout`, {
-      method: 'POST',
-      credentials: 'include',
-    }).then((res) => {
-      if (res.ok) {
-        localStorage.removeItem('yu');
-        // todo: WHY RERENDER DOES NOT WORK
-        // forceUpdate();
-        window.location.reload();
-      }
-    });
+    localStorage.removeItem('yu');
+    window.location.reload();
   };
 
   return (

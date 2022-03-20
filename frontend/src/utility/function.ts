@@ -1,12 +1,4 @@
 import React from 'react';
-import { env } from './constant';
-
-// todo: move to constant.ts
-export const apiUrl = (): string => {
-  if (env.prod_url) return env.prod_url + '/api';
-  if (env.ngrok_url) return env.ngrok_url + '/api';
-  return 'http://localhost:4000';
-};
 
 export const emailIsValid = (s: string): boolean => {
   const ex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

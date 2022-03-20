@@ -16,8 +16,8 @@ export const newAccessToken = (payload: {
       if (payload.remember) return '7d';
       return '1d';
     }
-    if (payload.remember) return '30s';
-    return '15s';
+    if (payload.remember) return '120s';
+    return '60s';
   };
   return jwt.sign(payload, env.secret.token.access, {
     expiresIn: time(),
