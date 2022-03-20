@@ -35,6 +35,7 @@ export const Register: React.FC = () => {
       setSubmitting(true);
       const res = await registerMutation({ captcha, password, username });
       if (res.error) {
+        console.log(res.error)
         const { message } = res.error;
         if (message === '[GraphQL] failed captcha') setRegisterError('captcha');
         if (message === '[GraphQL] username exists') setRegisterError('username');

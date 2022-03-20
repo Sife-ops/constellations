@@ -289,12 +289,18 @@ const register = async (
 
   const hashed = await argon2.hash(password);
 
-  const user = await User.create({
-    username,
-    password: hashed,
-  }).save();
+  // todo: delete try/catch
+  try {
+    const user = await User.create({
+      username,
+      password: hashed,
+    }).save();
 
-  return { username: user.username };
+    return { username: user.username };
+  } catch (e) {
+    console.log(e);
+    throw new Error('sqlite error');
+  }
 };
 
 /*
