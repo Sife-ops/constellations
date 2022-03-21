@@ -6,6 +6,7 @@ import { Category as CategoryEntity } from '../entity/category';
 import { Request } from 'express';
 import { User } from '../entity/user';
 import { auth_ } from './auth';
+import { captchaUrl } from '../utility/function';
 import { env } from '../utility/constant';
 
 /*
@@ -275,10 +276,13 @@ const register = async (
   { captcha, password, username }: RegisterInput
 ): Promise<RegisterResponse> => {
   if (env.secret.captcha) {
-    if (!captcha) throw new Error('invalid captcha');
+    if (!captcha) throw new Error('no captcha in request');
     // todo: move to constant.ts
-    const url = `https://www.google.com/recaptcha/api/siteverify?secret=${env.secret.captcha}&response=${captcha}`;
-    const res = await fetch(url, { method: 'POST' });
+    const res = await fetch(captchaUrl(env.secret.captcha, captcha), {
+      method: 'POST',
+    });
+    if (!res.ok) throw new Error('request to captcha service failed');
+    // todo: use io-ts
     const json: { success: boolean } = await res.json();
     console.log('resolver.ts - captcha result', json);
     if (!json.success) throw new Error('failed captcha');
