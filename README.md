@@ -1,9 +1,13 @@
-# Equuleus
+# Constellations
 
 ## Todo
 
-- logging
+- (better) logging
 - sign-in/out naming
-- project name change to 'Equuleus'
 - remove dead code
-- only use usernames
+- update mock data and functions
+- node command line utility
+- systemd service
+- mirror on git.goettsch.xyz
+- update links to other projects (equuleus etc)
+- ability to change passwords

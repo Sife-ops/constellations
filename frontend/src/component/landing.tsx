@@ -24,13 +24,29 @@ export const Landing: React.FC = () => {
         <UnorderedList>
           <ListItem>
             <Text as="u">
-              <a href="https://github.com/Sife-ops/jwt-auth" target="_blank">
+              <a href="https://github.com/Sife-ops/constellations" target="_blank">
                 Github
               </a>
             </Text>
           </ListItem>
 
-          <ListItem>They're just bookmarks</ListItem>
+          <ListItem>
+            CLI Utilities
+            <UnorderedList>
+              <ListItem>
+                <Text as="u">
+                  <a href="https://github.com/nemored/equuleus" target="_blank">
+                    Equuleus (rust)
+                  </a>
+                </Text>
+                <Text as="u">
+                  <a href="https://github.com/Sife-ops/cepheus" target="_blank">
+                    Cepheus (Node.js)
+                  </a>
+                </Text>
+              </ListItem>
+            </UnorderedList>
+          </ListItem>
         </UnorderedList>
       </Box>
     </>
