@@ -39,6 +39,8 @@ export const Landing: React.FC = () => {
                     Equuleus (rust)
                   </a>
                 </Text>
+              </ListItem>
+              <ListItem>
                 <Text as="u">
                   <a href="https://github.com/Sife-ops/cepheus" target="_blank">
                     Cepheus (Node.js)
