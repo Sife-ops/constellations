@@ -1,7 +1,5 @@
 import { gql } from 'apollo-server-core';
 
-// todo: remove user.email
-// todo: make 'remember' optional
 export const typeDefs = gql`
   type Bookmark {
     id: Int
@@ -24,7 +22,6 @@ export const typeDefs = gql`
 
   type User {
     id: Int
-    email: String
     username: String
     bookmarks: [Bookmark]
     categories: [Category]
@@ -56,7 +53,7 @@ export const typeDefs = gql`
     categoryAdd(name: String!): Category
     categoryDelete(id: Int!): Category
     categoryUpdate(id: Int!, name: String!): Category
-    login(username: String!, password: String!, remember: Boolean!): LoginResponse
+    login(username: String!, password: String!, remember: Boolean): LoginResponse
     register(username: String!, password: String!, captcha: String): User
     userExists(email: String, username: String): Boolean
   }

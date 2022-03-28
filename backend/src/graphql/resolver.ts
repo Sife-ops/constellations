@@ -240,7 +240,7 @@ const categoryUpdate = async (
 interface LoginInput {
   username: string;
   password: string;
-  remember: boolean;
+  remember?: boolean;
 }
 
 const login = async (
@@ -253,7 +253,10 @@ const login = async (
   if (!verified) throw new Error('wrong password');
 
   return {
-    accessToken: t.newAccessToken({ id: user.id, remember }),
+    accessToken: t.newAccessToken({
+      id: user.id,
+      remember: remember ? remember : false,
+    }),
   };
 };
 

@@ -90,7 +90,7 @@ export type MutationCategoryUpdateArgs = {
 
 export type MutationLoginArgs = {
   password: Scalars['String'];
-  remember: Scalars['Boolean'];
+  remember?: InputMaybe<Scalars['Boolean']>;
   username: Scalars['String'];
 };
 
@@ -127,7 +127,6 @@ export type User = {
   __typename?: 'User';
   bookmarks?: Maybe<Array<Maybe<Bookmark>>>;
   categories?: Maybe<Array<Maybe<Category>>>;
-  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['Int']>;
   username?: Maybe<Scalars['String']>;
 };
@@ -140,7 +139,7 @@ export type _Dev0Query = { __typename?: 'Query', _dev0?: string | null };
 export type _Dev1QueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type _Dev1Query = { __typename?: 'Query', _dev1?: Array<{ __typename?: 'User', id?: number | null, email?: string | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null };
+export type _Dev1Query = { __typename?: 'Query', _dev1?: Array<{ __typename?: 'User', id?: number | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null };
 
 export type _Dev2QueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -152,7 +151,7 @@ export type _Dev3QueryVariables = Exact<{
 }>;
 
 
-export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null } | null };
+export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, username?: string | null } | null };
 
 export type BookmarkAddMutationVariables = Exact<{
   description: Scalars['String'];
@@ -215,7 +214,7 @@ export type CategoryUpdateMutation = { __typename?: 'Mutation', categoryUpdate?:
 export type LoginMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
-  remember: Scalars['Boolean'];
+  remember?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
@@ -241,7 +240,7 @@ export type UserExistsMutation = { __typename?: 'Mutation', userExists?: boolean
 export type UserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id?: number | null, email?: string | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id?: number | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null } | null> | null } | null };
 
 import { IntrospectionQuery } from 'graphql';
 export default {
@@ -567,11 +566,8 @@ export default {
               {
                 "name": "remember",
                 "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
+                  "kind": "SCALAR",
+                  "name": "Any"
                 }
               },
               {
@@ -767,14 +763,6 @@ export default {
             "args": []
           },
           {
-            "name": "email",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
             "name": "id",
             "type": {
               "kind": "SCALAR",
@@ -820,7 +808,6 @@ export const _Dev1Document = gql`
     query _dev1 {
   _dev1 {
     id
-    email
     username
     bookmarks {
       id
@@ -863,7 +850,6 @@ export const _Dev3Document = gql`
     query _dev3($dev3Id: Int!) {
   _dev3(id: $dev3Id) {
     id
-    email
     username
   }
 }
@@ -1044,7 +1030,7 @@ export function useCategoryUpdateMutation() {
   return Urql.useMutation<CategoryUpdateMutation, CategoryUpdateMutationVariables>(CategoryUpdateDocument);
 };
 export const LoginDocument = gql`
-    mutation Login($username: String!, $password: String!, $remember: Boolean!) {
+    mutation Login($username: String!, $password: String!, $remember: Boolean) {
   login(username: $username, password: $password, remember: $remember) {
     accessToken
   }
@@ -1094,7 +1080,6 @@ export const UserDocument = gql`
     query User {
   user {
     id
-    email
     username
     bookmarks {
       id

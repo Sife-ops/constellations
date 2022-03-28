@@ -1,7 +1,6 @@
 query User {
   user {
     id
-    email
     username
     bookmarks {
       id

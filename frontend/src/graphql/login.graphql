@@ -1,4 +1,4 @@
-mutation Login($username: String!, $password: String!, $remember: Boolean!) {
+mutation Login($username: String!, $password: String!, $remember: Boolean) {
   login(username: $username, password: $password, remember: $remember) {
     accessToken
   }
