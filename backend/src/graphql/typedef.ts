@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server-core';
 
 // todo: remove user.email
+// todo: make 'remember' optional
 export const typeDefs = gql`
   type Bookmark {
     id: Int

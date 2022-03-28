@@ -277,7 +277,6 @@ const register = async (
 ): Promise<RegisterResponse> => {
   if (env.secret.captcha) {
     if (!captcha) throw new Error('no captcha in request');
-    // todo: move to constant.ts
     const res = await fetch(captchaUrl(env.secret.captcha, captcha), {
       method: 'POST',
     });
@@ -293,18 +292,12 @@ const register = async (
 
   const hashed = await argon2.hash(password);
 
-  // todo: delete try/catch
-  try {
-    const user = await User.create({
-      username,
-      password: hashed,
-    }).save();
+  const user = await User.create({
+    username,
+    password: hashed,
+  }).save();
 
-    return { username: user.username };
-  } catch (e) {
-    console.log(e);
-    throw new Error('sqlite error');
-  }
+  return { username: user.username };
 };
 
 /*
