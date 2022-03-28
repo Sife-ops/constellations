@@ -1,5 +1,6 @@
 import { gql } from 'apollo-server-core';
 
+// todo: official test endpoint
 export const typeDefs = gql`
   type Bookmark {
     id: Int
@@ -28,10 +29,6 @@ export const typeDefs = gql`
   }
 
   type Query {
-    _dev0: String
-    _dev1: [User]
-    _dev2: User
-    _dev3(id: Int!): User
     bookmarks: [Bookmark]
     categories: [Category]
     user: User

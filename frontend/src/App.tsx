@@ -2,7 +2,6 @@ import './App.css';
 import React from 'react';
 import { Box, Button } from '@chakra-ui/react';
 import { BoxOutlined } from './component/box-outlined';
-import { Dev } from './component/dev/dev';
 import { Home } from './component/home/home';
 import { Landing } from './component/landing';
 import { Login } from './component/login';
@@ -79,7 +78,7 @@ export const App = () => {
       </BoxOutlined>
       {loggedIn ? (
         <Routes>
-          <Route path="/dev" element={<Dev />} />
+          {/* todo: developer page */}
           <Route path="/home" element={<Home />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Navigate replace to="/home" />} />

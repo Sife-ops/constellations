@@ -6,7 +6,6 @@ interface Env {
     captcha: string | undefined;
     token: {
       access: string; // todo: add '| undefined'
-      refresh: string; // todo: remove references to 'refresh'
     };
   };
   seed: boolean;
@@ -43,7 +42,6 @@ export const env: Env = {
     captcha: process.env.CAPTCHA_SECRET,
     token: {
       access: process.env.SECRET_ACCESS_TOKEN || 'access',
-      refresh: process.env.SECRET_REFRESH_TOKEN || 'refresh',
     },
   },
   seed: process.env.SEED ? true : false,

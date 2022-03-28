@@ -1,6 +1,6 @@
-import * as t from '../utility/token';
 import { Request, Response, Router } from 'express';
 import { env } from '../utility/constant';
+import { newAccessToken } from '../utility/token';
 import { verify, JwtPayload } from 'jsonwebtoken';
 
 const refresh = Router();
@@ -16,7 +16,7 @@ refresh.post('/refresh', (req: Request, res: Response) => {
       accessToken,
       env.secret.token.access
     ) as JwtPayload & { id: number; remember: boolean };
-    res.json({ accessToken: t.newAccessToken({ id, remember }) });
+    res.json({ accessToken: newAccessToken({ id, remember }) });
   } catch (e) {
     // console.log(e); // todo: why?
     return res.sendStatus(401);

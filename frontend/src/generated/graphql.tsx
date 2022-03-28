@@ -109,18 +109,9 @@ export type MutationUserExistsArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  _dev0?: Maybe<Scalars['String']>;
-  _dev1?: Maybe<Array<Maybe<User>>>;
-  _dev2?: Maybe<User>;
-  _dev3?: Maybe<User>;
   bookmarks?: Maybe<Array<Maybe<Bookmark>>>;
   categories?: Maybe<Array<Maybe<Category>>>;
   user?: Maybe<User>;
-};
-
-
-export type Query_Dev3Args = {
-  id: Scalars['Int'];
 };
 
 export type User = {
@@ -130,28 +121,6 @@ export type User = {
   id?: Maybe<Scalars['Int']>;
   username?: Maybe<Scalars['String']>;
 };
-
-export type _Dev0QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type _Dev0Query = { __typename?: 'Query', _dev0?: string | null };
-
-export type _Dev1QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type _Dev1Query = { __typename?: 'Query', _dev1?: Array<{ __typename?: 'User', id?: number | null, username?: string | null, bookmarks?: Array<{ __typename?: 'Bookmark', id?: number | null, url?: string | null, description?: string | null } | null> | null, categories?: Array<{ __typename?: 'Category', id?: number | null, name?: string | null } | null> | null } | null> | null };
-
-export type _Dev2QueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type _Dev2Query = { __typename?: 'Query', _dev2?: { __typename?: 'User', id?: number | null } | null };
-
-export type _Dev3QueryVariables = Exact<{
-  dev3Id: Scalars['Int'];
-}>;
-
-
-export type _Dev3Query = { __typename?: 'Query', _dev3?: { __typename?: 'User', id?: number | null, username?: string | null } | null };
 
 export type BookmarkAddMutationVariables = Exact<{
   description: Scalars['String'];
@@ -650,55 +619,6 @@ export default {
         "name": "Query",
         "fields": [
           {
-            "name": "_dev0",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Any"
-            },
-            "args": []
-          },
-          {
-            "name": "_dev1",
-            "type": {
-              "kind": "LIST",
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
-              }
-            },
-            "args": []
-          },
-          {
-            "name": "_dev2",
-            "type": {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
-            },
-            "args": []
-          },
-          {
-            "name": "_dev3",
-            "type": {
-              "kind": "OBJECT",
-              "name": "User",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "type": {
-                  "kind": "NON_NULL",
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Any"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "bookmarks",
             "type": {
               "kind": "LIST",
@@ -790,79 +710,6 @@ export default {
   }
 } as unknown as IntrospectionQuery;
 
-export const _Dev0Document = gql`
-    query _dev0 {
-  _dev0
-}
-    `;
-
-export const _Dev0Component = (props: Omit<Urql.QueryProps<_Dev0Query, _Dev0QueryVariables>, 'query'> & { variables?: _Dev0QueryVariables }) => (
-  <Urql.Query {...props} query={_Dev0Document} />
-);
-
-
-export function use_Dev0Query(options?: Omit<Urql.UseQueryArgs<_Dev0QueryVariables>, 'query'>) {
-  return Urql.useQuery<_Dev0Query>({ query: _Dev0Document, ...options });
-};
-export const _Dev1Document = gql`
-    query _dev1 {
-  _dev1 {
-    id
-    username
-    bookmarks {
-      id
-      url
-      description
-    }
-    categories {
-      id
-      name
-    }
-  }
-}
-    `;
-
-export const _Dev1Component = (props: Omit<Urql.QueryProps<_Dev1Query, _Dev1QueryVariables>, 'query'> & { variables?: _Dev1QueryVariables }) => (
-  <Urql.Query {...props} query={_Dev1Document} />
-);
-
-
-export function use_Dev1Query(options?: Omit<Urql.UseQueryArgs<_Dev1QueryVariables>, 'query'>) {
-  return Urql.useQuery<_Dev1Query>({ query: _Dev1Document, ...options });
-};
-export const _Dev2Document = gql`
-    query _dev2 {
-  _dev2 {
-    id
-  }
-}
-    `;
-
-export const _Dev2Component = (props: Omit<Urql.QueryProps<_Dev2Query, _Dev2QueryVariables>, 'query'> & { variables?: _Dev2QueryVariables }) => (
-  <Urql.Query {...props} query={_Dev2Document} />
-);
-
-
-export function use_Dev2Query(options?: Omit<Urql.UseQueryArgs<_Dev2QueryVariables>, 'query'>) {
-  return Urql.useQuery<_Dev2Query>({ query: _Dev2Document, ...options });
-};
-export const _Dev3Document = gql`
-    query _dev3($dev3Id: Int!) {
-  _dev3(id: $dev3Id) {
-    id
-    username
-  }
-}
-    `;
-
-export const _Dev3Component = (props: Omit<Urql.QueryProps<_Dev3Query, _Dev3QueryVariables>, 'query'> & { variables: _Dev3QueryVariables }) => (
-  <Urql.Query {...props} query={_Dev3Document} />
-);
-
-
-export function use_Dev3Query(options: Omit<Urql.UseQueryArgs<_Dev3QueryVariables>, 'query'>) {
-  return Urql.useQuery<_Dev3Query>({ query: _Dev3Document, ...options });
-};
 export const BookmarkAddDocument = gql`
     mutation BookmarkAdd($description: String!, $url: String!, $categoryIds: [Int]) {
   bookmarkAdd(description: $description, url: $url, categoryIds: $categoryIds) {

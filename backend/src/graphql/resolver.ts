@@ -1,4 +1,3 @@
-import * as t from '../utility/token';
 import argon2 from 'argon2';
 import fetch from 'cross-fetch';
 import { Bookmark as BookmarkEntity } from '../entity/bookmark';
@@ -8,6 +7,7 @@ import { User } from '../entity/user';
 import { auth_ } from './auth';
 import { captchaUrl } from '../utility/function';
 import { env } from '../utility/constant';
+import { newAccessToken } from '../utility/token';
 
 /*
  * Loaders
@@ -37,25 +37,6 @@ const Category = {
 /*
  * Query
  */
-
-const _dev0 = () => 'hello';
-
-const _dev1 = async (): Promise<User[]> => {
-  return await User.find({ relations: ['bookmarks', 'categories'] });
-};
-
-const _dev2 = async (
-  _: any,
-  __: any,
-  { req }: { req: Request }
-): Promise<User> => {
-  const authPayload = auth_(req);
-  return await User.findOneOrFail<User>(authPayload.id);
-};
-
-const _dev3 = async (_: any, { id }: { id: number }): Promise<User> => {
-  return await User.findOneOrFail(id);
-};
 
 const bookmarks = async (
   _: any,
@@ -253,7 +234,7 @@ const login = async (
   if (!verified) throw new Error('wrong password');
 
   return {
-    accessToken: t.newAccessToken({
+    accessToken: newAccessToken({
       id: user.id,
       remember: remember ? remember : false,
     }),
@@ -327,10 +308,6 @@ export const resolvers = {
   Category,
 
   Query: {
-    _dev0,
-    _dev1,
-    _dev2,
-    _dev3,
     bookmarks,
     categories,
     user,

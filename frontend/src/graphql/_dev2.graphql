@@ -1,5 +1,0 @@
-query _dev2 {
-  _dev2 {
-    id
-  }
-}
