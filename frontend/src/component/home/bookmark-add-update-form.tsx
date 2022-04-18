@@ -89,7 +89,16 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
     >
       {({ handleChange, handleSubmit, values }) => (
         <form onSubmit={handleSubmit}>
-          {BookmarkCategories && <div>{BookmarkCategories}</div>}
+          {BookmarkCategories && (
+            <div
+              style={{
+                display: 'flex',
+                flexWrap: 'wrap',
+              }}
+            >
+              {BookmarkCategories}
+            </div>
+          )}
           <Box className="element">
             <Input
               //
