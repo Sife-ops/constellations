@@ -6,14 +6,18 @@ export const usePassword = (initialValue: string) => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const passwordSchema = yup.object().shape({
-    password: yup.string().email().required(),
+    password: yup.string()
+    .required()
+    .min(8)
+    .matches(/[0-9]/)
+    .matches(/[!@#\$%\^\&*\)\(+=._-]/)
   });
 
   useEffect(() => {
-    if (password.length < 1) {
-      setIsValid(false);
-      return;
-    }
+    // if (password.length < 1) {
+    //   setIsValid(false);
+    //   return;
+    // }
 
     const isValid = passwordSchema.isValidSync({ password });
     setIsValid(isValid);
@@ -21,4 +25,3 @@ export const usePassword = (initialValue: string) => {
 
   return { password, setPassword, isValid };
 };
-
