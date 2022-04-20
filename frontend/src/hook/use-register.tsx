@@ -1,3 +1,4 @@
+import { env } from '../utility/constant';
 import { useEffect, useState } from 'react';
 import { usePassword } from './use-password';
 import { useUsername } from './use-username';
@@ -12,16 +13,18 @@ export const useRegister = (
   const { username, isValid: isValidUsername, setUsername } = useUsername(i.username);
   const { password, isValid: isValidPassword, setPassword } = usePassword(i.password);
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
-  const [captcha, setCaptcha] = useState<string>('');
+  const [captcha, setCaptcha] = useState<string | null>(null);
   const [isValidRegister, setIsValidRegister] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isValidUsername && isValidPassword && passwordConfirm === password && captcha.length > 0) {
+    if (env.secret.recaptcha && !captcha) {
+      setIsValidRegister(false);
+    } else if (isValidUsername && isValidPassword && passwordConfirm === password) {
       setIsValidRegister(true);
     } else {
       setIsValidRegister(false);
     }
-  }, [isValidUsername, isValidPassword, captcha]);
+  }, [username, password, passwordConfirm]);
 
   return {
     username,

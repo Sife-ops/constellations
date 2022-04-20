@@ -8,15 +8,18 @@ import { env } from '../utility/constant';
 import { useRegister } from '../hook/use-register';
 import { useRegisterMutation } from '../generated/graphql';
 
-export const Register: React.FC = () => {
+export const Register2: React.FC = () => {
   const navigate = useNavigate();
 
   const [_, registerMutation] = useRegisterMutation();
 
-  const [registerError, setRegisterError] = React.useState<null | 'captcha' | 'username'>(null);
+  const [errorUsername, setErrorUsername] = React.useState<boolean>(false);
+  const [errorCaptcha, setErrorCaptcha] = React.useState<boolean>(false);
 
   const r = useRegister();
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
     const res = await registerMutation({
       password: r.password,
       username: r.username,
@@ -24,13 +27,17 @@ export const Register: React.FC = () => {
     });
 
     if (res.error) {
-      console.log(res.error);
-      const { message } = res.error;
-      // todo: use better error???
-      if (message === '[GraphQL] failed captcha') setRegisterError('captcha');
-      if (message === '[GraphQL] username exists') setRegisterError('username');
+      console.log(res);
+
+      const graphQLErrors = res.error.graphQLErrors.map((e) => e.toString());
+
+      if (graphQLErrors.includes('username exists')) {
+        setErrorUsername(true);
+      } else if (graphQLErrors.includes('failed captcha')) {
+        setErrorCaptcha(true);
+      }
     } else {
-      // navigate('login');
+      navigate('login');
     }
   };
 
@@ -74,7 +81,7 @@ export const Register: React.FC = () => {
         }}
       >
         <form onSubmit={handleSubmit}>
-          {registerError && (
+          {errorUsername && (
             <BoxOutlined bg="tomato" className="block">
               <Box
                 className="element"
@@ -89,26 +96,31 @@ export const Register: React.FC = () => {
                 >
                   <WarningTwoIcon />
                 </Box>
-                {registerError === 'captcha' ? (
-                  <Text>Failed captcha.</Text>
-                ) : (
-                  <Text>
-                    {/* An account with that {registerError === 'email' ? 'email address' : 'username'} already exists. */}
-                    An account with that username already exists.
-                  </Text>
-                )}
+                <Text>An account with that username already exists.</Text>
               </Box>
             </BoxOutlined>
           )}
-          {/* <Box className="element">
-                <Input
-                  focusBorderColor={values.email === '' ? '' : errors.email === 'invalid' ? 'red.500' : 'green.500'}
-                  name="email"
-                  onChange={handleChange}
-                  placeholder="email"
-                  value={values.email}
-                />
-              </Box> */}
+
+          {errorCaptcha && (
+            <BoxOutlined bg="tomato" className="block">
+              <Box
+                className="element"
+                style={{
+                  display: 'flex',
+                }}
+              >
+                <Box
+                  style={{
+                    marginRight: '.5rem',
+                  }}
+                >
+                  <WarningTwoIcon />
+                </Box>
+                <Text>Failed Captcha.</Text>
+              </Box>
+            </BoxOutlined>
+          )}
+
           <Box className="element">
             <Input
               focusBorderColor={r.username.length < 1 ? '' : !r.isValidUsername ? 'red.500' : 'green.500'}
@@ -151,11 +163,7 @@ export const Register: React.FC = () => {
             </Box>
           )}
           <Box className="element">
-            <Button
-              colorScheme="blue"
-              // disabled={isSubmitting}
-              type="submit"
-            >
+            <Button colorScheme="blue" disabled={!r.isValidRegister} type="submit">
               Sign Up
             </Button>
           </Box>

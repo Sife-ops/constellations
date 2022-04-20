@@ -6,7 +6,7 @@ export const useUsername = (initialValue: string) => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const usernameSchema = yup.object().shape({
-    username: yup.string().min(8).required(),
+    username: yup.string().min(5).required(),
   });
 
   useEffect(() => {
