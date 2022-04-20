@@ -7,7 +7,6 @@ import { Landing } from './component/landing';
 import { Login } from './component/login';
 import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { Register } from './component/register';
-import { Register2 } from './component/register2';
 import { Reset } from './component/reset';
 import { Settings } from './component/settings/settings';
 import { isValid } from './utility/token';
@@ -89,7 +88,6 @@ export const App = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/register2" element={<Register2 />} />
           <Route path="/reset" element={<Reset />} />
           <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>

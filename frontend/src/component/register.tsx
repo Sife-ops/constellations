@@ -2,11 +2,10 @@ import Captcha from 'react-google-recaptcha';
 import React from 'react';
 import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
-import { Formik, FormikConfig } from 'formik';
 import { Link, useNavigate } from 'react-router-dom';
 import { WarningTwoIcon } from '@chakra-ui/icons';
-import { passwordIsValid, usernameIsValid } from '../utility/function';
 import { env } from '../utility/constant';
+import { useRegister } from '../hook/use-register';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
@@ -14,51 +13,32 @@ export const Register: React.FC = () => {
 
   const [_, registerMutation] = useRegisterMutation();
 
-  const [registerError, setRegisterError] = React.useState<null | 'captcha' | 'username'>(null);
+  const [errorUsername, setErrorUsername] = React.useState<boolean>(false);
+  const [errorCaptcha, setErrorCaptcha] = React.useState<boolean>(false);
 
-  interface Config {
-    username: string;
-    password: string;
-    passwordConfirm: string;
-    captcha: string | null;
-  }
+  const r = useRegister();
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
 
-  const formikConfig: FormikConfig<Config> = {
-    initialValues: {
-      captcha: null,
-      password: '',
-      passwordConfirm: '',
-      username: '',
-    },
-    onSubmit: async ({ captcha, username, password }, { setSubmitting }) => {
-      setRegisterError(null);
-      setSubmitting(true);
-      const res = await registerMutation({ captcha, password, username });
-      if (res.error) {
-        console.log(res.error);
-        const { message } = res.error;
-        if (message === '[GraphQL] failed captcha') setRegisterError('captcha');
-        if (message === '[GraphQL] username exists') setRegisterError('username');
-        return;
+    const res = await registerMutation({
+      password: r.password,
+      username: r.username,
+      captcha: r.captcha,
+    });
+
+    if (res.error) {
+      console.log(res);
+
+      const graphQLErrors = res.error.graphQLErrors.map((e) => e.toString());
+
+      if (graphQLErrors.includes('username exists')) {
+        setErrorUsername(true);
+      } else if (graphQLErrors.includes('failed captcha')) {
+        setErrorCaptcha(true);
       }
+    } else {
       navigate('login');
-    },
-    validate: (v) => {
-      const errors: {
-        username?: 'empty' | 'invalid';
-        password?: 'empty' | 'invalid';
-        passwordConfirm?: 'empty' | 'invalid';
-        captcha?: 'invalid';
-      } = {};
-      if (!usernameIsValid(v.username)) errors.username = 'invalid';
-      if (!v.username) errors.username = 'empty';
-      if (!passwordIsValid(v.password)) errors.password = 'invalid';
-      if (!v.password) errors.password = 'empty';
-      if (v.password !== v.passwordConfirm) errors.passwordConfirm = 'invalid';
-      if (!v.passwordConfirm) errors.passwordConfirm = 'empty';
-      if (env.secret.recaptcha && !v.captcha) errors.captcha = 'invalid';
-      return errors;
-    },
+    }
   };
 
   return (
@@ -100,98 +80,100 @@ export const Register: React.FC = () => {
           flex: '1',
         }}
       >
-        <Formik {...formikConfig}>
-          {({ errors, handleChange, handleSubmit, isSubmitting, setFieldValue, values }) => (
-            <form onSubmit={handleSubmit}>
-              {registerError && (
-                <BoxOutlined bg="tomato" className="block">
-                  <Box
-                    className="element"
-                    style={{
-                      display: 'flex',
-                    }}
-                  >
-                    <Box
-                      style={{
-                        marginRight: '.5rem',
-                      }}
-                    >
-                      <WarningTwoIcon />
-                    </Box>
-                    {registerError === 'captcha' ? (
-                      <Text>Failed captcha.</Text>
-                    ) : (
-                      <Text>
-                        {/* An account with that {registerError === 'email' ? 'email address' : 'username'} already exists. */}
-                        An account with that username already exists.
-                      </Text>
-                    )}
-                  </Box>
-                </BoxOutlined>
-              )}
-              {/* <Box className="element">
-                <Input
-                  focusBorderColor={values.email === '' ? '' : errors.email === 'invalid' ? 'red.500' : 'green.500'}
-                  name="email"
-                  onChange={handleChange}
-                  placeholder="email"
-                  value={values.email}
-                />
-              </Box> */}
-              <Box className="element">
-                <Input
-                  focusBorderColor={
-                    values.username === '' ? '' : errors.username === 'invalid' ? 'red.500' : 'green.500'
-                  }
-                  name="username"
-                  onChange={handleChange}
-                  placeholder="username"
-                  value={values.username}
-                />
-              </Box>
-              <Box className="element">
-                <Input
-                  focusBorderColor={
-                    values.password === '' ? '' : errors.password === 'invalid' ? 'red.500' : 'green.500'
-                  }
-                  name="password"
-                  onChange={handleChange}
-                  placeholder="password"
-                  type="password"
-                  value={values.password}
-                />
-              </Box>
-              <Box className="element">
-                <Input
-                  focusBorderColor={
-                    values.passwordConfirm === '' ? '' : errors.passwordConfirm === 'invalid' ? 'red.500' : 'green.500'
-                  }
-                  name="passwordConfirm"
-                  onChange={handleChange}
-                  placeholder="confirm password"
-                  type="password"
-                  value={values.passwordConfirm}
-                />
-              </Box>
-              {env.secret.recaptcha && (
-                <Box className="element">
-                  <Captcha sitekey={env.secret.recaptcha} onChange={(v) => setFieldValue('captcha', v)} />
+        <form onSubmit={handleSubmit}>
+          {errorUsername && (
+            <BoxOutlined bg="tomato" className="block">
+              <Box
+                className="element"
+                style={{
+                  display: 'flex',
+                }}
+              >
+                <Box
+                  style={{
+                    marginRight: '.5rem',
+                  }}
+                >
+                  <WarningTwoIcon />
                 </Box>
-              )}
-              <Box className="element">
-                <Button colorScheme="blue" disabled={isSubmitting} type="submit">
-                  Sign Up
-                </Button>
+                <Text>An account with that username already exists.</Text>
               </Box>
-              <Box className="element">
-                <Link to="/reset">Forgot password?</Link>
-              </Box>
-              <Box className="element">
-                <Link to="/login">{'Already have an account? Sign In'}</Link>
-              </Box>
-            </form>
+            </BoxOutlined>
           )}
-        </Formik>
+
+          {errorCaptcha && (
+            <BoxOutlined bg="tomato" className="block">
+              <Box
+                className="element"
+                style={{
+                  display: 'flex',
+                }}
+              >
+                <Box
+                  style={{
+                    marginRight: '.5rem',
+                  }}
+                >
+                  <WarningTwoIcon />
+                </Box>
+                <Text>Failed Captcha.</Text>
+              </Box>
+            </BoxOutlined>
+          )}
+
+          <Box className="element">
+            <Input
+              focusBorderColor={r.username.length < 1 ? '' : !r.isValidUsername ? 'red.500' : 'green.500'}
+              name="username"
+              onChange={(e) => r.setUsername(e.target.value)}
+              placeholder="username"
+              value={r.username}
+            />
+          </Box>
+          <Box className="element">
+            <Input
+              focusBorderColor={r.password.length < 1 ? '' : !r.isValidPassword ? 'red.500' : 'green.500'}
+              name="password"
+              onChange={(e) => r.setPassword(e.target.value)}
+              placeholder="password"
+              type="password"
+              value={r.password}
+            />
+          </Box>
+          <Box className="element">
+            <Input
+              focusBorderColor={
+                r.passwordConfirm === '' ? '' : r.passwordConfirm !== r.password ? 'red.500' : 'green.500'
+              }
+              name="passwordConfirm"
+              onChange={(e) => r.setPasswordConfirm(e.target.value)}
+              placeholder="confirm password"
+              type="password"
+              value={r.passwordConfirm}
+            />
+          </Box>
+          {env.secret.recaptcha && (
+            <Box className="element">
+              <Captcha
+                sitekey={env.secret.recaptcha}
+                onChange={(v) => {
+                  if (v) r.setCaptcha(v);
+                }}
+              />
+            </Box>
+          )}
+          <Box className="element">
+            <Button colorScheme="blue" disabled={!r.isValidRegister} type="submit">
+              Sign Up
+            </Button>
+          </Box>
+          <Box className="element">
+            <Link to="/reset">Forgot password?</Link>
+          </Box>
+          <Box className="element">
+            <Link to="/login">{'Already have an account? Sign In'}</Link>
+          </Box>
+        </form>
       </BoxOutlined>
     </Box>
   );
