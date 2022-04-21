@@ -9,14 +9,13 @@ import { useRegister } from '../hook/use-register';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
-  const navigate = useNavigate();
-
-  const [_, registerMutation] = useRegisterMutation();
-
   const [errorUsername, setErrorUsername] = React.useState<boolean>(false);
   const [errorCaptcha, setErrorCaptcha] = React.useState<boolean>(false);
 
+  const [_, registerMutation] = useRegisterMutation();
   const r = useRegister();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
@@ -81,45 +80,8 @@ export const Register: React.FC = () => {
         }}
       >
         <form onSubmit={handleSubmit}>
-          {errorUsername && (
-            <BoxOutlined bg="tomato" className="block">
-              <Box
-                className="element"
-                style={{
-                  display: 'flex',
-                }}
-              >
-                <Box
-                  style={{
-                    marginRight: '.5rem',
-                  }}
-                >
-                  <WarningTwoIcon />
-                </Box>
-                <Text>An account with that username already exists.</Text>
-              </Box>
-            </BoxOutlined>
-          )}
-
-          {errorCaptcha && (
-            <BoxOutlined bg="tomato" className="block">
-              <Box
-                className="element"
-                style={{
-                  display: 'flex',
-                }}
-              >
-                <Box
-                  style={{
-                    marginRight: '.5rem',
-                  }}
-                >
-                  <WarningTwoIcon />
-                </Box>
-                <Text>Failed Captcha.</Text>
-              </Box>
-            </BoxOutlined>
-          )}
+          {errorUsername && errorBox('An account with that username already exists.')}
+          {errorCaptcha && errorBox('Captcha Failed')}
 
           <Box className="element">
             <Input
@@ -176,5 +138,27 @@ export const Register: React.FC = () => {
         </form>
       </BoxOutlined>
     </Box>
+  );
+};
+
+const errorBox = (msg: string) => {
+  return (
+    <BoxOutlined bg="tomato" className="block">
+      <Box
+        className="element"
+        style={{
+          display: 'flex',
+        }}
+      >
+        <Box
+          style={{
+            marginRight: '.5rem',
+          }}
+        >
+          <WarningTwoIcon />
+        </Box>
+        <Text>{msg}</Text>
+      </Box>
+    </BoxOutlined>
   );
 };
