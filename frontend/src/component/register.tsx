@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
 import { Link, useNavigate } from 'react-router-dom';
+import { Spinner } from '@chakra-ui/react';
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import { env } from '../utility/constant';
 import { useRegister } from '../hook/use-register';
@@ -109,22 +110,15 @@ export const Register: React.FC = () => {
               value={r.username}
             />
           </Box>
-          {r.isValidUsername && r.usernameExists === 'pending' && (
-            <Box>
-              {/* / */}
-              spinner
-            </Box>
-          )}
+          {r.isValidUsername && r.usernameExists === 'pending' && <Spinner />}
           {r.isValidUsername && r.usernameExists === true && (
-            <Box>
-              {/* / */}
-              username exists
+            <Box className="element">
+              <Text color="red.500">Username already exists.</Text>
             </Box>
           )}
           {r.isValidUsername && r.usernameExists === false && (
-            <Box>
-              {/* / */}
-              username available
+            <Box className="element">
+              <Text color="green.500">Username available!</Text>
             </Box>
           )}
           <Box className="element">
