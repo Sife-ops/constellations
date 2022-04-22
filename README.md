@@ -11,4 +11,3 @@
 - ability to change passwords
 - 'forgot password'
 - fetch suggested description
-- debounce library
