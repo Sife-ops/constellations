@@ -6,14 +6,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Spinner } from '@chakra-ui/react';
 import { WarningTwoIcon } from '@chakra-ui/icons';
 import { env } from '../utility/constant';
-import { useRegister } from '../hook/use-register';
+import { useRegisterForm } from '../hook/use-register-form';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
   const [errorUsername, setErrorUsername] = useState<boolean>(false);
   const [errorCaptcha, setErrorCaptcha] = useState<boolean>(false);
 
-  const r = useRegister();
+  const r = useRegisterForm();
   const [__, registerMutation] = useRegisterMutation();
 
   const navigate = useNavigate();

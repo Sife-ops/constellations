@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { usePassword } from './use-password';
 import { useUsername } from './use-username';
 
-export const useRegister = (
+export const useRegisterForm = (
   i: { username: string; password: string; remember: boolean } = {
     username: '',
     password: '',
