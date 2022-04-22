@@ -10,7 +10,7 @@ export const useRegister = (
     remember: false,
   }
 ) => {
-  const { username, isValid: isValidUsername, setUsername } = useUsername(i.username);
+  const { exists: usernameExists, isValid: isValidUsername, setUsername, username } = useUsername(i.username);
   const { password, isValid: isValidPassword, setPassword } = usePassword(i.password);
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const [captcha, setCaptcha] = useState<string | null>(null);
@@ -19,17 +19,18 @@ export const useRegister = (
   useEffect(() => {
     if (env.secret.recaptcha && !captcha) {
       setIsValidRegister(false);
-    } else if (isValidUsername && isValidPassword && passwordConfirm === password) {
+    } else if (isValidUsername && isValidPassword && passwordConfirm === password && usernameExists === false) {
       setIsValidRegister(true);
     } else {
       setIsValidRegister(false);
     }
-  }, [username, password, passwordConfirm]);
+  }, [username, password, passwordConfirm, usernameExists]);
 
   return {
     username,
     setUsername,
     isValidUsername,
+    usernameExists,
     password,
     setPassword,
     isValidPassword,

@@ -1,5 +1,5 @@
 import Captcha from 'react-google-recaptcha';
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,11 +9,12 @@ import { useRegister } from '../hook/use-register';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
-  const [errorUsername, setErrorUsername] = React.useState<boolean>(false);
-  const [errorCaptcha, setErrorCaptcha] = React.useState<boolean>(false);
+  const [errorUsername, setErrorUsername] = useState<boolean>(false);
+  const [errorCaptcha, setErrorCaptcha] = useState<boolean>(false);
 
-  const [_, registerMutation] = useRegisterMutation();
   const r = useRegister();
+  const [__, registerMutation] = useRegisterMutation();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: any) => {
@@ -26,7 +27,7 @@ export const Register: React.FC = () => {
     });
 
     if (res.error) {
-      console.log(res);
+      console.error(res);
 
       const graphQLErrors = res.error.graphQLErrors.map((e) => e.toString());
 
@@ -37,6 +38,22 @@ export const Register: React.FC = () => {
       }
     } else {
       navigate('login');
+    }
+  };
+
+  const usernameBorderColor = () => {
+    if (r.username.length < 1) {
+      return '';
+    } else if (!r.isValidUsername) {
+      return 'red.500';
+    } else if (r.usernameExists === 'pending') {
+      return '';
+    } else if (r.usernameExists === true) {
+      return 'red.500';
+    } else if (r.usernameExists === false) {
+      return 'green.500';
+    } else {
+      return '';
     }
   };
 
@@ -80,18 +97,36 @@ export const Register: React.FC = () => {
         }}
       >
         <form onSubmit={handleSubmit}>
-          {errorUsername && errorBox('An account with that username already exists.')}
-          {errorCaptcha && errorBox('Captcha Failed')}
+          {errorUsername && errorBox('Username exists.')}
+          {errorCaptcha && errorBox('Captcha failed.')}
 
           <Box className="element">
             <Input
-              focusBorderColor={r.username.length < 1 ? '' : !r.isValidUsername ? 'red.500' : 'green.500'}
+              focusBorderColor={usernameBorderColor()}
               name="username"
               onChange={(e) => r.setUsername(e.target.value)}
               placeholder="username"
               value={r.username}
             />
           </Box>
+          {r.isValidUsername && r.usernameExists === 'pending' && (
+            <Box>
+              {/* / */}
+              spinner
+            </Box>
+          )}
+          {r.isValidUsername && r.usernameExists === true && (
+            <Box>
+              {/* / */}
+              username exists
+            </Box>
+          )}
+          {r.isValidUsername && r.usernameExists === false && (
+            <Box>
+              {/* / */}
+              username available
+            </Box>
+          )}
           <Box className="element">
             <Input
               focusBorderColor={r.password.length < 1 ? '' : !r.isValidPassword ? 'red.500' : 'green.500'}
