@@ -7,7 +7,7 @@ export const Landing: React.FC = () => {
     <>
       <Box className="block">
         <Text fontSize="3xl">Bookmark Manager</Text>
-        <Text>Never lose your bookmarks.</Text>
+        <Text>Blazingly fast!</Text>
       </Box>
       <Box className="block">
         <UnorderedList>
