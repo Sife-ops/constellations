@@ -24,7 +24,7 @@ export const useRegister = (
     } else {
       setIsValidRegister(false);
     }
-  }, [username, password, passwordConfirm, usernameExists]);
+  }, [username, password, passwordConfirm, usernameExists, captcha]);
 
   return {
     username,
