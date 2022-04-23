@@ -1,7 +1,7 @@
 // todo: move to hooks
 import React from 'react';
-import { Category } from '../../generated/graphql';
-import { SelectableCategory } from '../../utility/type';
+import { Category } from '../generated/graphql';
+import { SelectableCategory } from '../utility/type';
 
 export type CategoriesStateType = (SelectableCategory | null)[] | null;
 

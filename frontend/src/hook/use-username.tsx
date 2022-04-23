@@ -8,6 +8,7 @@ export const useUsername = (initialValue: string) => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const [debouncedUsername] = useDebounce(username, 1000);
+  // todo: use userExistsRes instead
   const [exists, setExists] = useState<boolean | 'pending'>('pending');
   const [_, userExistsMutation] = useUserExistsMutation();
 

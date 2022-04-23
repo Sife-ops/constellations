@@ -1,7 +1,7 @@
 import React from 'react';
 import { Bookmark } from '../../generated/graphql';
 import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
-import { CategoriesStateType } from './use-categories-state';
+import { CategoriesStateType } from '../../hook/use-categories-state';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { OperationContext } from 'urql';
 import { Table, Tbody, Tr, Td, BoxProps, Box } from '@chakra-ui/react';

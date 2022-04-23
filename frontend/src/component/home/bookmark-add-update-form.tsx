@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
-import { CategoriesStateType, useCategoriesState } from './use-categories-state';
+import { CategoriesStateType, useCategoriesState } from '../../hook/use-categories-state';
 import { Category } from './category';
 import { OperationContext } from 'urql';
 import { Spinner } from '@chakra-ui/react';

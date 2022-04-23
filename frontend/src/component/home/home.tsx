@@ -7,7 +7,7 @@ import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { Category } from './category';
 import { CategoryAddUpdateForm } from './category-add-update-form';
 import { HandleCategory } from '../../utility/type';
-import { useCategoriesState } from './use-categories-state';
+import { useCategoriesState } from '../../hook/use-categories-state';
 
 export const Home: React.FC = () => {
   /**
