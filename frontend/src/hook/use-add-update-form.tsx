@@ -3,12 +3,7 @@ import { useState, useEffect } from 'react';
 import { usePageTitleMutation } from '../generated/graphql';
 import { useUrl } from './use-url';
 
-export const useAddUpdateForm = (
-  i: { description: string; url: string } = {
-    description: '',
-    url: '',
-  }
-) => {
+export const useAddUpdateForm = (i: { description: string; url: string }) => {
   const [description, setDescription] = useState<string>(i.description);
   const { isValid: isValidUrl, setUrl, url } = useUrl(i.url);
   const [debouncedUrl] = useDebounce(url, 1000);
@@ -25,7 +20,7 @@ export const useAddUpdateForm = (
   }, [description, isValidUrl, url]);
 
   useEffect(() => {
-    if (isValidUrl) {
+    if (isValidUrl && description.length < 1) {
       console.log('fetching page title');
       pageTitleMutation({
         // todo: use url?

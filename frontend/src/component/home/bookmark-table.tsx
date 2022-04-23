@@ -1,6 +1,6 @@
 import React from 'react';
 import { Bookmark } from '../../generated/graphql';
-import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
+import { BookmarkAddUpdateForm2 } from './bookmark-add-update-form2';
 import { CategoriesStateType } from './use-categories-state';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import { OperationContext } from 'urql';
@@ -65,7 +65,7 @@ export const BookmarkRow: React.FC<Props & RowProps> = (p) => {
       {showForm && (
         <Tr>
           <Td colSpan={2}>
-            <BookmarkAddUpdateForm
+            <BookmarkAddUpdateForm2
               //
               bookmark={p.bookmark}
               categories={p.categories}

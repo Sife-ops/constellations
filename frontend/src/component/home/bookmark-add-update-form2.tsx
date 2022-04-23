@@ -143,7 +143,7 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
             >
               <WarningTwoIcon />
             </Box>
-            <Text>Autofill description doesn't work for this page.</Text>
+            <Text>Autofill description doesn't work for this URL.</Text>
           </Box>
         </BoxOutlined>
       )}
@@ -166,6 +166,7 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
       >
         <Button
           colorScheme="blue"
+          disabled={!f.isValidForm}
           isFullWidth
           style={{
             marginRight: '.5rem',
@@ -174,6 +175,8 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
         >
           Submit
         </Button>
+
+        {/* todo: cancel button */}
 
         {p.bookmark && (
           <Button

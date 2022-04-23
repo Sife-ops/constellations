@@ -1,7 +1,6 @@
 import React from 'react';
 import { BoxOutlined } from '../box-outlined';
 import { Bookmark as BookmarkType, useUserQuery } from '../../generated/graphql';
-import { BookmarkAddUpdateForm } from './bookmark-add-update-form';
 import { BookmarkAddUpdateForm2 } from './bookmark-add-update-form2';
 import { BookmarkTable } from './bookmark-table';
 import { Box, Button, Input, Text } from '@chakra-ui/react';
