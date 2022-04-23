@@ -6,7 +6,7 @@ type AuthPayload = JwtPayload & { id: number };
 
 // todo: rename function
 // todo: change to wrapper function
-export const auth_ = (req: Request): AuthPayload => {
+export const authorize = (req: Request): AuthPayload => {
   const accessToken = req.headers.authorization;
   if (!accessToken) throw new Error('no authorization header/token');
   try {

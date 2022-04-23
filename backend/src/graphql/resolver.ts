@@ -4,7 +4,7 @@ import { Bookmark as BookmarkEntity } from '../entity/bookmark';
 import { Category as CategoryEntity } from '../entity/category';
 import { Request } from 'express';
 import { User } from '../entity/user';
-import { auth_ } from './auth';
+import { authorize } from './authorize';
 import { captchaUrl } from '../utility/function';
 import { env } from '../utility/constant';
 import { newAccessToken } from '../utility/token';
@@ -43,7 +43,7 @@ const bookmarks = async (
   __: any,
   { req }: { req: Request }
 ): Promise<BookmarkEntity[]> => {
-  const authPayload = auth_(req);
+  const authPayload = authorize(req);
   const user = await User.findOneOrFail<User>(authPayload.id, {
     relations: ['bookmarks'],
   });
@@ -55,7 +55,7 @@ const categories = async (
   __: any,
   { req }: { req: Request }
 ): Promise<CategoryEntity[]> => {
-  const authPayload = auth_(req);
+  const authPayload = authorize(req);
   const user = await User.findOneOrFail<User>(authPayload.id, {
     relations: ['categories'],
   });
@@ -67,7 +67,7 @@ const user = async (
   __: any,
   { req }: { req: Request }
 ): Promise<User> => {
-  const authPayload = auth_(req);
+  const authPayload = authorize(req);
   return await User.findOneOrFail<User>(authPayload.id, {
     relations: ['bookmarks', 'categories'],
   });
@@ -92,7 +92,7 @@ const bookmarkAdd = async (
   { description, url, categoryIds }: BookmarkAddInput,
   { req }: { req: Request }
 ): Promise<BookmarkEntity> => {
-  const authPayload = auth_(req);
+  const authPayload = authorize(req);
   const user = await User.findOneOrFail<User>(authPayload.id, {
     relations: ['bookmarks'],
   });
@@ -114,12 +114,14 @@ interface BookmarkDeleteInput {
   id: number;
 }
 
-// todo: use auth_
 const bookmarkDelete = async (
   _: any,
-  { id }: BookmarkDeleteInput
+  { id }: BookmarkDeleteInput,
+  { req }: { req: Request }
 ): Promise<BookmarkEntity> => {
+  authorize(req);
   const bookmark = await BookmarkEntity.findOneOrFail(id);
+  // todo: returns garbage data
   return await bookmark.remove();
 };
 
@@ -134,11 +136,13 @@ interface bookmarkUpdateInput {
   url?: string;
 }
 
-// todo: use auth_
 const bookmarkUpdate = async (
   _: any,
-  { id, description, url, categoryIds }: bookmarkUpdateInput
+  { id, description, url, categoryIds }: bookmarkUpdateInput,
+  { req }: { req: Request }
 ): Promise<BookmarkEntity> => {
+  authorize(req);
+
   if (!description && !url && !categoryIds)
     throw new Error('invalid arguments');
 
@@ -167,7 +171,7 @@ const categoryAdd = async (
   { name }: CategoryAddInput,
   { req }: { req: Request }
 ): Promise<CategoryEntity> => {
-  const authPayload = auth_(req);
+  const authPayload = authorize(req);
   const user = await User.findOneOrFail<User>(authPayload.id, {
     relations: ['categories'],
   });
@@ -186,11 +190,12 @@ interface CategoryDeleteInput {
   id: number;
 }
 
-// todo: use auth_
 const categoryDelete = async (
   _: any,
-  { id }: CategoryDeleteInput
+  { id }: CategoryDeleteInput,
+  { req }: { req: Request }
 ): Promise<CategoryEntity> => {
+  authorize(req);
   const category = await CategoryEntity.findOneOrFail(id);
   const result = await category.remove();
   return result;
@@ -205,11 +210,12 @@ interface CategoryUpdateInput {
   name: string;
 }
 
-// todo: use auth_
 const categoryUpdate = async (
   _: any,
-  { id, name }: CategoryUpdateInput
+  { id, name }: CategoryUpdateInput,
+  { req }: { req: Request }
 ): Promise<CategoryEntity> => {
+  authorize(req);
   const category = await CategoryEntity.findOneOrFail(id);
 
   category.name = name;
@@ -248,8 +254,13 @@ const login = async (
 /*
  * pageTitle
  */
-// todo: use auth_
-const pageTitle = async (_: any, i: { url: string }): Promise<string> => {
+
+const pageTitle = async (
+  _: any,
+  i: { url: string },
+  c: { req: Request }
+): Promise<string> => {
+  authorize(c.req);
   return await fetch(i.url).then((res) =>
     res.text().then((body) => {
       const match = body.match(/<title>([^<]*)<\/title>/);
