@@ -114,6 +114,7 @@ interface BookmarkDeleteInput {
   id: number;
 }
 
+// todo: use auth_
 const bookmarkDelete = async (
   _: any,
   { id }: BookmarkDeleteInput
@@ -133,6 +134,7 @@ interface bookmarkUpdateInput {
   url?: string;
 }
 
+// todo: use auth_
 const bookmarkUpdate = async (
   _: any,
   { id, description, url, categoryIds }: bookmarkUpdateInput
@@ -184,6 +186,7 @@ interface CategoryDeleteInput {
   id: number;
 }
 
+// todo: use auth_
 const categoryDelete = async (
   _: any,
   { id }: CategoryDeleteInput
@@ -202,6 +205,7 @@ interface CategoryUpdateInput {
   name: string;
 }
 
+// todo: use auth_
 const categoryUpdate = async (
   _: any,
   { id, name }: CategoryUpdateInput
@@ -239,6 +243,22 @@ const login = async (
       remember: remember ? remember : false,
     }),
   };
+};
+
+/*
+ * pageTitle
+ */
+// todo: use auth_
+const pageTitle = async (_: any, i: { url: string }): Promise<string> => {
+  return await fetch(i.url).then((res) =>
+    res.text().then((body) => {
+      const match = body.match(/<title>([^<]*)<\/title>/);
+      if (!match || typeof match[1] !== 'string') {
+        throw new Error('Unable to parse the title tag');
+      }
+      return match[1];
+    })
+  );
 };
 
 /*
@@ -321,6 +341,7 @@ export const resolvers = {
     categoryDelete,
     categoryUpdate,
     login,
+    pageTitle,
     register,
     userExists,
   },

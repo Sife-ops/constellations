@@ -47,6 +47,7 @@ export type Mutation = {
   categoryDelete?: Maybe<Category>;
   categoryUpdate?: Maybe<Category>;
   login?: Maybe<LoginResponse>;
+  pageTitle?: Maybe<Scalars['String']>;
   register?: Maybe<User>;
   userExists?: Maybe<Scalars['Boolean']>;
 };
@@ -92,6 +93,11 @@ export type MutationLoginArgs = {
   password: Scalars['String'];
   remember?: InputMaybe<Scalars['Boolean']>;
   username: Scalars['String'];
+};
+
+
+export type MutationPageTitleArgs = {
+  url: Scalars['String'];
 };
 
 
@@ -188,6 +194,13 @@ export type LoginMutationVariables = Exact<{
 
 
 export type LoginMutation = { __typename?: 'Mutation', login?: { __typename?: 'LoginResponse', accessToken: string } | null };
+
+export type PageTitleMutationVariables = Exact<{
+  url: Scalars['String'];
+}>;
+
+
+export type PageTitleMutation = { __typename?: 'Mutation', pageTitle?: string | null };
 
 export type RegisterMutationVariables = Exact<{
   username: Scalars['String'];
@@ -552,6 +565,25 @@ export default {
             ]
           },
           {
+            "name": "pageTitle",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Any"
+            },
+            "args": [
+              {
+                "name": "url",
+                "type": {
+                  "kind": "NON_NULL",
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Any"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "register",
             "type": {
               "kind": "OBJECT",
@@ -891,6 +923,20 @@ export const LoginComponent = (props: Omit<Urql.MutationProps<LoginMutation, Log
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const PageTitleDocument = gql`
+    mutation PageTitle($url: String!) {
+  pageTitle(url: $url)
+}
+    `;
+
+export const PageTitleComponent = (props: Omit<Urql.MutationProps<PageTitleMutation, PageTitleMutationVariables>, 'query'> & { variables?: PageTitleMutationVariables }) => (
+  <Urql.Mutation {...props} query={PageTitleDocument} />
+);
+
+
+export function usePageTitleMutation() {
+  return Urql.useMutation<PageTitleMutation, PageTitleMutationVariables>(PageTitleDocument);
 };
 export const RegisterDocument = gql`
     mutation Register($username: String!, $password: String!, $captcha: String) {

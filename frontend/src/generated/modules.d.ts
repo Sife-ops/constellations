@@ -80,6 +80,15 @@ declare module '*/login.graphql' {
 }
     
 
+declare module '*/page-title.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const PageTitle: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/register.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;

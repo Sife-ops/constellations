@@ -4,6 +4,7 @@ import { CategoriesStateType, useCategoriesState } from './use-categories-state'
 import { Category } from './category';
 import { OperationContext } from 'urql';
 import { useAddUpdateForm } from '../../hook/use-add-update-form';
+import { usePageTitleMutation } from '../../generated/graphql';
 
 import {
   Bookmark,
@@ -65,9 +66,21 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
   const [___, deleteMutation] = useBookmarkDeleteMutation();
 
-  const handleSubmit = async () => {
-    console.log('sup');
+  // todo: delete
+  const [____, pageTitleMutation] = usePageTitleMutation();
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    // todo: delete
+    console.log('sucks');
+    pageTitleMutation({
+      url: 'https://github.com/dbroadhurst/aws-cognito-react',
+    }).then((res) => {
+      console.log(res);
+    });
     return;
+    //
 
     const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
 
@@ -166,4 +179,15 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
       </Box>
     </form>
   );
+};
+
+// todo: rewrite
+const getTitle = (url: string) => {
+  return fetch(`https://crossorigin.me/${url}`)
+    .then((response) => response.text())
+    .then((html) => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const title = doc.querySelectorAll('title')[0];
+      return title.innerText;
+    });
 };

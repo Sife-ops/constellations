@@ -4,6 +4,8 @@ import { env } from '../utility/constant';
 
 type AuthPayload = JwtPayload & { id: number };
 
+// todo: rename function
+// todo: change to wrapper function
 export const auth_ = (req: Request): AuthPayload => {
   const accessToken = req.headers.authorization;
   if (!accessToken) throw new Error('no authorization header/token');
