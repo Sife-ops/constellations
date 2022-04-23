@@ -2,8 +2,8 @@ import React from 'react';
 import { Box, Button, Input } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
-import { Formik } from 'formik';
 import { OperationContext } from 'urql';
+import { useAddUpdateForm } from '../../hook/use-add-update-form';
 
 import {
   Bookmark,
@@ -19,8 +19,8 @@ interface Props {
   userReexec: (opts?: Partial<OperationContext> | undefined) => void;
 }
 
-export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
-  /**
+export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
+  /*
    * categories
    */
   const initialCategories = (): CategoriesStateType => {
@@ -52,12 +52,51 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
     />
   ));
 
-  /**
+  /*
    * fields
    */
+  // todo: pass in bookmark
+  const f = useAddUpdateForm({
+    description: p.bookmark?.description || '',
+    url: p.bookmark?.url || '',
+  });
+
   const [_, bookmarkAddMutation] = useBookmarkAddMutation();
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
   const [___, deleteMutation] = useBookmarkDeleteMutation();
+
+  const handleSubmit = async () => {
+    console.log('sup');
+    return;
+
+    const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
+
+    let res;
+    if (p.bookmark?.id) {
+      res = await bookmarkUpdateMutation({
+        //
+        categoryIds,
+        description: f.description,
+        id: p.bookmark.id,
+        url: f.url,
+      });
+    } else {
+      res = await bookmarkAddMutation({
+        //
+        categoryIds,
+        description: f.description,
+        url: f.url,
+      });
+    }
+
+    if (res?.error) {
+      console.log(res.error);
+      return;
+    }
+
+    p.userReexec();
+    p.setShowForm(false);
+  };
 
   const handleDelete: React.MouseEventHandler = async (e) => {
     const res = await deleteMutation({ id: p.bookmark?.id! });
@@ -66,89 +105,65 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   };
 
   return (
-    <Formik
-      initialValues={{ description: p.bookmark?.description || '', url: p.bookmark?.url || '' }}
-      onSubmit={async ({ description, url }) => {
-        const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
-
-        let res;
-        if (p.bookmark) {
-          res = await bookmarkUpdateMutation({ id: p.bookmark.id!, description, url, categoryIds });
-        } else {
-          res = await bookmarkAddMutation({ description, url, categoryIds });
-        }
-
-        if (res?.error) {
-          console.log(res.error);
-          return;
-        }
-
-        p.userReexec();
-        p.setShowForm(false);
-      }}
-    >
-      {({ handleChange, handleSubmit, values }) => (
-        <form onSubmit={handleSubmit}>
-          {BookmarkCategories && (
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-              }}
-            >
-              {BookmarkCategories}
-            </div>
-          )}
-          <Box className="element">
-            <Input
-              //
-              name="description"
-              onChange={handleChange}
-              placeholder="description"
-              value={values.description}
-            />
-          </Box>
-
-          <Box className="element">
-            <Input
-              //
-              name="url"
-              onChange={handleChange}
-              placeholder="url"
-              value={values.url}
-            />
-          </Box>
-
-          <Box
-            className="element"
-            style={{
-              display: 'flex',
-            }}
-          >
-            <Button
-              colorScheme="blue"
-              isFullWidth
-              style={{
-                marginRight: '.5rem',
-              }}
-              type="submit"
-            >
-              Submit
-            </Button>
-
-            {p.bookmark && (
-              <Button
-                //
-                colorScheme="red"
-                isFullWidth
-                onClick={handleDelete}
-              >
-                Delete
-              </Button>
-            )}
-          </Box>
-        </form>
+    <form onSubmit={handleSubmit}>
+      {BookmarkCategories && (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+          }}
+        >
+          {BookmarkCategories}
+        </div>
       )}
-    </Formik>
+      <Box className="element">
+        <Input
+          //
+          name="url"
+          onChange={f.handleUrl}
+          placeholder="url"
+          value={f.url}
+        />
+      </Box>
+
+      <Box className="element">
+        <Input
+          //
+          name="description"
+          onChange={f.handleDescription}
+          placeholder="description"
+          value={f.description}
+        />
+      </Box>
+
+      <Box
+        className="element"
+        style={{
+          display: 'flex',
+        }}
+      >
+        <Button
+          colorScheme="blue"
+          isFullWidth
+          style={{
+            marginRight: '.5rem',
+          }}
+          type="submit"
+        >
+          Submit
+        </Button>
+
+        {p.bookmark && (
+          <Button
+            //
+            colorScheme="red"
+            isFullWidth
+            onClick={handleDelete}
+          >
+            Delete
+          </Button>
+        )}
+      </Box>
+    </form>
   );
 };
