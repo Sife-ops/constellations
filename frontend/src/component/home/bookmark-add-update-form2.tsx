@@ -1,10 +1,11 @@
 import React from 'react';
-import { Box, Button, Input } from '@chakra-ui/react';
+import { Box, Button, Input, Text } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from './use-categories-state';
 import { Category } from './category';
 import { OperationContext } from 'urql';
+import { Spinner } from '@chakra-ui/react';
+import { WarningTwoIcon } from '@chakra-ui/icons';
 import { useAddUpdateForm } from '../../hook/use-add-update-form';
-import { usePageTitleMutation } from '../../generated/graphql';
 
 import {
   Bookmark,
@@ -12,6 +13,7 @@ import {
   useBookmarkDeleteMutation,
   useBookmarkUpdateMutation,
 } from '../../generated/graphql';
+import { BoxOutlined } from '../box-outlined';
 
 interface Props {
   bookmark?: Bookmark | null;
@@ -66,28 +68,14 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
   const [___, deleteMutation] = useBookmarkDeleteMutation();
 
-  // todo: delete
-  const [____, pageTitleMutation] = usePageTitleMutation();
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-
-    // todo: delete
-    console.log('sucks');
-    pageTitleMutation({
-      url: 'https://github.com/dbroadhurst/aws-cognito-react',
-    }).then((res) => {
-      console.log(res);
-    });
-    return;
-    //
 
     const categoryIds = bookmarkCategories?.filter((e) => e?.selected).map((e) => e?.id) as number[];
 
     let res;
     if (p.bookmark?.id) {
       res = await bookmarkUpdateMutation({
-        //
         categoryIds,
         description: f.description,
         id: p.bookmark.id,
@@ -95,7 +83,6 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
       });
     } else {
       res = await bookmarkAddMutation({
-        //
         categoryIds,
         description: f.description,
         url: f.url,
@@ -139,6 +126,28 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
         />
       </Box>
 
+      {/* todo: spinner inside description box */}
+      {f.pageTitleRes.fetching && <Spinner />}
+      {f.pageTitleRes.error && (
+        <BoxOutlined bg="yellow" className="block">
+          <Box
+            className="element"
+            style={{
+              display: 'flex',
+            }}
+          >
+            <Box
+              style={{
+                marginRight: '.5rem',
+              }}
+            >
+              <WarningTwoIcon />
+            </Box>
+            <Text>Autofill description doesn't work for this page.</Text>
+          </Box>
+        </BoxOutlined>
+      )}
+
       <Box className="element">
         <Input
           //
@@ -179,15 +188,4 @@ export const BookmarkAddUpdateForm2: React.FC<Props> = (p) => {
       </Box>
     </form>
   );
-};
-
-// todo: rewrite
-const getTitle = (url: string) => {
-  return fetch(`https://crossorigin.me/${url}`)
-    .then((response) => response.text())
-    .then((html) => {
-      const doc = new DOMParser().parseFromString(html, 'text/html');
-      const title = doc.querySelectorAll('title')[0];
-      return title.innerText;
-    });
 };

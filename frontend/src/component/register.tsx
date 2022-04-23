@@ -170,6 +170,7 @@ export const Register: React.FC = () => {
   );
 };
 
+// todo: separate component file
 const errorBox = (msg: string) => {
   return (
     <BoxOutlined bg="tomato" className="block">

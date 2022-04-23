@@ -12,7 +12,7 @@ export const useAddUpdateForm = (
   const [description, setDescription] = useState<string>(i.description);
   const { isValid: isValidUrl, setUrl, url } = useUrl(i.url);
   const [debouncedUrl] = useDebounce(url, 1000);
-  const [_, pageTitleMutation] = usePageTitleMutation();
+  const [pageTitleRes, pageTitleMutation] = usePageTitleMutation();
 
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
 
@@ -50,6 +50,7 @@ export const useAddUpdateForm = (
 
   return {
     description,
+    pageTitleRes,
     handleDescription,
     handleUrl,
     isValidForm,
