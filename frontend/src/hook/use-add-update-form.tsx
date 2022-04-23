@@ -1,3 +1,4 @@
+import { useDebounce } from 'use-debounce';
 import { useState, useEffect } from 'react';
 import { useUrl } from './use-url';
 
@@ -9,6 +10,7 @@ export const useAddUpdateForm = (
 ) => {
   const [description, setDescription] = useState<string>(i.description);
   const { isValid: isValidUrl, setUrl, url } = useUrl(i.url);
+  const [debouncedUrl] = useDebounce(url, 1000);
 
   const [isValidForm, setIsValidForm] = useState<boolean>(false);
 
@@ -25,8 +27,7 @@ export const useAddUpdateForm = (
       console.log('trying to fetch description');
       setDescription('test');
     }
-    // todo: debounce url
-  }, [url]);
+  }, [debouncedUrl]);
 
   const handleDescription = (e: any) => {
     setDescription(e.target.value);
