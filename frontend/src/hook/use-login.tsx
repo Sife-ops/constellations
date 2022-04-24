@@ -4,7 +4,7 @@ import { usePassword } from './use-password';
 
 export const useLogin = (i: { email: string; password: string; remember: boolean }) => {
   const { email, isValid: isValidEmail, setEmail } = useEmail(i.email);
-  const { password, isValid: isValidPassword, setPassword } = usePassword(i.password);
+  const { password, isValidPassword, setPassword } = usePassword(i.password);
   const [remember, setRemember] = useState<boolean>(i.remember);
   const [isValid, setIsValid] = useState<boolean>(false);
 
