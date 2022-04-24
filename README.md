@@ -9,3 +9,4 @@
 - ability to change passwords
 - 'forgot password'
 - change table row hamburger to triangle
+- sensical filtering algorithm

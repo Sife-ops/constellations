@@ -20,7 +20,7 @@ export const useAddUpdateForm = (i: { description: string; url: string }) => {
   }, [description, isValidUrl, url]);
 
   useEffect(() => {
-    if (isValidUrl && description.length < 1) {
+    if (description.length < 1 && isValidUrl) {
       console.log('fetching page title');
       pageTitleMutation({
         // todo: use url?
