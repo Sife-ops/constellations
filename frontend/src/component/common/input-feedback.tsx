@@ -1,17 +1,36 @@
-import * as CSS from 'csstype';
 import { Box, Text } from '@chakra-ui/react';
 import { BoxOutlined } from '../box-outlined';
-import { WarningTwoIcon } from '@chakra-ui/icons';
-import { Token } from '@chakra-ui/styled-system/dist/declarations/src/utils/types';
+import { WarningTwoIcon, CheckCircleIcon, NotAllowedIcon } from '@chakra-ui/icons';
 
-// todo: separate component file
 export const InputFeedback: React.FC<{
-  bg?: Token<CSS.Property.Color, 'colors'>;
   className?: string | undefined;
   msg: string;
+  type: 'success' | 'failure' | 'warning';
 }> = (p) => {
+  const bgColor = () => {
+    switch (p.type) {
+      case 'failure':
+        return 'red.500';
+      case 'success':
+        return 'green.500';
+      case 'warning':
+        return 'yellow.500';
+    }
+  };
+
+  const icon = () => {
+    switch (p.type) {
+      case 'failure':
+        return <NotAllowedIcon />;
+      case 'success':
+        return <CheckCircleIcon />;
+      case 'warning':
+        return <WarningTwoIcon />;
+    }
+  };
+
   return (
-    <BoxOutlined bg={p.bg} className={p.className}>
+    <BoxOutlined bg={bgColor()} className={p.className}>
       <Box
         className="element"
         style={{
@@ -23,8 +42,7 @@ export const InputFeedback: React.FC<{
             marginRight: '.5rem',
           }}
         >
-          {/* todo: can change icon */}
-          <WarningTwoIcon />
+          {icon()}
         </Box>
         <Text>{p.msg}</Text>
       </Box>

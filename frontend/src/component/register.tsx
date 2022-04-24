@@ -42,9 +42,9 @@ export const Register: React.FC = () => {
         // todo: progress bar?
         return <Spinner />;
       } else if (userExists === true) {
-        return <InputFeedback msg="Username already exists." bg="red.500" className="block" />;
+        return <InputFeedback msg="Username already exists." type="failure" className="block" />;
       } else if (userExists === false) {
-        return <InputFeedback msg="Username available!" bg="green.500" className="block" />;
+        return <InputFeedback msg="Username available!" type="success" className="block" />;
       }
     } else {
       return null;

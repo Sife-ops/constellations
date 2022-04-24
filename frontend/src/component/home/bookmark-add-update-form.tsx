@@ -131,9 +131,9 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       {f.pageTitleRes.error && (
         <InputFeedback
           //
-          msg="Description autofull does not work for this URL"
-          bg="yellow.500"
           className="block"
+          msg="Description autofull does not work for this URL."
+          type="warning"
         />
       )}
 
