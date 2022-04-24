@@ -1,27 +1,24 @@
+// todo: remove yup?
 import * as yup from 'yup';
 import { useState, useEffect } from 'react';
 
 export const usePassword = (initialValue: string) => {
   const [password, setPassword] = useState<string>(initialValue);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValidPassword, setIsValidPassword] = useState<boolean>(false);
 
   const passwordSchema = yup.object().shape({
-    password: yup.string()
-    .required()
-    .min(8)
-    .matches(/[0-9]/)
-    .matches(/[!@#\$%\^\&*\)\(+=._-]/)
+    password: yup
+      .string()
+      .required()
+      .min(8)
+      .matches(/[0-9]/)
+      .matches(/[!@#\$%\^\&*\)\(+=._-]/),
   });
 
   useEffect(() => {
-    // if (password.length < 1) {
-    //   setIsValid(false);
-    //   return;
-    // }
-
-    const isValid = passwordSchema.isValidSync({ password });
-    setIsValid(isValid);
+    const isValidPassword = passwordSchema.isValidSync({ password });
+    setIsValidPassword(isValidPassword);
   }, [password]);
 
-  return { password, setPassword, isValid };
+  return { password, setPassword, isValidPassword };
 };

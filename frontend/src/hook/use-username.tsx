@@ -5,40 +5,32 @@ import { useUserExistsMutation } from '../generated/graphql';
 
 export const useUsername = (initialValue: string) => {
   const [username, setUsername] = useState<string>(initialValue);
-  const [isValid, setIsValid] = useState<boolean>(false);
-
-  const [debouncedUsername] = useDebounce(username, 1000);
-  // todo: use userExistsRes instead
-  const [exists, setExists] = useState<boolean | 'pending'>('pending');
-  const [_, userExistsMutation] = useUserExistsMutation();
+  const [isValidUsername, setIsValidUsername] = useState<boolean>(false);
+  const [dUsername, dUsernameCtl] = useDebounce(username, 1000);
+  const [userExistsRes, userExistsMutation] = useUserExistsMutation();
 
   const usernameSchema = yup.object().shape({
     username: yup.string().min(5).required(),
   });
 
   useEffect(() => {
-    setExists('pending');
-    const isValid = usernameSchema.isValidSync({ username });
-    setIsValid(isValid);
+    const isValidUsername = usernameSchema.isValidSync({ username });
+    setIsValidUsername(isValidUsername);
   }, [username]);
 
   useEffect(() => {
-    if (isValid) {
+    if (isValidUsername) {
       userExistsMutation({
-        username: debouncedUsername,
-      }).then((res) => {
-        if (res.error) {
-          console.error(res);
-        } else if (res.data) {
-          if (res.data.userExists) {
-            setExists(true);
-          } else {
-            setExists(false);
-          }
-        }
+        username: dUsername,
       });
     }
-  }, [debouncedUsername]);
+  }, [dUsername]);
 
-  return { username, setUsername, isValid, exists };
+  return {
+    dUsernameCtl,
+    isValidUsername,
+    setUsername,
+    userExistsRes,
+    username,
+  };
 };

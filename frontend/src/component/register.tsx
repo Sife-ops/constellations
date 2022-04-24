@@ -13,18 +13,19 @@ export const Register: React.FC = () => {
   const [errorUsername, setErrorUsername] = useState<boolean>(false);
   const [errorCaptcha, setErrorCaptcha] = useState<boolean>(false);
 
-  const r = useRegisterForm();
+  const f = useRegisterForm();
   const [__, registerMutation] = useRegisterMutation();
 
   const navigate = useNavigate();
 
+  // todo: move to hook
   const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     const res = await registerMutation({
-      password: r.password,
-      username: r.username,
-      captcha: r.captcha,
+      password: f.password,
+      username: f.username,
+      captcha: f.captcha,
     });
 
     if (res.error) {
@@ -43,18 +44,37 @@ export const Register: React.FC = () => {
   };
 
   const usernameBorderColor = () => {
-    if (r.username.length < 1) {
+    if (f.username.length < 1) {
       return '';
-    } else if (!r.isValidUsername) {
+    } else if (!f.isValidUsername) {
       return 'red.500';
-    } else if (r.usernameExists === 'pending') {
+    } else if (f.userExistsRes.fetching) {
       return '';
-    } else if (r.usernameExists === true) {
+    } else if (f.userExistsRes.data?.userExists === true) {
       return 'red.500';
-    } else if (r.usernameExists === false) {
+    } else if (f.userExistsRes.data?.userExists === false) {
       return 'green.500';
     } else {
       return '';
+    }
+  };
+
+  const usernameFeedback = () => {
+    const userExists = f.userExistsRes.data?.userExists;
+    if (f.isValidUsername) {
+      // todo: don't use fetching?
+      if (f.dUsernameCtl.isPending() || f.userExistsRes.fetching) {
+        return <Spinner />;
+      } else {
+        return (
+          <Box className="element">
+            {userExists === true && <Text color="red.500">Username already exists.</Text>}
+            {userExists === false && <Text color="green.500">Username available!</Text>}
+          </Box>
+        );
+      }
+    } else {
+      return null;
     }
   };
 
@@ -105,42 +125,35 @@ export const Register: React.FC = () => {
             <Input
               focusBorderColor={usernameBorderColor()}
               name="username"
-              onChange={(e) => r.setUsername(e.target.value)}
+              onChange={(e) => f.setUsername(e.target.value)}
               placeholder="username"
-              value={r.username}
+              value={f.username}
             />
           </Box>
-          {r.isValidUsername && r.usernameExists === 'pending' && <Spinner />}
-          {r.isValidUsername && r.usernameExists === true && (
-            <Box className="element">
-              <Text color="red.500">Username already exists.</Text>
-            </Box>
-          )}
-          {r.isValidUsername && r.usernameExists === false && (
-            <Box className="element">
-              <Text color="green.500">Username available!</Text>
-            </Box>
-          )}
+
+          {/* feedback */}
+          {usernameFeedback()}
+
           <Box className="element">
             <Input
-              focusBorderColor={r.password.length < 1 ? '' : !r.isValidPassword ? 'red.500' : 'green.500'}
+              focusBorderColor={f.password.length < 1 ? '' : !f.isValidPassword ? 'red.500' : 'green.500'}
               name="password"
-              onChange={(e) => r.setPassword(e.target.value)}
+              onChange={(e) => f.setPassword(e.target.value)}
               placeholder="password"
               type="password"
-              value={r.password}
+              value={f.password}
             />
           </Box>
           <Box className="element">
             <Input
               focusBorderColor={
-                r.passwordConfirm === '' ? '' : r.passwordConfirm !== r.password ? 'red.500' : 'green.500'
+                f.passwordConfirm === '' ? '' : f.passwordConfirm !== f.password ? 'red.500' : 'green.500'
               }
               name="passwordConfirm"
-              onChange={(e) => r.setPasswordConfirm(e.target.value)}
+              onChange={(e) => f.setPasswordConfirm(e.target.value)}
               placeholder="confirm password"
               type="password"
-              value={r.passwordConfirm}
+              value={f.passwordConfirm}
             />
           </Box>
           {env.secret.recaptcha && (
@@ -148,13 +161,13 @@ export const Register: React.FC = () => {
               <Captcha
                 sitekey={env.secret.recaptcha}
                 onChange={(v) => {
-                  if (v) r.setCaptcha(v);
+                  if (v) f.setCaptcha(v);
                 }}
               />
             </Box>
           )}
           <Box className="element">
-            <Button colorScheme="blue" disabled={!r.isValidRegister} type="submit">
+            <Button colorScheme="blue" disabled={!f.isValidRegister} type="submit">
               Sign Up
             </Button>
           </Box>

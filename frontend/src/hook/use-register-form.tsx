@@ -10,34 +10,50 @@ export const useRegisterForm = (
     remember: false,
   }
 ) => {
-  const { exists: usernameExists, isValid: isValidUsername, setUsername, username } = useUsername(i.username);
-  const { password, isValid: isValidPassword, setPassword } = usePassword(i.password);
+  const { dUsernameCtl, isValidUsername, setUsername, userExistsRes, username } = useUsername(i.username);
+  const { password, isValidPassword, setPassword } = usePassword(i.password);
   const [passwordConfirm, setPasswordConfirm] = useState<string>('');
   const [captcha, setCaptcha] = useState<string | null>(null);
   const [isValidRegister, setIsValidRegister] = useState<boolean>(false);
 
   useEffect(() => {
     if (env.secret.recaptcha && !captcha) {
+      // only check captcha if it is enabled
       setIsValidRegister(false);
-    } else if (isValidUsername && isValidPassword && passwordConfirm === password && usernameExists === false) {
+    } else if (
+      isValidUsername &&
+      !dUsernameCtl.isPending() &&
+      !userExistsRes.fetching &&
+      userExistsRes.data?.userExists === false &&
+      isValidPassword &&
+      passwordConfirm === password
+    ) {
       setIsValidRegister(true);
     } else {
       setIsValidRegister(false);
     }
-  }, [username, password, passwordConfirm, usernameExists, captcha]);
+  }, [
+    //
+    username,
+    userExistsRes.fetching,
+    password,
+    passwordConfirm,
+    captcha,
+  ]);
 
   return {
-    username,
-    setUsername,
-    isValidUsername,
-    usernameExists,
-    password,
-    setPassword,
-    isValidPassword,
-    passwordConfirm,
-    setPasswordConfirm,
     captcha,
-    setCaptcha,
+    dUsernameCtl,
+    isValidPassword,
     isValidRegister,
+    isValidUsername,
+    password,
+    passwordConfirm,
+    setCaptcha,
+    setPassword,
+    setPasswordConfirm,
+    setUsername,
+    userExistsRes,
+    username,
   };
 };
