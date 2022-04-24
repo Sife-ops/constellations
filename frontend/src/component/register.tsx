@@ -2,9 +2,9 @@ import Captcha from 'react-google-recaptcha';
 import React, { useState } from 'react';
 import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
+import { InputFeedback } from './common/input-feedback';
 import { Link, useNavigate } from 'react-router-dom';
 import { Spinner } from '@chakra-ui/react';
-import { WarningTwoIcon } from '@chakra-ui/icons';
 import { env } from '../utility/constant';
 import { useRegisterForm } from '../hook/use-register-form';
 import { useRegisterMutation } from '../generated/graphql';
@@ -17,31 +17,6 @@ export const Register: React.FC = () => {
   const [__, registerMutation] = useRegisterMutation();
 
   const navigate = useNavigate();
-
-  // todo: move to hook
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
-    const res = await registerMutation({
-      password: f.password,
-      username: f.username,
-      captcha: f.captcha,
-    });
-
-    if (res.error) {
-      console.error(res);
-
-      const graphQLErrors = res.error.graphQLErrors.map((e) => e.toString());
-
-      if (graphQLErrors.includes('username exists')) {
-        setErrorUsername(true);
-      } else if (graphQLErrors.includes('failed captcha')) {
-        setErrorCaptcha(true);
-      }
-    } else {
-      navigate('login');
-    }
-  };
 
   const usernameBorderColor = () => {
     if (f.username.length < 1) {
@@ -64,17 +39,39 @@ export const Register: React.FC = () => {
     if (f.isValidUsername) {
       // todo: don't use fetching?
       if (f.dUsernameCtl.isPending() || f.userExistsRes.fetching) {
+        // todo: progress bar?
         return <Spinner />;
-      } else {
-        return (
-          <Box className="element">
-            {userExists === true && <Text color="red.500">Username already exists.</Text>}
-            {userExists === false && <Text color="green.500">Username available!</Text>}
-          </Box>
-        );
+      } else if (userExists === true) {
+        return <InputFeedback msg="Username already exists." bg="red.500" className="block" />;
+      } else if (userExists === false) {
+        return <InputFeedback msg="Username available!" bg="green.500" className="block" />;
       }
     } else {
       return null;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const res = await registerMutation({
+      password: f.password,
+      username: f.username,
+      captcha: f.captcha,
+    });
+
+    if (res.error) {
+      console.error(res);
+
+      const graphQLErrors = res.error.graphQLErrors.map((e) => e.toString());
+
+      if (graphQLErrors.includes('username exists')) {
+        setErrorUsername(true);
+      } else if (graphQLErrors.includes('failed captcha')) {
+        setErrorCaptcha(true);
+      }
+    } else {
+      navigate('login');
     }
   };
 
@@ -118,8 +115,8 @@ export const Register: React.FC = () => {
         }}
       >
         <form onSubmit={handleSubmit}>
-          {errorUsername && errorBox('Username exists.')}
-          {errorCaptcha && errorBox('Captcha failed.')}
+          {/* {errorUsername && errorBox('Username exists.')}
+          {errorCaptcha && errorBox('Captcha failed.')} */}
 
           <Box className="element">
             <Input
@@ -131,7 +128,6 @@ export const Register: React.FC = () => {
             />
           </Box>
 
-          {/* feedback */}
           {usernameFeedback()}
 
           <Box className="element">
@@ -180,28 +176,5 @@ export const Register: React.FC = () => {
         </form>
       </BoxOutlined>
     </Box>
-  );
-};
-
-// todo: separate component file
-const errorBox = (msg: string) => {
-  return (
-    <BoxOutlined bg="tomato" className="block">
-      <Box
-        className="element"
-        style={{
-          display: 'flex',
-        }}
-      >
-        <Box
-          style={{
-            marginRight: '.5rem',
-          }}
-        >
-          <WarningTwoIcon />
-        </Box>
-        <Text>{msg}</Text>
-      </Box>
-    </BoxOutlined>
   );
 };

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Box, Button, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Input } from '@chakra-ui/react';
 import { CategoriesStateType, useCategoriesState } from '../../hook/use-categories-state';
 import { Category } from './category';
+import { InputFeedback } from '../common/input-feedback';
 import { OperationContext } from 'urql';
 import { Spinner } from '@chakra-ui/react';
-import { WarningTwoIcon } from '@chakra-ui/icons';
 import { useAddUpdateForm } from '../../hook/use-add-update-form';
 
 import {
@@ -13,7 +13,6 @@ import {
   useBookmarkDeleteMutation,
   useBookmarkUpdateMutation,
 } from '../../generated/graphql';
-import { BoxOutlined } from '../box-outlined';
 
 interface Props {
   bookmark?: Bookmark | null;
@@ -119,7 +118,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       )}
       <Box className="element">
         <Input
-          //
+          // todo: border color
           name="url"
           onChange={f.handleUrl}
           placeholder="url"
@@ -130,23 +129,12 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       {/* todo: spinner inside description box */}
       {f.pageTitleRes.fetching && <Spinner />}
       {f.pageTitleRes.error && (
-        <BoxOutlined bg="yellow" className="block">
-          <Box
-            className="element"
-            style={{
-              display: 'flex',
-            }}
-          >
-            <Box
-              style={{
-                marginRight: '.5rem',
-              }}
-            >
-              <WarningTwoIcon />
-            </Box>
-            <Text>Autofill description doesn't work for this URL.</Text>
-          </Box>
-        </BoxOutlined>
+        <InputFeedback
+          //
+          msg="Description autofull does not work for this URL"
+          bg="yellow.500"
+          className="block"
+        />
       )}
 
       <Box className="element">
