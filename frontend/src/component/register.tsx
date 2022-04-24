@@ -48,7 +48,7 @@ export const Register: React.FC = () => {
       return '';
     } else if (!f.isValidUsername) {
       return 'red.500';
-    } else if (f.userExistsRes.fetching) {
+    } else if (f.dUsernameCtl.isPending() || f.userExistsRes.fetching) {
       return '';
     } else if (f.userExistsRes.data?.userExists === true) {
       return 'red.500';
