@@ -8,13 +8,22 @@ import { useRegisterForm } from '../hook/use-register-form';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
+  /*
+   * error
+   */
   // todo: delete
   const [errorUsername, setErrorUsername] = useState<boolean>(false);
   const [errorCaptcha, setErrorCaptcha] = useState<boolean>(false);
 
+  /*
+   * fields
+   */
   const f = useRegisterForm();
-  const [__, registerMutation] = useRegisterMutation();
 
+  /*
+   * submit
+   */
+  const [_, registerMutation] = useRegisterMutation();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,6 +40,7 @@ export const Register: React.FC = () => {
 
       const graphQLErrors = res.error.graphQLErrors.map((e) => e.toString());
 
+      // todo: delete
       if (graphQLErrors.includes('username exists')) {
         setErrorUsername(true);
       } else if (graphQLErrors.includes('failed captcha')) {
@@ -45,6 +55,7 @@ export const Register: React.FC = () => {
     <Box
       className="loginRegister"
       style={{
+        // todo: this is stupid
         flexDirection: 'row-reverse',
       }}
     >

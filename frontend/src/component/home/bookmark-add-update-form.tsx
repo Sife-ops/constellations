@@ -57,15 +57,17 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
   /*
    * fields
    */
-  // todo: pass in bookmark
+  // todo: pass in bookmark?
   const f = useAddUpdateForm({
     description: p.bookmark?.description || '',
     url: p.bookmark?.url || '',
   });
 
+  /*
+   * submit
+   */
   const [_, bookmarkAddMutation] = useBookmarkAddMutation();
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
-  const [___, deleteMutation] = useBookmarkDeleteMutation();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -96,6 +98,11 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
     p.userReexec();
     p.setShowForm(false);
   };
+
+  /*
+   * delete
+   */
+  const [___, deleteMutation] = useBookmarkDeleteMutation();
 
   const handleDelete: React.MouseEventHandler = async () => {
     const res = await deleteMutation({ id: p.bookmark?.id! });
