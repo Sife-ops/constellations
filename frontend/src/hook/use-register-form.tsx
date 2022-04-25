@@ -1,3 +1,5 @@
+import { InputFeedback } from '../component/common/input-feedback';
+import { Spinner } from '@chakra-ui/react';
 import { env } from '../utility/constant';
 import { useEffect, useState } from 'react';
 import { usePassword } from './use-password';
@@ -41,6 +43,39 @@ export const useRegisterForm = (
     captcha,
   ]);
 
+  const usernameBorderColor = () => {
+    if (username.length < 1) {
+      return '';
+    } else if (!isValidUsername) {
+      return 'red.500';
+    } else if (dUsernameCtl.isPending() || userExistsRes.fetching) {
+      return '';
+    } else if (userExistsRes.data?.userExists === true) {
+      return 'red.500';
+    } else if (userExistsRes.data?.userExists === false) {
+      return 'green.500';
+    } else {
+      return '';
+    }
+  };
+
+  const usernameFeedback = () => {
+    const userExists = userExistsRes.data?.userExists;
+    if (isValidUsername) {
+      // todo: don't use fetching?
+      if (dUsernameCtl.isPending() || userExistsRes.fetching) {
+        // todo: progress bar?
+        return <Spinner />;
+      } else if (userExists === true) {
+        return <InputFeedback msg="Username already exists." type="failure" className="block" />;
+      } else if (userExists === false) {
+        return <InputFeedback msg="Username available!" type="success" className="block" />;
+      }
+    } else {
+      return null;
+    }
+  };
+
   return {
     captcha,
     dUsernameCtl,
@@ -55,5 +90,7 @@ export const useRegisterForm = (
     setUsername,
     userExistsRes,
     username,
+    usernameBorderColor,
+    usernameFeedback,
   };
 };

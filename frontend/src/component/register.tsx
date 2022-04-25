@@ -2,9 +2,7 @@ import Captcha from 'react-google-recaptcha';
 import React, { useState } from 'react';
 import { Box, Button, Input, ListItem, Text, UnorderedList } from '@chakra-ui/react';
 import { BoxOutlined } from './box-outlined';
-import { InputFeedback } from './common/input-feedback';
 import { Link, useNavigate } from 'react-router-dom';
-import { Spinner } from '@chakra-ui/react';
 import { env } from '../utility/constant';
 import { useRegisterForm } from '../hook/use-register-form';
 import { useRegisterMutation } from '../generated/graphql';
@@ -18,40 +16,6 @@ export const Register: React.FC = () => {
   const [__, registerMutation] = useRegisterMutation();
 
   const navigate = useNavigate();
-
-  // todo: can move to hook
-  const usernameBorderColor = () => {
-    if (f.username.length < 1) {
-      return '';
-    } else if (!f.isValidUsername) {
-      return 'red.500';
-    } else if (f.dUsernameCtl.isPending() || f.userExistsRes.fetching) {
-      return '';
-    } else if (f.userExistsRes.data?.userExists === true) {
-      return 'red.500';
-    } else if (f.userExistsRes.data?.userExists === false) {
-      return 'green.500';
-    } else {
-      return '';
-    }
-  };
-
-  const usernameFeedback = () => {
-    const userExists = f.userExistsRes.data?.userExists;
-    if (f.isValidUsername) {
-      // todo: don't use fetching?
-      if (f.dUsernameCtl.isPending() || f.userExistsRes.fetching) {
-        // todo: progress bar?
-        return <Spinner />;
-      } else if (userExists === true) {
-        return <InputFeedback msg="Username already exists." type="failure" className="block" />;
-      } else if (userExists === false) {
-        return <InputFeedback msg="Username available!" type="success" className="block" />;
-      }
-    } else {
-      return null;
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -122,7 +86,7 @@ export const Register: React.FC = () => {
 
           <Box className="element">
             <Input
-              focusBorderColor={usernameBorderColor()}
+              focusBorderColor={f.usernameBorderColor()}
               name="username"
               onChange={(e) => f.setUsername(e.target.value)}
               placeholder="username"
@@ -130,7 +94,7 @@ export const Register: React.FC = () => {
             />
           </Box>
 
-          {usernameFeedback()}
+          {f.usernameFeedback()}
 
           <Box className="element">
             <Input

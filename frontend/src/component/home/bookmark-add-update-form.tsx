@@ -97,7 +97,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
     p.setShowForm(false);
   };
 
-  const handleDelete: React.MouseEventHandler = async (e) => {
+  const handleDelete: React.MouseEventHandler = async () => {
     const res = await deleteMutation({ id: p.bookmark?.id! });
     if (res.error) return;
     p.userReexec();
