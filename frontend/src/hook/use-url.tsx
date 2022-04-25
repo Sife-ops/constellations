@@ -3,15 +3,15 @@ import { ex } from '../utility/constant';
 
 export const useUrl = (initialValue: string = '') => {
   const [url, setUrl] = useState<string>(initialValue);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValidUrl, setIsValidUrl] = useState<boolean>(false);
 
   useEffect(() => {
     if (ex.url.test(url)) {
-      setIsValid(true);
+      setIsValidUrl(true);
     } else {
-      setIsValid(false);
+      setIsValidUrl(false);
     }
   }, [url]);
 
-  return { url, setUrl, isValid };
+  return { url, setUrl, isValidUrl };
 };

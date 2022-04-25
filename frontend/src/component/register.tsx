@@ -10,6 +10,7 @@ import { useRegisterForm } from '../hook/use-register-form';
 import { useRegisterMutation } from '../generated/graphql';
 
 export const Register: React.FC = () => {
+  // todo: delete
   const [errorUsername, setErrorUsername] = useState<boolean>(false);
   const [errorCaptcha, setErrorCaptcha] = useState<boolean>(false);
 
@@ -18,6 +19,7 @@ export const Register: React.FC = () => {
 
   const navigate = useNavigate();
 
+  // todo: can move to hook
   const usernameBorderColor = () => {
     if (f.username.length < 1) {
       return '';

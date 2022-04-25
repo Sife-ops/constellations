@@ -7,30 +7,19 @@ export const InputFeedback: React.FC<{
   msg: string;
   type: 'success' | 'failure' | 'warning';
 }> = (p) => {
-  const bgColor = () => {
+  const variant = () => {
     switch (p.type) {
       case 'failure':
-        return 'red.500';
+        return { color: 'red.500', icon: <NotAllowedIcon /> };
       case 'success':
-        return 'green.500';
+        return { color: 'green.500', icon: <CheckCircleIcon /> };
       case 'warning':
-        return 'yellow.500';
-    }
-  };
-
-  const icon = () => {
-    switch (p.type) {
-      case 'failure':
-        return <NotAllowedIcon />;
-      case 'success':
-        return <CheckCircleIcon />;
-      case 'warning':
-        return <WarningTwoIcon />;
+        return { color: 'yellow.500', icon: <WarningTwoIcon /> };
     }
   };
 
   return (
-    <BoxOutlined bg={bgColor()} className={p.className}>
+    <BoxOutlined bg={variant().color} className={p.className}>
       <Box
         className="element"
         style={{
@@ -42,7 +31,7 @@ export const InputFeedback: React.FC<{
             marginRight: '.5rem',
           }}
         >
-          {icon()}
+          {variant().icon}
         </Box>
         <Text>{p.msg}</Text>
       </Box>

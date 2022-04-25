@@ -63,7 +63,6 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
     url: p.bookmark?.url || '',
   });
 
-  // todo: move to hook
   const [_, bookmarkAddMutation] = useBookmarkAddMutation();
   const [__, bookmarkUpdateMutation] = useBookmarkUpdateMutation();
   const [___, deleteMutation] = useBookmarkDeleteMutation();
@@ -118,7 +117,8 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       )}
       <Box className="element">
         <Input
-          // todo: border color
+          //
+          focusBorderColor={f.urlBorderColor()}
           name="url"
           onChange={f.handleUrl}
           placeholder="url"
@@ -127,6 +127,7 @@ export const BookmarkAddUpdateForm: React.FC<Props> = (p) => {
       </Box>
 
       {/* todo: spinner inside description box */}
+      {/* todo: spinner spinner during debounce */}
       {f.pageTitleRes.fetching && <Spinner />}
       {f.pageTitleRes.error && (
         <InputFeedback

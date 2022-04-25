@@ -5,7 +5,7 @@ import { useUrl } from './use-url';
 
 export const useAddUpdateForm = (i: { description: string; url: string }) => {
   const [description, setDescription] = useState<string>(i.description);
-  const { isValid: isValidUrl, setUrl, url } = useUrl(i.url);
+  const { isValidUrl, setUrl, url } = useUrl(i.url);
   const [debouncedUrl] = useDebounce(url, 1000);
   const [pageTitleRes, pageTitleMutation] = usePageTitleMutation();
 
@@ -35,6 +35,16 @@ export const useAddUpdateForm = (i: { description: string; url: string }) => {
     }
   }, [debouncedUrl]);
 
+  const urlBorderColor = () => {
+    if (url.length < 1) {
+      return '';
+    } else if (!isValidUrl) {
+      return 'red.500';
+    } else {
+      return '';
+    }
+  };
+
   const handleDescription = (e: any) => {
     setDescription(e.target.value);
   };
@@ -45,13 +55,14 @@ export const useAddUpdateForm = (i: { description: string; url: string }) => {
 
   return {
     description,
-    pageTitleRes,
     handleDescription,
     handleUrl,
     isValidForm,
     isValidUrl,
+    pageTitleRes,
     setDescription,
     setUrl,
     url,
+    urlBorderColor,
   };
 };
