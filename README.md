@@ -2,11 +2,12 @@
 
 ## Todo
 
-- sign-in/out naming
-- remove dead code
 - update mock data and functions
-- mirror on git.goettsch.xyz
+- sensical filtering algorithm
+- change table row hamburger to triangle
+
 - ability to change passwords
 - 'forgot password'
-- change table row hamburger to triangle
-- sensical filtering algorithm
+- sign-in/out naming
+- remove dead code
+- mirror on git.goettsch.xyz
