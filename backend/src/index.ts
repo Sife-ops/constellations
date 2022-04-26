@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import * as mock from './utility/mock';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -11,7 +12,6 @@ import { createConnection } from 'typeorm';
 import { env } from './utility/constant';
 import { refresh } from './rest/refresh';
 import { resolvers } from './graphql/resolver';
-import { seed } from './utility/mock';
 import { typeDefs } from './graphql/typedef';
 
 (async () => {
@@ -21,7 +21,7 @@ import { typeDefs } from './graphql/typedef';
 
   console.log(env);
 
-  const msg = 'Missing environment variable:';
+  const msg = 'missing environment variable:';
   if (env.prod) {
     if (env.secret.token.access === 'access') {
       throw new Error(`${msg} SECRET_ACCESS_TOKEN`);
@@ -39,17 +39,18 @@ import { typeDefs } from './graphql/typedef';
     await createConnection({
       type: 'sqlite',
       database: './database/db.sqlite3',
-      dropSchema: env.seed,
       entities: [User, Bookmark, Category],
       synchronize: true,
       logging: false,
     });
   } catch (e) {
     console.log(e);
-    throw new Error("couldn't connect to database");
+    throw new Error('could not connect to database');
   }
 
-  if (env.seed) await seed();
+  if (!env.prod) {
+    await mock.seed();
+  }
 
   /*
    * Express

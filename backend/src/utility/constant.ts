@@ -8,7 +8,6 @@ interface Env {
       access: string; // todo: add '| undefined'
     };
   };
-  seed: boolean;
   url: {
     prod: string | undefined;
   };
@@ -24,7 +23,6 @@ const origin = (): string[] => {
   if (urlProd) return [urlProd];
   return [
     'http://localhost:3000',
-    'http://localhost:3001',
     'https://studio.apollographql.com',
   ];
 };
@@ -44,7 +42,6 @@ export const env: Env = {
       access: process.env.SECRET_ACCESS_TOKEN || 'access',
     },
   },
-  seed: process.env.SEED ? true : false,
   url: {
     prod: process.env.VITE_PROD_URL,
   },
