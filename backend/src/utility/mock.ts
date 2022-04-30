@@ -9,7 +9,7 @@ export const seed = async () => {
    */
   const pwTestUser = {
     username: 'playwright00',
-    password: await argon2.hash('test'),
+    password: await argon2.hash('testtest1!'),
   };
 
   const found = await User.findOne({
