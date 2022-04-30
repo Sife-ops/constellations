@@ -1,24 +1,30 @@
 import { useEffect, useState } from 'react';
-import { useEmail } from './use-email';
+import { useUsername } from './use-username';
 import { usePassword } from './use-password';
 
-export const useLogin = (i: { email: string; password: string; remember: boolean }) => {
-  const { email, isValid: isValidEmail, setEmail } = useEmail(i.email);
+export const useLoginForm = (
+  i: { username: string; password: string; remember: boolean } = {
+    username: '',
+    password: '',
+    remember: false,
+  }
+) => {
+  const { username, isValidUsername, setUsername } = useUsername(i.username);
   const { password, isValidPassword, setPassword } = usePassword(i.password);
   const [remember, setRemember] = useState<boolean>(i.remember);
   const [isValid, setIsValid] = useState<boolean>(false);
 
   useEffect(() => {
-    if (isValidEmail && isValidPassword) {
+    if (isValidUsername && isValidPassword) {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
-  }, [isValidEmail, isValidPassword]);
+  }, [isValidUsername, isValidPassword]);
 
   return {
-    email,
-    setEmail,
+    username,
+    setUsername,
     password,
     setPassword,
     remember,
