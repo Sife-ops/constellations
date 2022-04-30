@@ -86,7 +86,7 @@ export const Login: React.FC = () => {
             <label>Remember me</label>
           </Box>
           <Box className="element">
-            <Button colorScheme="blue" disabled={!f.isValid} id="at-loginForm__submit" type="submit">
+            <Button colorScheme="blue" disabled={!f.isValidLogin} id="at-loginForm__submit" type="submit">
               Sign In
             </Button>
           </Box>

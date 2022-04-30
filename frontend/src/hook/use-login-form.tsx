@@ -12,13 +12,13 @@ export const useLoginForm = (
   const { username, isValidUsername, setUsername } = useUsername(i.username);
   const { password, isValidPassword, setPassword } = usePassword(i.password);
   const [remember, setRemember] = useState<boolean>(i.remember);
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValidLogin, setIsValidLogin] = useState<boolean>(false);
 
   useEffect(() => {
     if (isValidUsername && isValidPassword) {
-      setIsValid(true);
+      setIsValidLogin(true);
     } else {
-      setIsValid(false);
+      setIsValidLogin(false);
     }
   }, [isValidUsername, isValidPassword]);
 
@@ -29,6 +29,6 @@ export const useLoginForm = (
     setPassword,
     remember,
     setRemember,
-    isValid,
+    isValidLogin,
   };
 };
